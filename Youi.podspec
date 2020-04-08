@@ -22,4 +22,5 @@ Pod::Spec.new do |spec|
   spec.ios.frameworks         = "Cocoa", "UIKit", "simd"
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
+  spec.dependency             'Satin'
 end
