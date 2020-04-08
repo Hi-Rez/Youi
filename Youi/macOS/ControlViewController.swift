@@ -21,7 +21,7 @@ open class ControlViewController: NSViewController {
         deactivate()
     }
 
-    func deactivate() {
+    open func deactivate() {
         view.window?.makeFirstResponder(nil)
     }
 }

@@ -10,7 +10,7 @@ import Cocoa
 import Satin
 
 open class BindingInputViewController: ControlViewController, NSTextFieldDelegate {
-    weak var parameter: Parameter?
+    public weak var parameter: Parameter?
     var observation: NSKeyValueObservation?
 
     var stepper: NSStepper!

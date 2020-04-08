@@ -9,13 +9,13 @@
 import Cocoa
 import Satin
 
-protocol OptionsViewControllerDelegate: AnyObject {
+public protocol OptionsViewControllerDelegate: AnyObject {
     func onButtonPressed(_ sender: NSButton)
 }
 
 open class OptionsViewController: NSViewController, NSTextFieldDelegate {
-    var options: [String] = []
-    weak var delegate: OptionsViewControllerDelegate?
+    public var options: [String] = []
+    public weak var delegate: OptionsViewControllerDelegate?
     
     open override func loadView() {
         view = NSView()

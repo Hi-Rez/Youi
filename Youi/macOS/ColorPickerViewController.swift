@@ -11,7 +11,7 @@ import Satin
 import simd
 
 open class ColorPickerViewController: ControlViewController {
-    weak var parameter: Parameter?
+    public weak var parameter: Parameter?
     var observationR: NSKeyValueObservation?
     var observationG: NSKeyValueObservation?
     var observationB: NSKeyValueObservation?

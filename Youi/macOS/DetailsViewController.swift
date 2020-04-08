@@ -10,7 +10,7 @@ import Cocoa
 import Satin
 
 open class DetailsViewController: NSViewController, NSTextFieldDelegate {
-    var details: [StringParameter] = []
+    public var details: [StringParameter] = []
     var observations: [NSKeyValueObservation] = []
     
     open override func loadView() {

@@ -9,12 +9,12 @@
 import Cocoa
 
 open class Spacer: NSView {
-    init() {
+    public init() {
         super.init(frame: NSRect(x: 0, y: 0, width: 0, height: 0))
         self.setup()
     }
 
-    required public init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         super.init(coder: coder)
         self.setup()
     }
@@ -27,7 +27,7 @@ open class Spacer: NSView {
         super.updateLayer()
         layer?.backgroundColor = NSColor(named: "Spacer")?.cgColor
     }
-    
+
     deinit {
         print("Removing Spacer")
     }

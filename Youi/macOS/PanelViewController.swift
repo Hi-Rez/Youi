@@ -16,7 +16,7 @@ protocol PanelViewControllerDelegate: AnyObject {
 }
 
 open class PanelViewController: ControlViewController {
-    var parameters: ParameterGroup?
+    public var parameters: ParameterGroup?
     var numberInputs: [NumberInputViewController] = []
     var sliders: [SliderViewController] = []
     var toggles: [ToggleViewController] = []
@@ -40,7 +40,7 @@ open class PanelViewController: ControlViewController {
     
     weak var delegate: PanelViewControllerDelegate?
     
-    convenience init(_ title: String, parameters: ParameterGroup) {
+    public convenience init(_ title: String, parameters: ParameterGroup) {
         self.init()
         self.title = title
         self.parameters = parameters

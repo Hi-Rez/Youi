@@ -9,18 +9,18 @@
 import Cocoa
 import Satin
 
-protocol ProgressSliderViewControllerDelegate: AnyObject {
+public protocol ProgressSliderViewControllerDelegate: AnyObject {
     func onValueChanged(_ sender: ProgressSliderViewController)
 }
 
 open class ProgressSliderViewController: ControlViewController {
-    weak var parameter: Parameter?
+    public weak var parameter: Parameter?
     var valueObservation: NSKeyValueObservation?
     var minObservation: NSKeyValueObservation?
     var maxObservation: NSKeyValueObservation?
-    var slider: NSSlider!
+    public var slider: NSSlider!
     
-    weak var delegate: ProgressSliderViewControllerDelegate?
+    public weak var delegate: ProgressSliderViewControllerDelegate?
     
     open override func loadView() {
         view = NSView()

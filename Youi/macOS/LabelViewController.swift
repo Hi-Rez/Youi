@@ -10,7 +10,7 @@ import Cocoa
 import Satin
 
 open class LabelViewController: NSViewController, NSTextFieldDelegate {
-    weak var parameter: StringParameter?
+    public weak var parameter: StringParameter?
     var observation: NSKeyValueObservation?
 
     var labelField: NSTextField!

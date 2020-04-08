@@ -10,10 +10,10 @@ import Cocoa
 import Satin
 
 open class DropDownViewController: ControlViewController {
-    weak var parameter: StringParameter?
+    public weak var parameter: StringParameter?
     var observation: NSKeyValueObservation?
 
-    var options: [String] = []
+    public var options: [String] = []
     var labelField: NSTextField!
     var dropDownMenu: NSPopUpButton!
 

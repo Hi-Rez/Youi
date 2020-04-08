@@ -14,7 +14,7 @@ protocol SliderViewControllerDelegate: AnyObject {
 }
 
 open class SliderViewController: ControlViewController, NSTextFieldDelegate {
-    weak var parameter: Parameter?
+    public weak var parameter: Parameter?
     var valueObservation: NSKeyValueObservation?
     var minObservation: NSKeyValueObservation?
     var maxObservation: NSKeyValueObservation?

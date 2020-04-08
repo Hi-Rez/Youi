@@ -153,7 +153,7 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         }
     }
     
-    func resize() {
+    open func resize() {
         if let window = view.window, let contentView = window.contentView {
             vStack.layoutSubtreeIfNeeded()
             let windowFrame = window.frame
@@ -166,7 +166,7 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         }
     }
     
-    public func getPanels() -> [PanelViewController] {
+    open func getPanels() -> [PanelViewController] {
         return panels
     }
     

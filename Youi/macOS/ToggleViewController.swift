@@ -10,7 +10,7 @@ import Cocoa
 import Satin
 
 open class ToggleViewController: NSViewController {
-    weak var parameter: BoolParameter?
+    public weak var parameter: BoolParameter?
     var observation: NSKeyValueObservation?
     
     var labelField: NSTextField!
