@@ -18,8 +18,8 @@ Pod::Spec.new do |spec|
   spec.ios.source_files       = "Youi/*.h", "Forge/Youi/**/*.{h,m,swift}", "Youi/iOS/**/*.{h,m,swift}"
 
   spec.resources              = "Assets.xcassets"
-  spec.osx.frameworks         = "Cocoa", "Appkit", "simd"
-  spec.ios.frameworks         = "Cocoa", "UIKit", "simd"
+  spec.osx.frameworks         = "Cocoa", "Appkit"
+  spec.ios.frameworks         = "Cocoa", "UIKit"
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
   spec.dependency             'Satin'
