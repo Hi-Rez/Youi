@@ -14,8 +14,8 @@ Pod::Spec.new do |spec|
   spec.osx.deployment_target  = "10.14"
   spec.ios.deployment_target  = "12.4"
 
-  spec.osx.source_files       = "Youi/*.h", "Youi/Youi/Shared/*.{h,m,swift}", "Youi/Youi/macOS/*.{h,m,swift}"
-  spec.ios.source_files       = "Youi/*.h", "Youi/Youi/Shared/*.{h,m,swift}", "Youi/Youi/iOS/*.{h,m,swift}"
+  spec.osx.source_files       = "Youi/*.h", "Youi/Shared/*.{h,m,swift}", "Youi/macOS/*.{h,m,swift}"
+  spec.ios.source_files       = "Youi/*.h", "Youi/Shared/*.{h,m,swift}", "Youi/iOS/*.{h,m,swift}"
 
   spec.resources              = "Assets.xcassets"
   spec.osx.frameworks         = "AppKit"
