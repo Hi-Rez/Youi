@@ -14,12 +14,12 @@ Pod::Spec.new do |spec|
   spec.osx.deployment_target  = "10.14"
   spec.ios.deployment_target  = "12.4"
 
-  spec.osx.source_files       = "Youi/*.h", "Forge/Youi/**/*.{h,m,swift}", "Youi/macOS/**/*.{h,m,swift}"
-  spec.ios.source_files       = "Youi/*.h", "Forge/Youi/**/*.{h,m,swift}", "Youi/iOS/**/*.{h,m,swift}"
+  spec.osx.source_files       = "Youi/*.h", "Youi/Youi/Shared/*.{h,m,swift}", "Youi/Youi/macOS/*.{h,m,swift}"
+  spec.ios.source_files       = "Youi/*.h", "Youi/Youi/Shared/*.{h,m,swift}", "Youi/Youi/iOS/*.{h,m,swift}"
 
   spec.resources              = "Assets.xcassets"
-  spec.osx.frameworks         = "Cocoa", "Appkit"
-  spec.ios.frameworks         = "Cocoa", "UIKit"
+  spec.osx.frameworks         = "AppKit"
+  spec.ios.frameworks         = "UIKit"
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
   spec.dependency             'Satin'
