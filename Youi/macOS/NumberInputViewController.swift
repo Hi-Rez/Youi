@@ -72,7 +72,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             hStack.wantsLayer = true
             hStack.translatesAutoresizingMaskIntoConstraints = false
             hStack.orientation = .horizontal
-            hStack.spacing = 0
+            hStack.spacing = 4
             hStack.alignment = .centerY
             hStack.distribution = .gravityAreas
             vStack.addView(hStack, in: .center)
@@ -84,7 +84,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             labelField.isEditable = false
             labelField.isBordered = false
             labelField.backgroundColor = .clear
-            labelField.stringValue = parameter.label + ":"
+            labelField.stringValue = parameter.label
             hStack.addView(labelField, in: .leading)
             view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
             
@@ -99,7 +99,8 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             inputField.backgroundColor = .clear
             inputField.delegate = self
             inputField.resignFirstResponder()
-            hStack.addView(inputField, in: .leading)
+            inputField.alignment = .right
+            hStack.addView(inputField, in: .trailing)
             
             self.labelField = labelField
             self.inputField = inputField
@@ -124,8 +125,9 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
     }
 
     public func controlTextDidEndEditing(_ obj: Notification) {
-        let string = inputField?.stringValue
-        if let valueString = string, let value = Double(valueString) {
+        guard let inputField = self.inputField else { return }
+        let string = inputField.stringValue
+        if let value = Double(string) {
             setValue(value)
         }
         deactivate()

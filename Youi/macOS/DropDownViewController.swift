@@ -75,7 +75,6 @@ open class DropDownViewController: ControlViewController {
     }
 
     @objc func onSelected(_ sender: NSPopUpButton) {
-        print(sender.title)
         if let parameter = self.parameter {
             parameter.value = sender.title
         }

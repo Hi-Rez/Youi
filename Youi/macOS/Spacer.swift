@@ -25,7 +25,7 @@ open class Spacer: NSView {
 
     open override func updateLayer() {
         super.updateLayer()
-        layer?.backgroundColor = NSColor(named: "Spacer")?.cgColor
+        layer?.backgroundColor = NSColor(named: "Spacer", bundle: Bundle(for: Spacer.self))?.cgColor
     }
 
     deinit {

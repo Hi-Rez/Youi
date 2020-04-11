@@ -22,6 +22,7 @@ open class PanelViewController: ControlViewController {
     var toggles: [ToggleViewController] = []
     var labels: [LabelViewController] = []
     var colorPickers: [ColorPickerViewController] = []
+    var dropDowns: [DropDownViewController] = []
     
     var state: Bool = false
     
@@ -150,7 +151,14 @@ open class PanelViewController: ControlViewController {
                 }
                 else if param is StringParameter {
                     let stringParam = param as! StringParameter
-                    addLabel(stringParam)
+                    switch param.controlType {
+                    case .dropdown:
+                        addDropDown(stringParam)
+                    case .label:
+                        addLabel(stringParam)
+                    default:
+                        addLabel(stringParam)
+                    }
                     addSpacer()
                 }
                 else if param is Float4Parameter {
@@ -267,6 +275,17 @@ open class PanelViewController: ControlViewController {
             labelViewController.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
         labels.append(labelViewController)
+    }
+    
+    func addDropDown(_ parameter: StringParameter) {
+        let vc = DropDownViewController()
+        vc.parameter = parameter
+        vc.options = parameter.options
+        if let stackView = self.stackView {
+            stackView.addView(vc.view, in: .top)
+            vc.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        }
+        dropDowns.append(vc)
     }
     
     func addSpacer()

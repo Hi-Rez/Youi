@@ -91,6 +91,7 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         DispatchQueue.main.async { [unowned self] in
             if let window = self.view.window {
                 window.makeFirstResponder(nil)
+                self.resize()
             }
         }
     }
