@@ -22,10 +22,8 @@ open class ControlViewController: NSViewController {
     }
 
     open func deactivate() {
-        DispatchQueue.main.async { [unowned self] in
-            if let window = self.view.window {
-                window.makeFirstResponder(nil)
-            }
+        if let window = self.view.window {
+            window.makeFirstResponder(nil)
         }
     }
 }

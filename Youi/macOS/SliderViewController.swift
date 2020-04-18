@@ -22,9 +22,9 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
     var inputField: NSTextField!
     var labelField: NSTextField!
     var slider: NSSlider!
-    
+
     var delegate: SliderViewControllerDelegate?
-    
+
     open override func loadView() {
         view = NSView()
         view.wantsLayer = true
@@ -157,7 +157,7 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
             inputField.backgroundColor = .clear
             inputField.delegate = self
             inputField.resignFirstResponder()
-            hStack.addView(inputField, in: .leading)            
+            hStack.addView(inputField, in: .leading)
         }
     }
 
@@ -199,8 +199,6 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
             textField.stringValue = chars.joined()
         }
     }
-    
-    deinit {
-        print("Removing SliderViewController: \(parameter?.label ?? "nil")")
-    }
+
+    deinit {}
 }

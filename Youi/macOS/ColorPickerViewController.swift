@@ -34,17 +34,17 @@ open class ColorPickerViewController: ControlViewController {
                     let value = param.value
                     self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
-                
+
                 observationG = param.observe(\Float4Parameter.y, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
                     self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
-                
+
                 observationB = param.observe(\Float4Parameter.z, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
                     self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
-                
+
                 observationA = param.observe(\Float4Parameter.w, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
                     self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
@@ -99,7 +99,7 @@ open class ColorPickerViewController: ControlViewController {
             labelField.isBordered = false
             labelField.backgroundColor = .clear
             labelField.stringValue = parameter.label
-            hStack.addView(labelField, in: .leading)            
+            hStack.addView(labelField, in: .leading)
         }
     }
 
@@ -118,8 +118,6 @@ open class ColorPickerViewController: ControlViewController {
             }
         }
     }
-    
-    deinit {
-        print("Removing ColorPickerViewController: \(parameter?.label ?? "nil")")
-    }
+
+    deinit {}
 }

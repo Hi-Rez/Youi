@@ -172,7 +172,6 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
     }
     
     deinit {
-        print("\nRemoving InspectorViewController\n")
         removeAllPanels()
     }
 }

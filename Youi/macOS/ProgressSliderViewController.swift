@@ -19,9 +19,9 @@ open class ProgressSliderViewController: ControlViewController {
     var minObservation: NSKeyValueObservation?
     var maxObservation: NSKeyValueObservation?
     public var slider: NSSlider!
-    
+
     public weak var delegate: ProgressSliderViewControllerDelegate?
-    
+
     open override func loadView() {
         view = NSView()
         view.wantsLayer = true
@@ -115,7 +115,7 @@ open class ProgressSliderViewController: ControlViewController {
             slider.translatesAutoresizingMaskIntoConstraints = false
             vStack.addView(slider, in: .center)
             slider.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: -16).isActive = true
-            
+
             slider.target = self
         }
     }
@@ -142,9 +142,8 @@ open class ProgressSliderViewController: ControlViewController {
             }
         }
     }
-        
+
     deinit {
-        print("Removing ProgressSliderViewController: \(parameter?.label ?? "nil")")
         delegate = nil
         parameter = nil
     }

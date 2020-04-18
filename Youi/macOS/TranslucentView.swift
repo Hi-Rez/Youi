@@ -14,7 +14,7 @@ open class TranslucentView: NSVisualEffectView {
         setup()
     }
 
-    required public init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         super.init(coder: coder)
         setup()
     }
@@ -54,8 +54,6 @@ open class TranslucentView: NSVisualEffectView {
     @objc func interfaceModeChanged() {
         updateStyle()
     }
-    
-    deinit {
-        print("Removing TranslucentView")
-    }
+
+    deinit {}
 }

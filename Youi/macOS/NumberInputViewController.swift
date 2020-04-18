@@ -12,7 +12,7 @@ import Satin
 open class NumberInputViewController: ControlViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
     var valueObservation: NSKeyValueObservation?
-    
+
     var inputField: NSTextField?
     var labelField: NSTextField?
 
@@ -42,7 +42,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
                     if let value = change.newValue {
                         self.inputField?.stringValue = String(value)
                     }
-                 }
+                }
             }
             else if parameter is DoubleParameter {
                 let param = parameter as! DoubleParameter
@@ -87,7 +87,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             labelField.stringValue = parameter.label
             hStack.addView(labelField, in: .leading)
             view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
-            
+
             let inputField = NSTextField()
             inputField.font = .boldSystemFont(ofSize: 12)
             inputField.stringValue = stringValue
@@ -101,12 +101,12 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             inputField.resignFirstResponder()
             inputField.alignment = .right
             hStack.addView(inputField, in: .trailing)
-            
+
             self.labelField = labelField
             self.inputField = inputField
         }
     }
-    
+
     func setValue(_ value: Double) {
         if let parameter = self.parameter {
             if parameter is FloatParameter {
@@ -140,8 +140,6 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             textField.stringValue = chars.joined()
         }
     }
-    
-    deinit {
-        print("Removing NumberInputViewController: \(parameter?.label ?? "nil")")
-    }
+
+    deinit {}
 }

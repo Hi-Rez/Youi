@@ -16,7 +16,7 @@ public protocol OptionsViewControllerDelegate: AnyObject {
 open class OptionsViewController: NSViewController, NSTextFieldDelegate {
     public var options: [String] = []
     public weak var delegate: OptionsViewControllerDelegate?
-    
+
     open override func loadView() {
         view = NSView()
         view.wantsLayer = true
@@ -46,7 +46,7 @@ open class OptionsViewController: NSViewController, NSTextFieldDelegate {
 
         hStack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: -16).isActive = true
 
-        for option in options  {
+        for option in options {
             let button = NSButton()
             button.wantsLayer = true
             button.title = option
@@ -56,17 +56,15 @@ open class OptionsViewController: NSViewController, NSTextFieldDelegate {
             button.action = #selector(onButtonPressed)
             hStack.addView(button, in: .leading)
         }
-                
+
         view.heightAnchor.constraint(equalToConstant: 32).isActive = true
     }
-    
-    @objc func onButtonPressed(_ sender: NSButton)
-    {
+
+    @objc func onButtonPressed(_ sender: NSButton) {
         delegate?.onButtonPressed(sender)
     }
-    
+
     deinit {
-        print("Removing OptionsViewController: \(options)")
         options = []
         delegate = nil
     }

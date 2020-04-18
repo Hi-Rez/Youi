@@ -10,10 +10,10 @@ import Cocoa
 
 open class InspectorWindow: NSWindow {
     public var inspectorViewController: InspectorViewController?
-    
+
     public init() {
         super.init(contentRect: NSMakeRect(500, 500, 240, 240), styleMask: [.closable, .miniaturizable, .resizable, .fullSizeContentView, .titled], backing: .buffered, defer: false)
-        self.setup()
+        setup()
     }
 
     func setup() {
@@ -28,7 +28,6 @@ open class InspectorWindow: NSWindow {
     }
 
     deinit {
-        print("\nRemoving InspectorWindow\n")
         inspectorViewController = nil
     }
 }

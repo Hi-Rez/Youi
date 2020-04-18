@@ -46,7 +46,7 @@ open class PanelViewController: ControlViewController {
         self.title = title
         self.parameters = parameters
     }
-
+    
     open override func loadView() {
         view = NSView()
         view.wantsLayer = true
@@ -103,7 +103,6 @@ open class PanelViewController: ControlViewController {
             labelField.stringValue = "Panel"
         }
         hStack.addView(labelField, in: .leading)
-        
         
         let spacer = Spacer()
         vStack.addView(spacer, in: .top)
@@ -288,8 +287,7 @@ open class PanelViewController: ControlViewController {
         dropDowns.append(vc)
     }
     
-    func addSpacer()
-    {
+    func addSpacer() {
         let spacer = Spacer()
         if let stackView = self.stackView {
             stackView.addView(spacer, in: .top)
@@ -307,7 +305,5 @@ open class PanelViewController: ControlViewController {
         delegate?.onPanelResized(panel: self)
     }
     
-    deinit {
-        print("Removing PanelViewController: \(title ?? "nil")")
-    }
+    deinit {}
 }

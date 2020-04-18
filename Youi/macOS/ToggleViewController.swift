@@ -12,7 +12,7 @@ import Satin
 open class ToggleViewController: NSViewController {
     public weak var parameter: BoolParameter?
     var observation: NSKeyValueObservation?
-    
+
     var labelField: NSTextField!
     var button: NSButton!
 
@@ -87,8 +87,6 @@ open class ToggleViewController: NSViewController {
             }
         }
     }
-    
-    deinit {
-        print("Removing ToggleViewController: \(parameter?.label ?? "nil")")
-    }
+
+    deinit {}
 }

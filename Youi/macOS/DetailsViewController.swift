@@ -12,7 +12,7 @@ import Satin
 open class DetailsViewController: NSViewController, NSTextFieldDelegate {
     public var details: [StringParameter] = []
     var observations: [NSKeyValueObservation] = []
-    
+
     open override func loadView() {
         view = NSView()
         view.wantsLayer = true
@@ -73,7 +73,6 @@ open class DetailsViewController: NSViewController, NSTextFieldDelegate {
     }
 
     deinit {
-        print("Removing DetailsViewController: \(details)")
         details = []
         observations = []
     }

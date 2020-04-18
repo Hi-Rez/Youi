@@ -121,7 +121,6 @@ open class BindingInputViewController: ControlViewController, NSTextFieldDelegat
             stepper.maxValue = 100
             stepper.valueWraps = true
             hStack.addView(stepper, in: .trailing)
-            
         }
     }
 
@@ -163,7 +162,6 @@ open class BindingInputViewController: ControlViewController, NSTextFieldDelegat
     }
 
     deinit {
-        print("Removing BindingInputViewController")
         parameter = nil
         observation = nil
     }

@@ -80,7 +80,5 @@ open class DropDownViewController: ControlViewController {
         }
     }
 
-    deinit {
-        print("Removing DropDownViewController: \(options)")
-    }
+    deinit {}
 }

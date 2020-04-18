@@ -75,8 +75,6 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
             view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
         }
     }
-    
-    deinit {
-        print("Removing LabelViewController: \(parameter?.label ?? "nil")")
-    }
+
+    deinit {}
 }

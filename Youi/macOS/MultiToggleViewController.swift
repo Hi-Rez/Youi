@@ -91,7 +91,6 @@ open class MultiToggleViewController: NSViewController {
     }
 
     deinit {
-        print("Removing MultiToggleViewController: \(parameters)")
         parameters = []
         observations = []
         spacers = []

@@ -28,7 +28,5 @@ open class Spacer: NSView {
         layer?.backgroundColor = NSColor(named: "Spacer", bundle: Bundle(for: Spacer.self))?.cgColor
     }
 
-    deinit {
-        print("Removing Spacer")
-    }
+    deinit {}
 }
