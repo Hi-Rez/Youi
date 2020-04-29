@@ -11,9 +11,9 @@ import Cocoa
 import Satin
 
 open class InspectorViewController: NSViewController, PanelViewControllerDelegate, NSWindowDelegate {
-    var panels: [PanelViewController] = []
-    var vStack: NSStackView!
-    var viewHeightConstraint: NSLayoutConstraint!
+    public var panels: [PanelViewController] = []
+    public var vStack: NSStackView!
+    public var viewHeightConstraint: NSLayoutConstraint!
     
     open override func loadView() {
         let view = TranslucentView()
@@ -112,15 +112,30 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         }
     }
     
-    func onPanelOpen(panel: PanelViewController) {
+    open func onPanelOpen(panel: PanelViewController) {
         resize()
     }
     
-    func onPanelClose(panel: PanelViewController) {
+    open func onPanelClose(panel: PanelViewController) {
         resize()
     }
     
-    func onPanelResized(panel: PanelViewController) {
+    open func onPanelRemove(panel: PanelViewController) {
+        removePanel(panel)
+    }
+    
+    open func removePanel(_ panel: PanelViewController) {
+        for (index, item) in panels.enumerated() {
+            if item == panel {
+                item.view.removeFromSuperview()
+                panels.remove(at: index)
+                resize()
+                break
+            }
+        }
+    }
+    
+    open func onPanelResized(panel: PanelViewController) {
         viewHeightConstraint.constant = vStack.frame.height
     }
     
@@ -136,6 +151,7 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
     
     open func removeAllPanels() {
         for panel in panels {
+            panel.delegate = nil
             panel.view.removeFromSuperview()
         }
         panels = []

@@ -9,7 +9,7 @@
 import Cocoa
 import Satin
 
-open class DetailsViewController: NSViewController, NSTextFieldDelegate {
+open class DetailsViewController: ControlViewController, NSTextFieldDelegate {
     public var details: [StringParameter] = []
     var observations: [NSKeyValueObservation] = []
 

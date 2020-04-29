@@ -13,7 +13,7 @@ public protocol OptionsViewControllerDelegate: AnyObject {
     func onButtonPressed(_ sender: NSButton)
 }
 
-open class OptionsViewController: NSViewController, NSTextFieldDelegate {
+open class OptionsViewController: ControlViewController, NSTextFieldDelegate {
     public var options: [String] = []
     public weak var delegate: OptionsViewControllerDelegate?
 

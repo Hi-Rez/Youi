@@ -56,7 +56,6 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
         view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
 
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter {
-            print("parameter is int: \(parameter.label)")
             if let param = parameter as? Int2Parameter {
                 let updateValue: (Int2Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
@@ -89,16 +88,12 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
             }
 
             for i in 0..<parameter.count {
-                print("Setting up int input for \(parameter.label): \(i)")
                 let value: Int32 = parameter[i]
                 hStack.addView(createInput("\(value)", i), in: .trailing)
             }
         }
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
-            print("parameter is float: \(parameter.label)")
-            
             if let param = parameter as? Float2Parameter {
-                print("setting up: \(param.label)")
                 let updateValue: (Float2Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
                         input.stringValue = String(format: "%.5f", param[i])
@@ -141,7 +136,6 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
             }
 
             for i in 0..<parameter.count {
-                print("Setting up float input for \(parameter.label): \(i)")
                 let value: Float = parameter[i]
                 hStack.addView(createInput("\(value)", i), in: .trailing)
             }
@@ -180,7 +174,6 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
     }
 
     func setValue(_ value: Double, _ tag: Int) {
-        print("setting value: \(value), \(tag)")
         guard let parameter = self.parameter else { return }
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             let iValue = Int32(value)

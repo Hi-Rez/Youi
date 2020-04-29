@@ -23,8 +23,12 @@ open class InspectorWindow: NSWindow {
         backgroundColor = .clear
         isReleasedWhenClosed = false
         level = .statusBar
-        inspectorViewController = InspectorViewController()
+        setupInspector()
         contentView = inspectorViewController?.view
+    }
+
+    open func setupInspector() {
+        inspectorViewController = InspectorViewController()
     }
 
     deinit {
