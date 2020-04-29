@@ -1,16 +1,15 @@
 //
-//  NumberInputViewController.swift
-//  Slate macOS
+//  StringInputViewController.swift
+//  Youi-macOS
 //
-//  Created by Reza Ali on 3/14/20.
-//  Copyright © 2020 Reza Ali. All rights reserved.
+//  Created by Reza Ali on 4/27/20.
 //
 
 import Cocoa
 import Satin
 
-open class NumberInputViewController: ControlViewController, NSTextFieldDelegate {
-    public weak var parameter: Parameter?
+open class StringInputViewController: ControlViewController, NSTextFieldDelegate {
+    public weak var parameter: StringParameter?
     var valueObservation: NSKeyValueObservation?
 
     var inputField: NSTextField?
@@ -22,39 +21,6 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = self.parameter {
-            var value: Double = 0.0
-            var stringValue: String = ""
-            if parameter is FloatParameter {
-                let param = parameter as! FloatParameter
-                value = Double(param.value)
-                stringValue = String(format: "%.5f", value)
-                valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        self.inputField?.stringValue = String(format: "%.5f", value)
-                    }
-                }
-            }
-            else if parameter is IntParameter {
-                let param = parameter as! IntParameter
-                value = Double(param.value)
-                stringValue = String(format: "%.0f", value)
-                valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        self.inputField?.stringValue = String(value)
-                    }
-                }
-            }
-            else if parameter is DoubleParameter {
-                let param = parameter as! DoubleParameter
-                value = param.value
-                stringValue = String(format: "%.5f", value)
-                valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        self.inputField?.stringValue = String(format: "%.5f", value)
-                    }
-                }
-            }
-
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -90,10 +56,9 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
 
             let inputField = NSTextField()
             inputField.font = .boldSystemFont(ofSize: 12)
-            inputField.stringValue = stringValue
             inputField.wantsLayer = true
             inputField.translatesAutoresizingMaskIntoConstraints = false
-            inputField.stringValue = stringValue
+            inputField.stringValue = parameter.value
             inputField.isEditable = true
             inputField.isBordered = false
             inputField.isBezeled = true
@@ -103,45 +68,34 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             inputField.alignment = .right
             hStack.addView(inputField, in: .trailing)
             inputField.widthAnchor.constraint(lessThanOrEqualTo: hStack.widthAnchor, multiplier: 0.5).isActive = true
-
+            
             self.labelField = labelField
             self.inputField = inputField
         }
     }
 
-    func setValue(_ value: Double) {
+    func setValue(_ value: String) {
         if let parameter = self.parameter {
-            if parameter is FloatParameter {
-                let floatParam = parameter as! FloatParameter
-                floatParam.value = Float(value)
-            }
-            else if parameter is DoubleParameter {
-                let doubleParam = parameter as! DoubleParameter
-                doubleParam.value = value
-            }
-            else if parameter is IntParameter {
-                let intParam = parameter as! IntParameter
-                intParam.value = Int(value)
-            }
+            parameter.value = value
         }
     }
 
     public func controlTextDidEndEditing(_ obj: Notification) {
         guard let inputField = self.inputField else { return }
-        let string = inputField.stringValue
-        if let value = Double(string) {
-            setValue(value)
-        }
+        setValue(inputField.stringValue)
         deactivate()
     }
 
     public func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? NSTextField {
-            let charSet = NSCharacterSet(charactersIn: "-1234567890.").inverted
+            let charSet = NSCharacterSet.alphanumerics.inverted
             let chars = textField.stringValue.components(separatedBy: charSet)
             textField.stringValue = chars.joined()
         }
     }
 
-    deinit {}
+    deinit {
+        parameter = nil
+        valueObservation = nil
+    }
 }

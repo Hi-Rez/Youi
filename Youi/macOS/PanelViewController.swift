@@ -16,16 +16,9 @@ protocol PanelViewControllerDelegate: AnyObject {
 }
 
 open class PanelViewController: ControlViewController {
-    public var parameters: ParameterGroup?
-    var numberInputs: [NumberInputViewController] = []
-    var sliders: [SliderViewController] = []
-    var toggles: [ToggleViewController] = []
-    var labels: [LabelViewController] = []
-    var colorPickers: [ColorPickerViewController] = []
-    var dropDowns: [DropDownViewController] = []
-    
+    public weak var parameters: ParameterGroup?
+    var controls: [NSViewController] = []
     var state: Bool = false
-    
     var button: NSButton?
     var stackView: NSStackView?
     var vStack: NSStackView?
@@ -76,7 +69,7 @@ open class PanelViewController: ControlViewController {
         hStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         hStack.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         hStack.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -16).isActive = true
-        hStack.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        hStack.heightAnchor.constraint(equalToConstant: 42).isActive = true
         
         let button = NSButton()
         button.wantsLayer = true
@@ -90,7 +83,7 @@ open class PanelViewController: ControlViewController {
         hStack.addView(button, in: .leading)
         
         let labelField = NSTextField()
-        labelField.font = .boldSystemFont(ofSize: 12)
+        labelField.font = .systemFont(ofSize: 14, weight: .regular)
         labelField.wantsLayer = true
         labelField.translatesAutoresizingMaskIntoConstraints = false
         labelField.isEditable = false
@@ -140,6 +133,16 @@ open class PanelViewController: ControlViewController {
                         addSpacer()
                     default:
                         addSlider(param)
+                        addSpacer()
+                    }
+                }
+                if param is Int2Parameter || param is Float2Parameter {
+                    switch param.controlType {
+                    case .inputfield:
+                        addMultiNumberInput(param)
+                        addSpacer()
+                    default:
+                        addMultiNumberInput(param)
                         addSpacer()
                     }
                 }
@@ -233,7 +236,7 @@ open class PanelViewController: ControlViewController {
             stackView.addView(colorPickerViewController.view, in: .top)
             colorPickerViewController.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
-        colorPickers.append(colorPickerViewController)
+        controls.append(colorPickerViewController)
     }
     
     func addNumberInput(_ parameter: Parameter) {
@@ -243,7 +246,7 @@ open class PanelViewController: ControlViewController {
             stackView.addView(numberInputViewController.view, in: .top)
             numberInputViewController.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
-        numberInputs.append(numberInputViewController)
+        controls.append(numberInputViewController)
     }
     
     func addSlider(_ parameter: Parameter) {
@@ -253,7 +256,7 @@ open class PanelViewController: ControlViewController {
             stackView.addView(sliderViewController.view, in: .top)
             sliderViewController.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
-        sliders.append(sliderViewController)
+        controls.append(sliderViewController)
     }
     
     func addToggle(_ parameter: BoolParameter) {
@@ -263,7 +266,7 @@ open class PanelViewController: ControlViewController {
             stackView.addView(toggleViewController.view, in: .top)
             toggleViewController.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
-        toggles.append(toggleViewController)
+        controls.append(toggleViewController)
     }
     
     func addLabel(_ parameter: StringParameter) {
@@ -273,7 +276,7 @@ open class PanelViewController: ControlViewController {
             stackView.addView(labelViewController.view, in: .top)
             labelViewController.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
-        labels.append(labelViewController)
+        controls.append(labelViewController)
     }
     
     func addDropDown(_ parameter: StringParameter) {
@@ -284,7 +287,39 @@ open class PanelViewController: ControlViewController {
             stackView.addView(vc.view, in: .top)
             vc.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         }
-        dropDowns.append(vc)
+        controls.append(vc)
+    }
+    
+    func addMultiDropdown(_ parameters: [StringParameter]) {
+        let vc = MultiDropdownViewController()
+        vc.parameters = parameters
+        if let stackView = self.stackView {
+            stackView.addView(vc.view, in: .top)
+            vc.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        }
+        controls.append(vc)
+    }
+    
+    func addMultiDropdown(_ parameters: [StringParameter], _ options: [[String]]) {
+        let vc = MultiDropdownViewController()
+        vc.parameters = parameters
+        vc.options = options
+        if let stackView = self.stackView {
+            stackView.addView(vc.view, in: .top)
+            vc.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        }
+        controls.append(vc)
+    }
+    
+    func addMultiNumberInput(_ parameter: Parameter) {
+        print("setting ui for: \(parameter.label)")
+        let vc = MultiNumberInputViewController()
+        vc.parameter = parameter
+        if let stackView = self.stackView {
+            stackView.addView(vc.view, in: .top)
+            vc.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        }
+        controls.append(vc)
     }
     
     func addSpacer() {
@@ -305,5 +340,12 @@ open class PanelViewController: ControlViewController {
         delegate?.onPanelResized(panel: self)
     }
     
-    deinit {}
+    deinit {
+        controls = []
+        parameters = nil
+        button = nil
+        stackView = nil
+        vStack = nil
+        labelField = nil
+    }
 }
