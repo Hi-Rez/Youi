@@ -41,7 +41,7 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
-                stringValue = String(format: "%.5f", value)
+                stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField.stringValue = String(format: "%.5f", value)
@@ -64,7 +64,7 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
-                stringValue = String(format: "%.0f", value)
+                stringValue = String(format: "%d", value)
                 valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField.stringValue = String(value)
@@ -141,6 +141,7 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
             labelField.font = .labelFont(ofSize: 12)
             labelField.translatesAutoresizingMaskIntoConstraints = false
             labelField.isEditable = false
+            labelField.isSelectable = true
             labelField.isBordered = false
             labelField.backgroundColor = .clear
             labelField.stringValue = parameter.label + ":"
@@ -153,10 +154,12 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
             inputField.translatesAutoresizingMaskIntoConstraints = false
             inputField.stringValue = stringValue
             inputField.isEditable = true
+            inputField.isSelectable = true
             inputField.isBordered = false
             inputField.backgroundColor = .clear
             inputField.delegate = self
-            inputField.resignFirstResponder()
+            inputField.target = self
+            inputField.action = #selector(onInputChanged)
             hStack.addView(inputField, in: .leading)
         }
     }
@@ -184,14 +187,15 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
         }
     }
 
-    public func controlTextDidEndEditing(_ obj: Notification) {
-        if let value = Double(inputField.stringValue) {
+    
+    @objc func onInputChanged(_ sender: NSTextField) {
+        if let value = Double(sender.stringValue) {
             setValue(value)
             delegate?.onValueChanged(self)
+            deactivateAsync()
         }
-        deactivate()
     }
-
+    
     public func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? NSTextField {
             let charSet = NSCharacterSet(charactersIn: "-1234567890.").inverted

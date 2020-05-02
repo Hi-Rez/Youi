@@ -27,7 +27,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             if parameter is FloatParameter {
                 let param = parameter as! FloatParameter
                 value = Double(param.value)
-                stringValue = String(format: "%.5f", value)
+                stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField?.stringValue = String(format: "%.5f", value)
@@ -37,7 +37,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             else if parameter is IntParameter {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
-                stringValue = String(format: "%.0f", value)
+                stringValue = String(format: "%d", value)
                 valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField?.stringValue = String(value)
@@ -47,7 +47,7 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             else if parameter is DoubleParameter {
                 let param = parameter as! DoubleParameter
                 value = param.value
-                stringValue = String(format: "%.5f", value)
+                stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField?.stringValue = String(format: "%.5f", value)
@@ -99,7 +99,8 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             inputField.isBezeled = true
             inputField.backgroundColor = .clear
             inputField.delegate = self
-            inputField.resignFirstResponder()
+            inputField.target = self
+            inputField.action = #selector(onInputChanged)
             inputField.alignment = .right
             hStack.addView(inputField, in: .trailing)
             inputField.widthAnchor.constraint(lessThanOrEqualTo: hStack.widthAnchor, multiplier: 0.5).isActive = true
@@ -125,16 +126,14 @@ open class NumberInputViewController: ControlViewController, NSTextFieldDelegate
             }
         }
     }
-
-    public func controlTextDidEndEditing(_ obj: Notification) {
-        guard let inputField = self.inputField else { return }
-        let string = inputField.stringValue
-        if let value = Double(string) {
+    
+    @objc func onInputChanged(_ sender: NSTextField) {
+        if let value = Double(sender.stringValue) {
             setValue(value)
+            deactivateAsync()
         }
-        deactivate()
     }
-
+    
     public func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? NSTextField {
             let charSet = NSCharacterSet(charactersIn: "-1234567890.").inverted

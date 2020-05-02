@@ -157,14 +157,21 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
                         addSpacer()
                     }
                 }
-                if param is Int2Parameter || param is Float2Parameter {
-                    switch param.controlType {
-                    case .inputfield:
-                        addMultiNumberInput(param)
+                if param is Int2Parameter || param is Int3Parameter || param is Int4Parameter || param is Float2Parameter || param is Float3Parameter || param is Float4Parameter {
+                    if param is Float4Parameter && param.controlType == .colorpicker {
+                        let colorParam = param as! Float4Parameter
+                        addColorPicker(colorParam)
                         addSpacer()
-                    default:
-                        addMultiNumberInput(param)
-                        addSpacer()
+                    }
+                    else {
+                        switch param.controlType {
+                        case .inputfield:
+                            addMultiNumberInput(param)
+                            addSpacer()
+                        default:
+                            addMultiNumberInput(param)
+                            addSpacer()
+                        }
                     }
                 }
                 else if param is BoolParameter {
@@ -184,17 +191,11 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
                     }
                     addSpacer()
                 }
-                else if param is Float4Parameter {
-                    let colorParam = param as! Float4Parameter
-                    addColorPicker(colorParam)
-                    addSpacer()
-                }
             }
         }
     }
     
-    open func setupContainer()
-    {
+    open func setupContainer() {
         setupDisclosureButton()
         setupLabel()
     }
@@ -380,19 +381,16 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
         addControl(vc)
     }
     
-    open func onButtonPressed(_ sender: NSButton) {
-        
-    }
-    
+    open func onButtonPressed(_ sender: NSButton) {}
     
     open func removeAll() {
-         if let stack = self.stack {
-             for view in stack.views {
-                 view.removeFromSuperview()
-             }
-         }
-         controls = []
-     }
+        if let stack = self.stack {
+            for view in stack.views {
+                view.removeFromSuperview()
+            }
+        }
+        controls = []
+    }
     
     open override func viewDidLayout() {
         super.viewDidLayout()

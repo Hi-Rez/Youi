@@ -26,4 +26,12 @@ open class ControlViewController: NSViewController {
             window.makeFirstResponder(nil)
         }
     }
+
+    open func deactivateAsync() {
+        if let window = self.view.window {
+            DispatchQueue.main.async { // omg
+                window.makeFirstResponder(nil)
+            }
+        }
+    }
 }

@@ -64,26 +64,27 @@ open class StringInputViewController: ControlViewController, NSTextFieldDelegate
             inputField.isBezeled = true
             inputField.backgroundColor = .clear
             inputField.delegate = self
-            inputField.resignFirstResponder()
             inputField.alignment = .right
+            inputField.isSelectable = true
+            inputField.target = self
+            inputField.action = #selector(onInputChanged)
             hStack.addView(inputField, in: .trailing)
             inputField.widthAnchor.constraint(lessThanOrEqualTo: hStack.widthAnchor, multiplier: 0.5).isActive = true
-            
+
             self.labelField = labelField
             self.inputField = inputField
         }
     }
 
-    func setValue(_ value: String) {
-        if let parameter = self.parameter {
-            parameter.value = value
-        }
+    @objc func onInputChanged(_ sender: NSTextField) {
+        setValue(sender.stringValue)
+        deactivateAsync()
     }
 
-    public func controlTextDidEndEditing(_ obj: Notification) {
-        guard let inputField = self.inputField else { return }
-        setValue(inputField.stringValue)
-        deactivate()
+    func setValue(_ value: String) {
+        if let parameter = self.parameter {
+            parameter.value = value            
+        }
     }
 
     public func controlTextDidChange(_ obj: Notification) {

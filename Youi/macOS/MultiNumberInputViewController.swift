@@ -55,7 +55,7 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
         hStack.addView(labelField, in: .leading)
         view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
 
-        if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter {
+        if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             if let param = parameter as? Int2Parameter {
                 let updateValue: (Int2Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
@@ -96,7 +96,7 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
             if let param = parameter as? Float2Parameter {
                 let updateValue: (Float2Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.5f", param[i])
+                        input.stringValue = String(format: "%.3f", param[i])
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -105,7 +105,7 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
             else if let param = parameter as? Float3Parameter {
                 let updateValue: (Float3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.5f", param[i])
+                        input.stringValue = String(format: "%.3f", param[i])
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -115,18 +115,17 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
             else if let param = parameter as? PackedFloat3Parameter {
                 let updateValue: (PackedFloat3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.5f", param[i])
+                        input.stringValue = String(format: "%.3f", param[i])
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
                 observers.append(param.observe(\.y, changeHandler: updateValue))
                 observers.append(param.observe(\.z, changeHandler: updateValue))
             }
-
             else if let param = parameter as? Float4Parameter {
                 let updateValue: (Float4Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
                     for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.5f", param[i])
+                        input.stringValue = String(format: "%.3f", param[i])
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -142,6 +141,10 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
         }
 
         self.labelField = labelField
+
+        for (index, input) in inputs.enumerated() {
+            input.nextKeyView = inputs[index % inputs.count]
+        }
     }
 
     open override func viewDidAppear() {
@@ -167,8 +170,12 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
         input.isBezeled = true
         input.backgroundColor = .clear
         input.delegate = self
-        input.resignFirstResponder()
         input.alignment = .right
+        input.target = self
+        input.action = #selector(onInputChanged)
+        if inputs.count > 0 {
+            inputs[inputs.count - 1].nextKeyView = input
+        }
         inputs.append(input)
         return input
     }
@@ -185,13 +192,16 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
         }
     }
 
-    public func controlTextDidEndEditing(_ obj: Notification) {
-        if let input = obj.object as? NSTextField {
-            let string = input.stringValue
-            if let value = Double(string) {
-                setValue(value, input.tag)
+    @objc func onInputChanged(_ sender: NSTextField) {
+        if let value = Double(sender.stringValue) {
+            setValue(value, sender.tag)
+            let next = sender.tag + 1
+            if next != inputs.count {
+                inputs[next].becomeFirstResponder()
             }
-            deactivate()
+            else {
+                deactivateAsync()
+            }
         }
     }
 
@@ -203,14 +213,20 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
         }
     }
 
-    open override func mouseDown(with event: NSEvent) {
-        for input in inputs {
-            if let _ = input.hitTest(event.locationInWindow) {
-                input.becomeFirstResponder()
-                return
+    public func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        switch commandSelector {
+        case #selector(NSResponder.insertTab(_:)):
+            let next = control.tag + 1
+            if next != inputs.count {
+                inputs[next % inputs.count].becomeFirstResponder()
+                return true
             }
+            else {
+                return false
+            }
+        default:
+            return false
         }
-        deactivate()
     }
 
     deinit {
