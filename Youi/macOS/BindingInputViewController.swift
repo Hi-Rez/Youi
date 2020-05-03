@@ -103,6 +103,8 @@ open class BindingInputViewController: ControlViewController, NSTextFieldDelegat
             inputField.alignment = .right
             inputField.backgroundColor = .clear
             inputField.delegate = self
+            inputField.target = self
+            inputField.action = #selector(onInputChanged)
             inputField.resignFirstResponder()
             inputField.widthAnchor.constraint(equalToConstant: 24).isActive = true
             hStack.addView(inputField, in: .trailing)
@@ -146,11 +148,11 @@ open class BindingInputViewController: ControlViewController, NSTextFieldDelegat
         }
     }
 
-    public func controlTextDidEndEditing(_ obj: Notification) {
-        if let value = Double(inputField.stringValue) {
+    @objc func onInputChanged(_ sender: NSTextField) {
+        if let value = Double(sender.stringValue) {
             setValue(value)
+            deactivateAsync()
         }
-        deactivate()
     }
 
     public func controlTextDidChange(_ obj: Notification) {
