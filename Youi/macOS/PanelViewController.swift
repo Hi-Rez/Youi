@@ -16,12 +16,9 @@ public protocol PanelViewControllerDelegate: AnyObject {
     func onPanelRemove(panel: PanelViewController)
 }
 
-open class PanelViewController: ControlViewController, OptionsViewControllerDelegate {
-    public weak var parameters: ParameterGroup?
-    public var controls: [NSViewController] = []
+open class PanelViewController: ControlViewController {
     public var state: Bool = false
     
-    public var stack: NSStackView?
     public var vStack: NSStackView?
     public var hStack: NSStackView?
     public var button: NSButton?
@@ -43,7 +40,7 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
         self.parameters = parameters
     }
     
-    open func setupView() {
+    open override func setupView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +121,7 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
         spacer.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
     }
     
-    open func setupStackView() {
+    open override func setupStackView() {
         guard let vStack = self.vStack else { return }
         let stack = NSStackView()
         stack.wantsLayer = true
@@ -136,63 +133,6 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
         stack.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
         view.bottomAnchor.constraint(equalTo: stack.bottomAnchor).isActive = true
         self.stack = stack
-    }
-    
-    open func setupParameters() {
-        if let parameters = self.parameters {
-            for param in parameters.params {
-                if param is FloatParameter || param is IntParameter || param is DoubleParameter {
-                    switch param.controlType {
-                    case .unknown:
-                        addSlider(param)
-                        addSpacer()
-                    case .slider:
-                        addSlider(param)
-                        addSpacer()
-                    case .inputfield:
-                        addNumberInput(param)
-                        addSpacer()
-                    default:
-                        addSlider(param)
-                        addSpacer()
-                    }
-                }
-                if param is Int2Parameter || param is Int3Parameter || param is Int4Parameter || param is Float2Parameter || param is Float3Parameter || param is Float4Parameter {
-                    if param is Float4Parameter && param.controlType == .colorpicker {
-                        let colorParam = param as! Float4Parameter
-                        addColorPicker(colorParam)
-                        addSpacer()
-                    }
-                    else {
-                        switch param.controlType {
-                        case .inputfield:
-                            addMultiNumberInput(param)
-                            addSpacer()
-                        default:
-                            addMultiNumberInput(param)
-                            addSpacer()
-                        }
-                    }
-                }
-                else if param is BoolParameter {
-                    let boolParam = param as! BoolParameter
-                    addToggle(boolParam)
-                    addSpacer()
-                }
-                else if param is StringParameter {
-                    let stringParam = param as! StringParameter
-                    switch param.controlType {
-                    case .dropdown:
-                        addDropDown(stringParam)
-                    case .label:
-                        addLabel(stringParam)
-                    default:
-                        addLabel(stringParam)
-                    }
-                    addSpacer()
-                }
-            }
-        }
     }
     
     open func setupContainer() {
@@ -266,135 +206,13 @@ open class PanelViewController: ControlViewController, OptionsViewControllerDele
         return state
     }
     
-    open func addControl(_ control: ControlViewController) {
-        guard let stack = self.stack else { return }
-        stack.addView(control.view, in: .top)
-        control.view.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
-        controls.append(control)
-    }
-    
-    open func addSpacer() {
-        guard let stack = self.stack else { return }
-        let spacer = Spacer()
-        stack.addView(spacer, in: .top)
-        spacer.heightAnchor.constraint(equalToConstant: 1).isActive = true
-    }
-    
-    open func addColorPicker(_ parameter: Parameter) {
-        let vc = ColorPickerViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addNumberInput(_ parameter: Parameter) {
-        let vc = NumberInputViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addSlider(_ parameter: Parameter) {
-        let vc = SliderViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addToggle(_ parameter: BoolParameter) {
-        let vc = ToggleViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addLabel(_ parameter: StringParameter) {
-        let vc = LabelViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addDropDown(_ parameter: StringParameter) {
-        let vc = DropDownViewController()
-        vc.parameter = parameter
-        vc.options = parameter.options
-        addControl(vc)
-    }
-    
-    open func addMultiDropdown(_ parameters: [StringParameter]) {
-        let vc = MultiDropdownViewController()
-        vc.parameters = parameters
-        addControl(vc)
-    }
-    
-    open func addMultiDropdown(_ parameters: [StringParameter], _ options: [[String]]) {
-        let vc = MultiDropdownViewController()
-        vc.parameters = parameters
-        vc.options = options
-        addControl(vc)
-    }
-    
-    open func addMultiNumberInput(_ parameter: Parameter) {
-        let vc = MultiNumberInputViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addInput(_ parameter: StringParameter) {
-        let vc = StringInputViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addProgressSlider(_ parameter: Parameter) -> ProgressSliderViewController? {
-        let vc = ProgressSliderViewController()
-        vc.parameter = parameter
-        addControl(vc)
-        return vc
-    }
-    
-    open func addBindingInput(_ parameter: Parameter) {
-        let vc = BindingInputViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addToggles(_ parameters: [BoolParameter]) {
-        let vc = MultiToggleViewController()
-        vc.parameters = parameters
-        addControl(vc)
-    }
-    
-    open func addDetails(_ details: [StringParameter]) {
-        let vc = DetailsViewController()
-        vc.details = details
-        addControl(vc)
-    }
-    
-    open func addDropDown(_ parameter: StringParameter, options: [String]) {
-        let vc = DropDownViewController()
-        vc.options = options
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addOptions(_ options: [String]) {
-        let vc = OptionsViewController()
-        vc.options = options
-        vc.delegate = self
-        addControl(vc)
-    }
-    
-    open func onButtonPressed(_ sender: NSButton) {}
-    
-    open func removeAll() {
-        if let stack = self.stack {
-            for view in stack.views {
-                view.removeFromSuperview()
-            }
-        }
-        controls = []
-    }
-    
     open override func viewDidLayout() {
         super.viewDidLayout()
         delegate?.onPanelResized(panel: self)
+    }
+    
+    open override func resize() {
+        
     }
     
     deinit {

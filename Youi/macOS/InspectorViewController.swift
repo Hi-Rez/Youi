@@ -12,6 +12,7 @@ import Satin
 
 open class InspectorViewController: NSViewController, PanelViewControllerDelegate, NSWindowDelegate {
     public var panels: [PanelViewController] = []
+    public var controls: [ControlViewController] = []
     public var vStack: NSStackView!
     public var viewHeightConstraint: NSLayoutConstraint!
     
@@ -71,9 +72,13 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         divider.heightAnchor.constraint(equalToConstant: 1.0 / dpr).isActive = true
         divider.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
         
+        for control in controls {
+            vStack.addView(control.view, in: .top)
+            control.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
+        }
+        
         for panel in panels {
             vStack.addView(panel.view, in: .top)
-            panel.close()
             panel.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
         }
         
@@ -135,8 +140,28 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         }
     }
     
+    open func removeControl(_ control: ControlViewController) {
+        for (index, item) in controls.enumerated() {
+            if item == control {
+                control.view.removeFromSuperview()
+                controls.remove(at: index)
+                resize()
+                break
+            }
+        }
+    }
+    
     open func onPanelResized(panel: PanelViewController) {
         viewHeightConstraint.constant = vStack.frame.height
+    }
+    
+    open func addControl(_ control: ControlViewController) {
+        controls.append(control)
+        if isViewLoaded {
+            vStack.addArrangedSubview(control.view)
+            control.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
+            resize()
+        }
     }
     
     open func addPanel(_ panel: PanelViewController) {
@@ -157,6 +182,13 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         panels = []
     }
     
+    open func removeAllControls() {
+        for control in controls {
+            control.view.removeFromSuperview()
+        }
+        controls = []
+    }
+    
     open func removePanel(_ parameterGroup: ParameterGroup) {
         for (index, panel) in panels.enumerated() {
             if let panelParams = panel.parameters {
@@ -169,6 +201,19 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
             }
         }
     }
+    
+    open func removeControl(_ parameterGroup: ParameterGroup) {
+           for (index, control) in controls.enumerated() {
+               if let panelParams = control.parameters {
+                   if panelParams == parameterGroup {
+                       control.view.removeFromSuperview()
+                       controls.remove(at: index)
+                       resize()
+                       break
+                   }
+               }
+           }
+       }
     
     open func resize() {
         if let window = view.window, let contentView = window.contentView {
@@ -187,7 +232,12 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         return panels
     }
     
+    open func getControls() -> [ControlViewController] {
+        return controls
+    }
+    
     deinit {
         removeAllPanels()
+        removeAllControls()
     }
 }

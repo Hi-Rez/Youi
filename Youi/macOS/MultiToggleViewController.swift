@@ -9,7 +9,7 @@
 import Cocoa
 import Satin
 
-open class MultiToggleViewController: ControlViewController {
+open class MultiToggleViewController: NSViewController {
     public var parameters: [BoolParameter] = []
     var observations: [NSKeyValueObservation] = []
 

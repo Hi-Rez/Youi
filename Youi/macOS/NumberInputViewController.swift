@@ -9,7 +9,7 @@
 import Cocoa
 import Satin
 
-open class NumberInputViewController: ControlViewController, NSTextFieldDelegate {
+open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
     var valueObservation: NSKeyValueObservation?
 

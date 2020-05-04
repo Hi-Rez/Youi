@@ -9,7 +9,7 @@
 import Cocoa
 import Satin
 
-open class DropDownViewController: ControlViewController {
+open class DropDownViewController: NSViewController {
     public weak var parameter: StringParameter?
     var observation: NSKeyValueObservation?
 

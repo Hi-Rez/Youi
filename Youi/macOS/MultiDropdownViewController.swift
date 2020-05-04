@@ -8,7 +8,7 @@
 import Cocoa
 import Satin
 
-open class MultiDropdownViewController: ControlViewController {
+open class MultiDropdownViewController: NSViewController {
     public var parameters: [StringParameter] = []
     var observations: [NSKeyValueObservation] = []
     public var options: [[String]] = []

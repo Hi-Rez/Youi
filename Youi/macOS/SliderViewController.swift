@@ -13,7 +13,7 @@ protocol SliderViewControllerDelegate: AnyObject {
     func onValueChanged(_ sender: SliderViewController)
 }
 
-open class SliderViewController: ControlViewController, NSTextFieldDelegate {
+open class SliderViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
     var valueObservation: NSKeyValueObservation?
     var minObservation: NSKeyValueObservation?
@@ -44,7 +44,7 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
                 stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.inputField.stringValue = String(format: "%.5f", value)
+                        self.inputField.stringValue = String(format: "%.3f", value)
                         self.slider.doubleValue = Double(value)
                     }
                 }
@@ -87,10 +87,10 @@ open class SliderViewController: ControlViewController, NSTextFieldDelegate {
                 value = param.value
                 minValue = param.min
                 maxValue = param.max
-                stringValue = String(format: "%.5f", value)
+                stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.inputField.stringValue = String(format: "%.5f", value)
+                        self.inputField.stringValue = String(format: "%.3f", value)
                         self.slider.doubleValue = value
                     }
                 }

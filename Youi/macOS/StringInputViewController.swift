@@ -8,7 +8,7 @@
 import Cocoa
 import Satin
 
-open class StringInputViewController: ControlViewController, NSTextFieldDelegate {
+open class StringInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: StringParameter?
     var valueObservation: NSKeyValueObservation?
 
@@ -19,7 +19,8 @@ open class StringInputViewController: ControlViewController, NSTextFieldDelegate
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        view.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        
         if let parameter = self.parameter {
             let vStack = NSStackView()
             vStack.wantsLayer = true
@@ -83,7 +84,7 @@ open class StringInputViewController: ControlViewController, NSTextFieldDelegate
 
     func setValue(_ value: String) {
         if let parameter = self.parameter {
-            parameter.value = value            
+            parameter.value = value
         }
     }
 
@@ -94,7 +95,7 @@ open class StringInputViewController: ControlViewController, NSTextFieldDelegate
             textField.stringValue = chars.joined()
         }
     }
-
+    
     deinit {
         parameter = nil
         valueObservation = nil

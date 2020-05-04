@@ -8,7 +8,7 @@
 import Cocoa
 import Satin
 
-open class MultiNumberInputViewController: ControlViewController, NSTextFieldDelegate {
+open class MultiNumberInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
 
     var observers: [NSKeyValueObservation] = []
@@ -89,7 +89,8 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
 
             for i in 0..<parameter.count {
                 let value: Int32 = parameter[i]
-                hStack.addView(createInput("\(value)", i), in: .trailing)
+                let input = createInput("\(value)", i)
+                hStack.addView(input, in: .trailing)
             }
         }
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
@@ -136,7 +137,8 @@ open class MultiNumberInputViewController: ControlViewController, NSTextFieldDel
 
             for i in 0..<parameter.count {
                 let value: Float = parameter[i]
-                hStack.addView(createInput("\(value)", i), in: .trailing)
+                let input = createInput("\(value)", i)
+                hStack.addView(input, in: .trailing)
             }
         }
 

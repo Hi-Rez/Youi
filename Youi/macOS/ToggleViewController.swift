@@ -9,7 +9,7 @@
 import Cocoa
 import Satin
 
-open class ToggleViewController: ControlViewController {
+open class ToggleViewController: NSViewController {
     public weak var parameter: BoolParameter?
     var observation: NSKeyValueObservation?
 

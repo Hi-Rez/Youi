@@ -13,7 +13,7 @@ public protocol ProgressSliderViewControllerDelegate: AnyObject {
     func onValueChanged(_ sender: ProgressSliderViewController)
 }
 
-open class ProgressSliderViewController: ControlViewController {
+open class ProgressSliderViewController: NSViewController {
     public weak var parameter: Parameter?
     var valueObservation: NSKeyValueObservation?
     var minObservation: NSKeyValueObservation?
@@ -121,8 +121,7 @@ open class ProgressSliderViewController: ControlViewController {
     }
 
     @objc func onSliderChange() {
-        setValue(slider.doubleValue)
-        deactivate()
+        setValue(slider.doubleValue)        
         delegate?.onValueChanged(self)
     }
 
