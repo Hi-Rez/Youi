@@ -64,7 +64,7 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
-                stringValue = String(format: "%d", value)
+                stringValue = "\(Int(value))"                
                 valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField.stringValue = String(value)

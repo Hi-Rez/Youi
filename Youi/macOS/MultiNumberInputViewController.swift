@@ -218,7 +218,12 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
     public func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         switch commandSelector {
         case #selector(NSResponder.insertTab(_:)):
-            let next = control.tag + 1
+            let currentIndex = control.tag
+            let current = inputs[currentIndex]
+            if let value = Double(current.stringValue) {
+                self.setValue(value, currentIndex);
+            }        
+            let next = currentIndex + 1
             if next != inputs.count {
                 inputs[next % inputs.count].becomeFirstResponder()
                 return true
