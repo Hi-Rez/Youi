@@ -6,27 +6,66 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Foundation
+
 import AppKit
 import Cocoa
 import Satin
 
+open class FlippedStackView: NSStackView {
+    open override var isFlipped: Bool {
+        return true
+    }
+}
+
 open class InspectorViewController: NSViewController, PanelViewControllerDelegate, NSWindowDelegate {
     public var panels: [PanelViewController] = []
     public var controls: [ControlViewController] = []
-    public var vStack: NSStackView!
+    
     public var viewHeightConstraint: NSLayoutConstraint!
     
+    public var spacer: NSView!
+    public var scrollView: NSScrollView!
+    public var stackView: FlippedStackView!
+    
     open override func loadView() {
+        setupView()
+        setupSpacer()
+        setupScrollView()
+        setupStackView()
+        setupDivider()
+    }
+    
+    open func setupView() {
         let view = TranslucentView()
+        
         view.widthAnchor.constraint(greaterThanOrEqualToConstant: 240).isActive = true
-        viewHeightConstraint = view.heightAnchor.constraint(equalToConstant: 240)
+        viewHeightConstraint = view.heightAnchor.constraint(lessThanOrEqualToConstant: 240)
         viewHeightConstraint.isActive = true
         
         self.view = view
     }
     
-    open override func viewDidLoad() {
+    open func setupSpacer() {
+        let spacer = NSView(frame: NSRect(x: 0, y: 0, width: 240, height: 22))
+        
+        spacer.translatesAutoresizingMaskIntoConstraints = false
+        spacer.wantsLayer = true
+        spacer.layer?.backgroundColor = .clear
+        
+        view.addSubview(spacer)
+        
+        spacer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        spacer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        spacer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        spacer.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        
+        self.spacer = spacer
+    }
+    
+    open func setupScrollView() {
         let scrollView = NSScrollView()
+        
         scrollView.wantsLayer = true
         scrollView.backgroundColor = .clear
         scrollView.drawsBackground = false
@@ -40,46 +79,50 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
         
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: spacer.bottomAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        vStack = NSStackView()
-        vStack.wantsLayer = true
-        vStack.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.documentView = vStack
-        vStack.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        vStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        vStack.orientation = .vertical
-        vStack.distribution = .gravityAreas
-        vStack.spacing = 0
+        self.scrollView = scrollView
+    }
+    
+    open func setupStackView() {
+        let stackView = FlippedStackView()
         
-        let spacer = NSView(frame: NSRect(x: 0, y: 0, width: 100, height: 100))
-        spacer.translatesAutoresizingMaskIntoConstraints = false
-        spacer.wantsLayer = true
-        spacer.layer?.backgroundColor = .clear
-        vStack.addArrangedSubview(spacer)
-        spacer.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
-        spacer.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        stackView.wantsLayer = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
+        scrollView.documentView = stackView
+        
+        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        stackView.orientation = .vertical
+        stackView.contentHuggingPriority(for: .horizontal)
+        stackView.distribution = .gravityAreas
+        stackView.spacing = 0
+        
+        self.stackView = stackView
+    }
+    
+    open func setupDivider() {
         let divider = Spacer()
-        vStack.addArrangedSubview(divider)
+        stackView.addArrangedSubview(divider)
         var dpr = CGFloat(1.0)
         if let window = view.window {
             dpr = CGFloat(window.backingScaleFactor)
         }
         divider.heightAnchor.constraint(equalToConstant: 1.0 / dpr).isActive = true
-        divider.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
-        
+        divider.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+    }
+    
+    open override func viewDidLoad() {
         for control in controls {
-            vStack.addView(control.view, in: .top)
-            control.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
+            addControl(control)
         }
         
         for panel in panels {
-            vStack.addView(panel.view, in: .top)
-            panel.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
+            addPanel(panel)
         }
         
         view.window?.delegate = self
@@ -93,11 +136,31 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
     
     open override func viewWillAppear() {
         super.viewWillAppear()
+        resize()        
         DispatchQueue.main.async { [unowned self] in
             if let window = self.view.window {
                 window.makeFirstResponder(nil)
-                self.resize()
             }
+        }
+    }
+    
+    open func resize() {
+        let height = stackView.frame.height + spacer.frame.height
+        if let window = view.window {
+            let windowFrame = window.frame
+            let totalHeight = height
+            let originYOffset = windowFrame.height - totalHeight
+            if windowFrame.size.height != totalHeight {
+                DispatchQueue.main.async { [unowned self] in
+                    if let window = self.view.window {
+                        window.setFrame(NSRect(x: windowFrame.origin.x, y: windowFrame.origin.y + originYOffset, width: windowFrame.size.width, height: totalHeight), display: true, animate: false)
+                    }
+                }
+            }
+        }
+        
+        if viewHeightConstraint.constant != height {
+            viewHeightConstraint.constant = height
         }
     }
     
@@ -129,6 +192,10 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         removePanel(panel)
     }
     
+    open func onPanelResized(panel: PanelViewController) {
+        resize()
+    }
+    
     open func removePanel(_ panel: PanelViewController) {
         for (index, item) in panels.enumerated() {
             if item == panel {
@@ -151,15 +218,12 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         }
     }
     
-    open func onPanelResized(panel: PanelViewController) {
-        viewHeightConstraint.constant = vStack.frame.height
-    }
-    
     open func addControl(_ control: ControlViewController) {
         controls.append(control)
         if isViewLoaded {
-            vStack.addArrangedSubview(control.view)
-            control.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
+            stackView.addArrangedSubview(control.view)
+            control.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+            control.view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
             resize()
         }
     }
@@ -168,8 +232,8 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         panel.delegate = self
         panels.append(panel)
         if isViewLoaded {
-            vStack.addArrangedSubview(panel.view)
-            panel.view.widthAnchor.constraint(equalTo: vStack.widthAnchor).isActive = true
+            stackView.addArrangedSubview(panel.view)
+            panel.view.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
             resize()
         }
     }
@@ -212,19 +276,6 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
                     break
                 }
             }
-        }
-    }
-    
-    open func resize() {
-        if let window = view.window, let contentView = window.contentView {
-            vStack.layoutSubtreeIfNeeded()
-            let windowFrame = window.frame
-            let contentHeight = contentView.frame.height
-            let titleHeight = windowFrame.height - contentHeight
-            let calculatedHeight = vStack.frame.height + titleHeight
-            viewHeightConstraint.constant = vStack.frame.height
-            let originYOffset = windowFrame.height - calculatedHeight
-            window.setFrame(NSRect(x: windowFrame.origin.x, y: windowFrame.origin.y + originYOffset, width: windowFrame.size.width, height: calculatedHeight), display: true)
         }
     }
     
