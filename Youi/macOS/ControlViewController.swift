@@ -31,7 +31,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer?.backgroundColor = .clear
-        view.widthAnchor.constraint(equalToConstant: 240).isActive = true
+        view.widthAnchor.constraint(greaterThanOrEqualToConstant: 240).isActive = true
         viewHeightConstraint = view.heightAnchor.constraint(equalToConstant: 240)
         viewHeightConstraint.isActive = true
     }
@@ -108,6 +108,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     open func addControl(_ control: NSViewController) {
         guard let stack = self.stack else { return }
         stack.addView(control.view, in: .top)
+        control.view.leadingAnchor.constraint(equalTo: stack.leadingAnchor).isActive = true
         control.view.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
         controls.append(control)
         resize()
@@ -231,6 +232,11 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     }
     
     open func onButtonPressed(_ sender: NSButton) {}
+    
+    open override func viewWillLayout() {
+        super.viewWillLayout()
+        resize()
+    }
     
     open func resize() {
         if let stack = self.stack {

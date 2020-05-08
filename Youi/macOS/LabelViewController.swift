@@ -15,6 +15,8 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
 
     var labelField: NSTextField!
     var labelValue: NSTextField!
+    var viewHeightConstraint: NSLayoutConstraint!
+    var viewWidthConstraint: NSLayoutConstraint!
 
     open override func loadView() {
         view = NSView()
@@ -22,9 +24,11 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = self.parameter {
-            observation = parameter.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, change in
+            observation = parameter.observe(\StringParameter.value, options: [.old,.new]) { [unowned self] _, change in
                 if let value = change.newValue {
                     self.labelValue.stringValue = value
+                    self.labelValue.layout()
+                    self.view.needsLayout = true                    
                 }
             }
 
@@ -46,7 +50,7 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
             hStack.translatesAutoresizingMaskIntoConstraints = false
             vStack.addView(hStack, in: .center)
             hStack.orientation = .horizontal
-            hStack.alignment = .centerY
+            hStack.alignment = .top
             hStack.distribution = .gravityAreas
             hStack.spacing = 0
 
@@ -67,12 +71,27 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
             labelValue.wantsLayer = true
             labelValue.isEditable = false
             labelValue.isBordered = false
+            labelValue.isSelectable = true
             labelValue.maximumNumberOfLines = 100
             labelValue.backgroundColor = .clear
             labelValue.stringValue = parameter.value
             hStack.addView(labelValue, in: .leading)
 
-            view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
+            viewHeightConstraint = view.heightAnchor.constraint(equalTo: labelValue.heightAnchor, constant: 16)
+            viewHeightConstraint.isActive = true
+
+            viewWidthConstraint = view.widthAnchor.constraint(equalToConstant: 240)
+            viewWidthConstraint.isActive = false
+        }
+    }
+
+    open override func viewWillLayout() {
+        let w = labelValue.intrinsicContentSize.width
+        if w < 240 {
+            viewWidthConstraint.isActive = true
+        }
+        else {
+            viewWidthConstraint.isActive = false
         }
     }
 

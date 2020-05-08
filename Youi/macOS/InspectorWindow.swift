@@ -16,13 +16,14 @@ open class InspectorWindow: NSWindow {
         setup()
     }
 
-    func setup() {
+    open func setup() {
         titlebarAppearsTransparent = true
         title = "Inspector"
         setFrameAutosaveName("Inspector")
         backgroundColor = .clear
         isReleasedWhenClosed = false
         level = .statusBar
+        hidesOnDeactivate = true
         setupInspector()
         contentView = inspectorViewController?.view
     }

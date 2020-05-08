@@ -203,17 +203,17 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
     }
     
     open func removeControl(_ parameterGroup: ParameterGroup) {
-           for (index, control) in controls.enumerated() {
-               if let panelParams = control.parameters {
-                   if panelParams == parameterGroup {
-                       control.view.removeFromSuperview()
-                       controls.remove(at: index)
-                       resize()
-                       break
-                   }
-               }
-           }
-       }
+        for (index, control) in controls.enumerated() {
+            if let panelParams = control.parameters {
+                if panelParams == parameterGroup {
+                    control.view.removeFromSuperview()
+                    controls.remove(at: index)
+                    resize()
+                    break
+                }
+            }
+        }
+    }
     
     open func resize() {
         if let window = view.window, let contentView = window.contentView {
