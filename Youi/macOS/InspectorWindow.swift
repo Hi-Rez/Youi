@@ -23,7 +23,7 @@ open class InspectorWindow: NSWindow {
         backgroundColor = .clear
         isReleasedWhenClosed = false
         level = .statusBar
-        hidesOnDeactivate = true
+        hidesOnDeactivate = false
         setupInspector()
         contentView = inspectorViewController?.view
     }

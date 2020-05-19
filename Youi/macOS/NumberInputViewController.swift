@@ -37,7 +37,7 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
             else if parameter is IntParameter {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
-                stringValue = String(format: "%d", value)
+                stringValue = "\(param.value)"
                 valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
                         self.inputField?.stringValue = String(value)
