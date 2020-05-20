@@ -13,7 +13,6 @@ open class ToggleViewController: NSViewController {
     public weak var parameter: BoolParameter?
     var observation: NSKeyValueObservation?
 
-    var labelField: NSTextField!
     var button: NSButton!
 
     open override func loadView() {
@@ -55,23 +54,14 @@ open class ToggleViewController: NSViewController {
             button = NSButton()
             button.wantsLayer = true
             button.setButtonType(.switch)
-            button.title = ""
+            button.title = parameter.label
             button.translatesAutoresizingMaskIntoConstraints = false
             hStack.addView(button, in: .leading)
             button.state = (parameter.value ? .on : .off)
             button.target = self
             button.action = #selector(ToggleViewController.onButtonChange)
-
-            labelField = NSTextField()
-            labelField.font = .labelFont(ofSize: 12)
-            labelField.wantsLayer = true
-            labelField.translatesAutoresizingMaskIntoConstraints = false
-            labelField.isEditable = false
-            labelField.isBordered = false
-            labelField.backgroundColor = .clear
-            labelField.stringValue = parameter.label
-            hStack.addView(labelField, in: .leading)
-            view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
+            
+            view.heightAnchor.constraint(equalTo: button.heightAnchor, constant: 17).isActive = true
         }
     }
 
