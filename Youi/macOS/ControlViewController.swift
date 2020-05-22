@@ -63,8 +63,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                         addNumberInput(param)
                         addSpacer()
                     default:
-                        addSlider(param)
-                        addSpacer()
+                        break
                     }
                 }
                 if param is Int2Parameter || param is Int3Parameter || param is Int4Parameter || param is Float2Parameter || param is Float3Parameter || param is Float4Parameter {
@@ -78,16 +77,26 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                         case .inputfield:
                             addMultiNumberInput(param)
                             addSpacer()
-                        default:
+                        case .unknown:
                             addMultiNumberInput(param)
                             addSpacer()
+                        default:
+                            break
                         }
                     }
                 }
                 else if param is BoolParameter {
                     let boolParam = param as! BoolParameter
-                    addToggle(boolParam)
-                    addSpacer()
+                    switch param.controlType {
+                    case .toggle:
+                        addToggle(boolParam)
+                        addSpacer()
+                    case .unknown:
+                        addToggle(boolParam)
+                        addSpacer()
+                    default:
+                        break
+                    }
                 }
                 else if param is StringParameter {
                     let stringParam = param as! StringParameter
@@ -97,7 +106,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     case .label:
                         addLabel(stringParam)
                     default:
-                        addLabel(stringParam)
+                        break
                     }
                     addSpacer()
                 }
