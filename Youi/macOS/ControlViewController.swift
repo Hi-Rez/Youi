@@ -53,15 +53,16 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
             for param in parameters.params {
                 if param is FloatParameter || param is IntParameter || param is DoubleParameter {
                     switch param.controlType {
-                    case .unknown:
-                        addNumberInput(param)
-                        addSpacer()
                     case .slider:
                         addSlider(param)
                         addSpacer()
                     case .inputfield:
                         addNumberInput(param)
                         addSpacer()
+                    case .unknown:
+                        addNumberInput(param)
+                        addSpacer()
+                        
                     default:
                         break
                     }
