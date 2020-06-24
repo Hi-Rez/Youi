@@ -32,22 +32,22 @@ open class ColorPickerViewController: NSViewController {
                 let param = parameter as! Float4Parameter
                 observationR = param.observe(\Float4Parameter.x, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
 
                 observationG = param.observe(\Float4Parameter.y, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
 
                 observationB = param.observe(\Float4Parameter.z, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
 
                 observationA = param.observe(\Float4Parameter.w, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
                 }
             }
 
@@ -80,7 +80,7 @@ open class ColorPickerViewController: NSViewController {
             if parameter is Float4Parameter {
                 let param = parameter as! Float4Parameter
                 let value = param.value
-                colorWell.color = NSColor(calibratedRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
             }
             colorWell.translatesAutoresizingMaskIntoConstraints = false
             colorWell.widthAnchor.constraint(equalToConstant: 24).isActive = true
