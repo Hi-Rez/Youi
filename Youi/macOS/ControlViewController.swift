@@ -106,10 +106,18 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                         addDropDown(stringParam)
                     case .label:
                         addLabel(stringParam)
-                    case .filepicker:
-                        addFilePicker(stringParam)
                     case .unknown:
                         addLabel(stringParam)
+                    default:
+                        break
+                    }
+                    addSpacer()
+                }
+                else if param is FileParameter {
+                    let fileParam = param as! FileParameter
+                    switch param.controlType {
+                    case .filepicker:
+                        addFilePicker(fileParam)
                     default:
                         break
                     }
@@ -165,7 +173,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         addControl(vc)
     }
     
-    open func addFilePicker(_ parameter: StringParameter) {
+    open func addFilePicker(_ parameter: FileParameter) {
         let vc = FilePickerViewController()
         vc.parameter = parameter
         addControl(vc)

@@ -299,7 +299,7 @@ private class ProxyIconView: NSView, NSDraggingSource {
 // MARK: - File Picker View Controller
 
 open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
-    public weak var parameter: StringParameter?
+    public weak var parameter: FileParameter?
     
     private var observation: NSKeyValueObservation?
     private let dropTargetView = DropTargetView()
@@ -313,7 +313,7 @@ open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         guard let parameter = self.parameter else { return }
-        observation = parameter.observe(\StringParameter.value, options: [ .old, .new ]) { [unowned self] (_, change) in
+        observation = parameter.observe(\FileParameter.value, options: [ .old, .new ]) { [unowned self] (_, change) in
             if let oldPath = change.oldValue {
                 self.addRecent(oldPath, moveToTop: false)
             }
@@ -325,6 +325,7 @@ open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
         }
         
         dropTargetView.delegate = self
+        dropTargetView.allowedTypes = parameter.allowedTypes
         dropTargetView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dropTargetView)
         NSLayoutConstraint.activate([
@@ -382,16 +383,16 @@ open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
     private func addRecent(_ path: String, moveToTop: Bool = true) {
         guard let parameter = parameter else { return }
         guard FileManager.default.fileExists(atPath: path) else { return }
-        var options = parameter.options
+        var recents = parameter.recents
         
         if moveToTop {
-            options.removeAll { $0 == path }
-            options.insert(path, at: 0)
-        } else if !options.contains(path) {
-            options.insert(path, at: 0)
+            recents.removeAll { $0 == path }
+            recents.insert(path, at: 0)
+        } else if !recents.contains(path) {
+            recents.insert(path, at: 0)
         }
         
-        parameter.options = options
+        parameter.recents = recents
     }
     
     @objc func showPopUpMenu(_ sender: NSButton) {
@@ -408,14 +409,14 @@ open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
             }
             
             let fileManager = FileManager.default
-            let recents = parameter.options.filter { fileManager.fileExists(atPath: $0) }
+            let recents = parameter.recents.filter { fileManager.fileExists(atPath: $0) }
             
             if !recents.isEmpty {
                 menu.addItem(.separator())
                 let headerItem = menu.addItem(withTitle: "Recents", action: nil, keyEquivalent: "")
                 headerItem.isEnabled = false
                 
-                for recent in parameter.options {
+                for recent in recents {
                     guard fileManager.fileExists(atPath: recent) else { continue }
                     let item = menu.addItem(withTitle: ProxyIconView.displayNameForFile(recent), action: #selector(selectRecent(_:)), keyEquivalent: "")
                     item.representedObject = recent
@@ -435,11 +436,14 @@ open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
     }
     
     @objc func chooseFile(_ sender: NSMenuItem?) {
+        guard let parameter = parameter else { return }
+        
         let panel = NSOpenPanel()
+        panel.allowedFileTypes = parameter.allowedTypes
         panel.begin { response in
             guard response == .OK else { return }
             guard let url = panel.url else { return }
-            self.parameter?.value = url.path
+            parameter.value = url.path
         }
     }
     
@@ -458,7 +462,7 @@ open class FilePickerViewController: NSViewController, DropTargetViewDelegate {
     
     @objc func clearRecents(_ sender: NSMenuItem) {
         guard let parameter = parameter else { return }
-        parameter.options = []
+        parameter.recents = []
     }
     
     fileprivate func dropTargetViewShouldAcceptDrop(_ sender: DropTargetView, from source: Any?) -> Bool {
