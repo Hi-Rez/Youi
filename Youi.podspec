@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
   spec.version                = "1.0.0"
   spec.summary                = "Youi is a small library of UI components to help rapidly prototype and tweak parameters in Satin"
   spec.description            = <<-DESC
-  Youi is a small library of UI components to help rapidly prototype and tweak parameters in Satin
+  Youi is a small library of UI components (sliders, buttons, dropdown, labels, etc) to help rapidly prototype and tweak Satin parameters
                    DESC
   spec.homepage               = "https://github.com/Hi-Rez/Youi"
   spec.license                = { :type => "MIT", :file => "LICENSE" }
@@ -18,5 +18,5 @@ Pod::Spec.new do |spec|
   spec.osx.frameworks         = "AppKit"
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
-  spec.dependency             "Satin"
+  spec.dependency             'Satin'
 end

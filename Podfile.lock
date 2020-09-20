@@ -1,9 +1,9 @@
 PODS:
   - Satin (1.0.0)
-  - SwiftFormat/CLI (0.44.2)
+  - SwiftFormat/CLI (0.46.3)
 
 DEPENDENCIES:
-  - Satin
+  - Satin (>= 1.0.0)
   - SwiftFormat/CLI
 
 SPEC REPOS:
@@ -14,8 +14,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Satin: f9c1a1f289dde1dc68e481af22f9d6d5ee75f1f9
-  SwiftFormat: 53968b5cc5d466727e796f789fa9be6c38da34cb
+  SwiftFormat: b639417da9e024b9e782f917bc9a080cf75bcb37
 
-PODFILE CHECKSUM: e28781d894f3b4f61f6c03316fb528f8987357fe
+PODFILE CHECKSUM: 1346969da47389adfd2664929d9f5a911e9b3afd
 
 COCOAPODS: 1.10.0.rc.1

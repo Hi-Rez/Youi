@@ -1,6 +1,3 @@
-source 'git@github.com:Hi-Rez/Specs.git'
-source 'https://cdn.cocoapods.org/'
-
 install! 'cocoapods',
          :generate_multiple_pod_projects => true,
          :incremental_installation => true,
@@ -11,7 +8,7 @@ install! 'cocoapods', :disable_input_output_paths => true
 use_frameworks!
 target 'Youi macOS' do
   use_frameworks!
-  platform :osx, '10.15'
-  pod 'Satin'
+  platform :osx, '10.14'
+  pod 'Satin', '>= 1.0.0'
   pod 'SwiftFormat/CLI'
 end
