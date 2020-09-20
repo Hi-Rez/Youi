@@ -1,28 +1,21 @@
 PODS:
-  - Satin (0.2.0)
+  - Satin (1.0.0)
   - SwiftFormat/CLI (0.44.2)
 
 DEPENDENCIES:
-  - "Satin (from `git@github.com:Hi-Rez/Satin.git`)"
+  - Satin
   - SwiftFormat/CLI
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  "git@github.com:Hi-Rez/Specs.git":
+    - Satin
+  trunk:
     - SwiftFormat
 
-EXTERNAL SOURCES:
-  Satin:
-    :git: "git@github.com:Hi-Rez/Satin.git"
-
-CHECKOUT OPTIONS:
-  Satin:
-    :commit: d6d6ddca0ed7e67820f3a58c357974ff1221b0d0
-    :git: "git@github.com:Hi-Rez/Satin.git"
-
 SPEC CHECKSUMS:
-  Satin: e73bdaa91e191a6a47d547f4612e17e537686d98
+  Satin: f9c1a1f289dde1dc68e481af22f9d6d5ee75f1f9
   SwiftFormat: 53968b5cc5d466727e796f789fa9be6c38da34cb
 
-PODFILE CHECKSUM: 2fcbcf26e224c61ac631f95e651b3eeff1c7c528
+PODFILE CHECKSUM: e28781d894f3b4f61f6c03316fb528f8987357fe
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.10.0.rc.1

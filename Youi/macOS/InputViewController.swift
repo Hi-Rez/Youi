@@ -5,7 +5,7 @@
 //  Created by Reza Ali on 5/4/20.
 //
 
-import Foundation
+import AppKit
 
 open class InputViewController: NSViewController {
     open override func viewWillDisappear() {

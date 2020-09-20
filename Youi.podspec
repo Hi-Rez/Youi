@@ -12,15 +12,11 @@ Pod::Spec.new do |spec|
   spec.source                 = { :git => "https://github.com/Hi-Rez/Youi.git", :tag => spec.version.to_s }
 
   spec.osx.deployment_target  = "10.14"
-  spec.ios.deployment_target  = "12.4"
-
   spec.osx.source_files       = "Youi/*.h", "Youi/Shared/*.{h,m,swift}", "Youi/macOS/*.{h,m,swift}"
-  spec.ios.source_files       = "Youi/*.h", "Youi/Shared/*.{h,m,swift}", "Youi/iOS/*.{h,m,swift}"
 
   spec.resources              = "Assets.xcassets"
   spec.osx.frameworks         = "AppKit"
-  spec.ios.frameworks         = "UIKit"
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
-  spec.dependency             'Satin'
+  spec.dependency             "Satin"
 end
