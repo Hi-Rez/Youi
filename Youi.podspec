@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                   = "Youi"
-  spec.version                = "0.0.1"
+  spec.version                = "1.0.0"
   spec.summary                = "Youi is a small library of UI components to help rapidly prototype and tweak parameters in Satin"
   spec.description            = <<-DESC
   Youi is a small library of UI components to help rapidly prototype and tweak parameters in Satin
