@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
   spec.social_media_url       = "https://twitter.com/rezaali"
   spec.source                 = { :git => "https://github.com/Hi-Rez/Youi.git", :tag => spec.version.to_s }
 
-  spec.osx.deployment_target  = "10.14"
+  spec.osx.deployment_target  = "10.15"
   spec.osx.source_files       = "Youi/*.h", "Youi/Shared/*.{h,m,swift}", "Youi/macOS/*.{h,m,swift}"
 
   spec.resources              = "Assets.xcassets"
