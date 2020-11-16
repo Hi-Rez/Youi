@@ -22,38 +22,9 @@ open class TranslucentView: NSVisualEffectView {
     func setup() {
         translatesAutoresizingMaskIntoConstraints = false
         wantsLayer = true
-        updateStyle()
+        material = .popover
         state = .active
         blendingMode = .behindWindow
         autoresizingMask = [.width, .height]
-
-        DistributedNotificationCenter.default.addObserver(
-            self,
-            selector: #selector(interfaceModeChanged),
-            name: Notification.Name("AppleInterfaceThemeChangedNotification"),
-            object: nil
-        )
     }
-
-    func updateStyle() {
-        if let _ = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") {
-//            material = .dark
-            material = .appearanceBased
-        }
-        else {
-            material = .appearanceBased
-//            material = .light
-        }
-    }
-
-    open override func updateLayer() {
-        super.updateLayer()
-        updateStyle()
-    }
-
-    @objc func interfaceModeChanged() {
-        updateStyle()
-    }
-
-    deinit {}
 }

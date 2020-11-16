@@ -47,7 +47,7 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
     }
     
     open func setupSpacer() {
-        let spacer = NSView(frame: NSRect(x: 0, y: 0, width: 240, height: 22))
+        let spacer = NSView(frame: NSRect(x: 0, y: 0, width: 240, height: 28))
         
         spacer.translatesAutoresizingMaskIntoConstraints = false
         spacer.wantsLayer = true
@@ -58,7 +58,7 @@ open class InspectorViewController: NSViewController, PanelViewControllerDelegat
         spacer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         spacer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         spacer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        spacer.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        spacer.heightAnchor.constraint(equalToConstant: 28).isActive = true
         
         self.spacer = spacer
     }
