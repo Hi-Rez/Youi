@@ -17,7 +17,11 @@ public protocol PanelViewControllerDelegate: AnyObject {
 }
 
 open class PanelViewController: ControlViewController {
-    public var state: Bool = false
+    public var open: Bool = false {
+        didSet {
+            updateState()
+        }
+    }
     
     public var vStack: NSStackView?
     public var hStack: NSStackView?
@@ -148,30 +152,19 @@ open class PanelViewController: ControlViewController {
         setupContainer()
         setupStackView()
         setupParameters()
-        setState(state)
+        updateState()
     }
-    
-    open func setState(_ state: Bool) {
-        if state {
-            open()
-        }
-        else {
-            close()
-        }
-    }
-    
+        
     @objc open func onButtonChange() {
         if let button = self.button, button.state == .off {
-            close()
+            _close()
         }
         else {
-            open()
+            _open()
         }
     }
     
-    open func close() {
-        state = false
-        
+    open func _close() {
         if let button = self.button {
             button.state = .off
         }
@@ -185,9 +178,7 @@ open class PanelViewController: ControlViewController {
         delegate?.onPanelClose(panel: self)
     }
     
-    open func open() {
-        state = true
-        
+    open func _open() {
         if let button = self.button {
             button.state = .on
         }
@@ -202,17 +193,19 @@ open class PanelViewController: ControlViewController {
         delegate?.onPanelOpen(panel: self)
     }
     
-    open func isOpen() -> Bool {
-        return state
-    }
-    
     open override func viewDidLayout() {
         super.viewDidLayout()
         delegate?.onPanelResized(panel: self)
     }
     
-    open override func resize() {
-        
+    func updateState()
+    {
+        if open {
+            _open()
+        }
+        else {
+            _close()
+        }
     }
     
     deinit {

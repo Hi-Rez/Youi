@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                   = "Youi"
-  spec.version                = "1.0.1"
+  spec.version                = "2.0.0"
   spec.summary                = "Youi is a small library of UI components to help rapidly prototype and tweak parameters in Satin"
   spec.description            = <<-DESC
   Youi is a small library of UI components (sliders, buttons, dropdown, labels, etc) to help rapidly prototype and tweak Satin parameters
@@ -13,9 +13,14 @@ Pod::Spec.new do |spec|
 
   spec.osx.deployment_target  = "10.15"
   spec.osx.source_files       = "Youi/*.h", "Youi/Shared/*.{h,m,swift}", "Youi/macOS/*.{h,m,swift}"
+  spec.osx.frameworks         = "AppKit"
+
+  spec.ios.deployment_target  = "14.0"
+  spec.ios.source_files       = "Youi/*.h", "Youi/Shared/**/*.{h,m,swift}", "Youi/iOS/**/*.{h,m,swift}"
+  spec.ios.frameworks         = "UIKit"
 
   spec.resources              = "Assets.xcassets"
-  spec.osx.frameworks         = "AppKit"
+
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
   spec.dependency             'Satin'

@@ -1,25 +1,24 @@
 //
 //  ControlViewController.swift
-//  Slate macOS
+//  YouiTwo
 //
-//  Created by Reza Ali on 3/14/20.
-//  Copyright © 2020 Reza Ali. All rights reserved.
+//  Created by Reza Ali on 2/2/21.
 //
 
-import AppKit
-import Cocoa
 import Satin
+import UIKit
 
-open class ControlViewController: InputViewController, OptionsViewControllerDelegate {
+open class ControlViewController: UIViewController {
     public weak var parameters: ParameterGroup?
-    public var controls: [NSViewController] = []
-    public var stack: NSStackView?
-    public var viewHeightConstraint: NSLayoutConstraint?
+    public var controls: [UIViewController] = []
+    public var controlsStack: UIStackView?
     
     public convenience init(_ parameters: ParameterGroup) {
         self.init()
         self.parameters = parameters
     }
+    
+    var param = FloatParameter("Slider", 0.5, 0.0, 1.0, .slider)
     
     open override func loadView() {
         setupView()
@@ -27,30 +26,29 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         setupParameters()
     }
     
-    open func setupView() {
-        view = NSView()
-        view.wantsLayer = true
+    func setupView() {
+        view = UIView()
+        view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer?.backgroundColor = .clear
+        view.isUserInteractionEnabled = true
         view.widthAnchor.constraint(greaterThanOrEqualToConstant: 240).isActive = true
-        let viewHeightConstraint = view.heightAnchor.constraint(equalToConstant: 240)
-        viewHeightConstraint.isActive = true
-        self.viewHeightConstraint = viewHeightConstraint
     }
     
-    open func setupStackView() {
-        let stack = NSStackView()
-        stack.wantsLayer = true
+    func setupStackView() {
+        let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stack)
-        stack.orientation = .vertical
-        stack.distribution = .gravityAreas
+        stack.axis = .vertical
         stack.spacing = 0
-        stack.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        self.stack = stack
+        stack.alignment = .center
+        view.addSubview(stack)
+        stack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stack.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        stack.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 0).isActive = true
+        stack.widthAnchor.constraint(equalTo: view.widthAnchor, constant: 0).isActive = true
+        controlsStack = stack
     }
     
-    open func setupParameters() {
+    func setupParameters() {
         if let parameters = self.parameters {
             for param in parameters.params {
                 if param is FloatParameter || param is IntParameter || param is DoubleParameter {
@@ -64,7 +62,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     case .unknown:
                         addNumberInput(param)
                         addSpacer()
-                        
                     default:
                         break
                     }
@@ -106,47 +103,53 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     switch param.controlType {
                     case .dropdown:
                         addDropDown(stringParam)
+                        addSpacer()
                     case .label:
                         addLabel(stringParam)
+                        addSpacer()
+                    case .inputfield:
+                        addInput(stringParam)
+                        addSpacer()
                     case .unknown:
                         addLabel(stringParam)
+                        addSpacer()
                     default:
                         break
                     }
-                    addSpacer()
                 }
                 else if param is FileParameter {
                     let fileParam = param as! FileParameter
                     switch param.controlType {
                     case .filepicker:
                         addFilePicker(fileParam)
+                        addSpacer()
                     default:
                         break
                     }
-                    addSpacer()
                 }
             }
         }
     }
     
-    open func addControl(_ control: NSViewController) {
-        guard let stack = self.stack else { return }
-        stack.addView(control.view, in: .top)
+    open func addControl(_ control: UIViewController) {
+        guard let stack = controlsStack else { return }
+        stack.addArrangedSubview(control.view)
         control.view.leadingAnchor.constraint(equalTo: stack.leadingAnchor).isActive = true
         control.view.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
         controls.append(control)
     }
     
     open func addSpacer() {
-        guard let stack = self.stack else { return }
+        guard let stack = controlsStack else { return }
         let spacer = Spacer()
-        stack.addView(spacer, in: .top)
+        stack.addArrangedSubview(spacer)
         spacer.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        spacer.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
     }
     
     open func addColorPicker(_ parameter: Parameter) {
         let vc = ColorPickerViewController()
-        vc.parameter = parameter
+        vc.parameter = parameter as? Float4Parameter
         addControl(vc)
     }
     
@@ -175,9 +178,9 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     }
     
     open func addFilePicker(_ parameter: FileParameter) {
-        let vc = FilePickerViewController()
-        vc.parameter = parameter
-        addControl(vc)
+//        let vc = FilePickerViewController()
+//        vc.parameter = parameter
+//        addControl(vc)
     }
     
     open func addDropDown(_ parameter: StringParameter) {
@@ -188,16 +191,16 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     }
     
     open func addMultiDropdown(_ parameters: [StringParameter]) {
-        let vc = MultiDropdownViewController()
-        vc.parameters = parameters
-        addControl(vc)
+//        let vc = MultiDropdownViewController()
+//        vc.parameters = parameters
+//        addControl(vc)
     }
     
     open func addMultiDropdown(_ parameters: [StringParameter], _ options: [[String]]) {
-        let vc = MultiDropdownViewController()
-        vc.parameters = parameters
-        vc.options = options
-        addControl(vc)
+//        let vc = MultiDropdownViewController()
+//        vc.parameters = parameters
+//        vc.options = options
+//        addControl(vc)
     }
     
     open func addMultiNumberInput(_ parameter: Parameter) {
@@ -212,60 +215,57 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         addControl(vc)
     }
     
-    open func addProgressSlider(_ parameter: Parameter) -> ProgressSliderViewController? {
-        let vc = ProgressSliderViewController()
-        vc.parameter = parameter
-        addControl(vc)
-        return vc
-    }
+//    open func addProgressSlider(_ parameter: Parameter) -> ProgressSliderViewController? {
+//        let vc = ProgressSliderViewController()
+//        vc.parameter = parameter
+//        addControl(vc)
+//        return vc
+//    }
     
     open func addBindingInput(_ parameter: Parameter) {
-        let vc = BindingInputViewController()
-        vc.parameter = parameter
-        addControl(vc)
+//        let vc = BindingInputViewController()
+//        vc.parameter = parameter
+//        addControl(vc)
     }
     
     open func addToggles(_ parameters: [BoolParameter]) {
-        let vc = MultiToggleViewController()
-        vc.parameters = parameters
-        addControl(vc)
+//        let vc = MultiToggleViewController()
+//        vc.parameters = parameters
+//        addControl(vc)
     }
     
     open func addDetails(_ details: [StringParameter]) {
-        let vc = DetailsViewController()
-        vc.details = details
-        addControl(vc)
+//        let vc = DetailsViewController()
+//        vc.details = details
+//        addControl(vc)
     }
     
     open func addDropDown(_ parameter: StringParameter, options: [String]) {
-        let vc = DropDownViewController()
-        vc.options = options
-        vc.parameter = parameter
-        addControl(vc)
+//        let vc = DropDownViewController()
+//        vc.options = options
+//        vc.parameter = parameter
+//        addControl(vc)
     }
     
     open func addOptions(_ options: [String]) {
-        let vc = OptionsViewController()
-        vc.options = options
-        vc.delegate = self
-        addControl(vc)
+//        let vc = OptionsViewController()
+//        vc.options = options
+//        vc.delegate = self
+//        addControl(vc)
     }
     
     open func removeAll() {
-        if let stack = self.stack {
-            for view in stack.views {
+        if let stack = controlsStack {
+            for view in stack.subviews {
                 view.removeFromSuperview()
             }
         }
         controls = []
     }
     
-    open func onButtonPressed(_ sender: NSButton) {}
-    
     deinit {
-        viewHeightConstraint = nil
         removeAll()
         parameters = nil
-        stack = nil
+        controlsStack = nil
     }
 }

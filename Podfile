@@ -6,9 +6,13 @@ install! 'cocoapods',
 install! 'cocoapods', :disable_input_output_paths => true
 
 use_frameworks!
+
 target 'Youi macOS' do
-  use_frameworks!
   platform :osx, '10.15'
-  pod 'Satin', '>= 1.0.0'
-  pod 'SwiftFormat/CLI'
+  pod 'Satin'
+end
+
+target 'Youi iOS' do
+  platform :ios, '14.0'
+  pod 'Satin'
 end
