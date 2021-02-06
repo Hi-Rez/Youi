@@ -86,8 +86,13 @@ open class PanelViewController: ControlViewController, PanelHeaderViewController
     
     func updateState()
     {
-        guard let stack = self.controlsStack else { return }
-        stack.isHidden = !open
+        if let stack = self.controlsStack {
+            stack.isHidden = !open
+        }
+        
+        if let header = self.header {
+            header.state = open
+        }
     }
 
     func isOpen() -> Bool {

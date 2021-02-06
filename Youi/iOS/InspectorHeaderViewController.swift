@@ -36,7 +36,7 @@ class InspectorHeaderViewController: UIViewController {
     
     func setupView() {
         view = UIView()
-        view.backgroundColor = UIColor(named: "InspectorHeader")
+        view.backgroundColor = UIColor(named: "InspectorHeader", in: Bundle(for: InspectorHeaderViewController.self), compatibleWith: nil)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 48).isActive = true
     }

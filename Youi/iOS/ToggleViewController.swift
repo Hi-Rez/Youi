@@ -50,6 +50,11 @@ class ToggleViewController: WidgetViewController {
                 }
             }
         }
+        
+        if let toggle = self.toggle, let parameter = self.parameter as? BoolParameter {
+            toggle.isOn = parameter.value
+        }
+        
         super.setupBinding()
     }
     

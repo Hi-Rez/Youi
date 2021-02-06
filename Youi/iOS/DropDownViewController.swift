@@ -42,13 +42,14 @@ class DropDownViewController: WidgetViewController {
     func setupButton() {
         guard let hStack = self.hStack else { return }
         let button = UIButton(type: .roundedRect)
-        button.setTitleColor(UIColor(named: "Text"), for: .normal)
+        
+        button.setTitleColor(UIColor(named: "Text", in: Bundle(for: DropDownViewController.self), compatibleWith: nil), for: .normal)
         button.titleLabel?.font = font
         button.contentHorizontalAlignment = .right
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
         button.layer.cornerRadius = 4
         button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor(named: "Border")?.cgColor
+        button.layer.borderColor = UIColor(named: "Border", in: Bundle(for: DropDownViewController.self), compatibleWith: nil)?.cgColor
         button.showsMenuAsPrimaryAction = true
         button.heightAnchor.constraint(equalToConstant: 32).isActive = true
         button.addAction(UIAction(handler: { [unowned self] _ in
@@ -107,7 +108,7 @@ class DropDownViewController: WidgetViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if let button = self.button {
-            button.layer.borderColor = UIColor(named: "Border")?.cgColor
+            button.layer.borderColor = UIColor(named: "Border", in: Bundle(for: DropDownViewController.self), compatibleWith: nil)?.cgColor
         }
     }
 }

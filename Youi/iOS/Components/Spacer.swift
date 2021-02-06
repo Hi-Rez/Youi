@@ -10,11 +10,11 @@ import UIKit
 open class Spacer: UIView {
     public init() {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        self.backgroundColor = UIColor(named: "Spacer")
+        self.backgroundColor = UIColor(named: "Spacer", in: Bundle(for: Spacer.self), compatibleWith: nil)
     }
 
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.backgroundColor = UIColor(named: "Spacer")
+        self.backgroundColor = UIColor(named: "Spacer", in: Bundle(for: Spacer.self), compatibleWith: nil)
     }
 }

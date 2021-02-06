@@ -32,6 +32,7 @@
 		E15F8A73243E34430034661E /* MultiToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A62243E34430034661E /* MultiToggleViewController.swift */; };
 		E15F8A74243E34430034661E /* ToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A63243E34430034661E /* ToggleViewController.swift */; };
 		E160D6E12517EF4F00028F00 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E160D6E02517EF4F00028F00 /* InputViewController.swift */; };
+		E1B4DB4C25CE0BAD00908B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E15F8A44243E33F90034661E /* Assets.xcassets */; };
 		E1F2D41A25C9E9DF00420A04 /* Youi.h in Headers */ = {isa = PBXBuildFile; fileRef = E15F8A3C243E333E0034661E /* Youi.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -292,6 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1B4DB4C25CE0BAD00908B5B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

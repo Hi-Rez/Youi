@@ -24,7 +24,7 @@ open class InspectorViewController: UIViewController {
         self.title = title
     }
     
-    open override func loadView() {
+    override open func loadView() {
         setupView()
         setupBlurView()
         setupScrollView()
@@ -42,7 +42,7 @@ open class InspectorViewController: UIViewController {
     }
     
     func setupBlurView() {
-        let blurEffect = UIBlurEffect(style: .systemThinMaterial)
+        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -127,13 +127,12 @@ open class InspectorViewController: UIViewController {
         return panels
     }
     
-    open func removeAllPanels()
-    {
-        for (index, control) in controls.enumerated() {
+    open func removeAllPanels() {
+        for control in controls {
             if let panel = control as? PanelViewController {
-                controls.remove(at: index)
-                panel.removeFromParent()
+                panel.view.removeFromSuperview()
             }
         }
+        controls = []
     }
 }

@@ -62,7 +62,7 @@ open class InspectorWindow: UIViewController {
         view.backgroundColor = .clear
         view.layer.cornerRadius = 12
         view.layer.borderWidth = 0.25
-        view.layer.borderColor = UIColor(named: "Border")?.cgColor
+        view.layer.borderColor = UIColor(named: "Border", in: Bundle(for: InspectorWindow.self), compatibleWith: nil)?.cgColor
         view.clipsToBounds = true
         
         let widthAnchorConstraint = view.widthAnchor.constraint(equalToConstant: CGFloat(width))
@@ -106,11 +106,11 @@ open class InspectorWindow: UIViewController {
             
             if animated {
                 UIView.animate(withDuration: 0.2) {
-                    superView.layoutIfNeeded()
+//                    superView.layoutIfNeeded()
                 }
             }
             else {
-                superView.layoutIfNeeded()
+//                superView.layoutIfNeeded()
             }
         }
         else {
@@ -123,11 +123,11 @@ open class InspectorWindow: UIViewController {
             
             if animated {
                 UIView.animate(withDuration: 0.2) {
-                    superView.layoutIfNeeded()
+//                    superView.layoutIfNeeded()
                 }
             }
             else {
-                superView.layoutIfNeeded()
+//                superView.layoutIfNeeded()
             }
         }
     }
@@ -225,7 +225,7 @@ open class InspectorWindow: UIViewController {
     }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        view.layer.borderColor = UIColor(named: "Border")?.cgColor
+        view.layer.borderColor = UIColor(named: "Border", in: Bundle(for: InspectorWindow.self), compatibleWith: nil)?.cgColor
     }
     
     deinit {

@@ -38,7 +38,7 @@ class DisclosureButton: UIButton {
             updateState()
         }), for: .touchUpInside)
         updateState()
-        tintColor = UIColor(named: "Disclosure")
+        tintColor = UIColor(named: "Disclosure", in: Bundle(for: DisclosureButton.self), compatibleWith: nil)
     }
 
     func updateState()

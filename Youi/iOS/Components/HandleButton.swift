@@ -33,7 +33,7 @@ class HandleButton: UIButton {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isUserInteractionEnabled = true
         self.layer.cornerRadius = 3.0
-        self.backgroundColor = UIColor(named: "Button")
+        self.backgroundColor = UIColor(named: "Button", in: Bundle(for: HandleButton.self), compatibleWith: nil)
         self.widthAnchor.constraint(equalToConstant: 6).isActive = true
         self.heightAnchor.constraint(equalToConstant: 96).isActive = true   
     }

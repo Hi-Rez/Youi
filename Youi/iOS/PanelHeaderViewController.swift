@@ -17,11 +17,13 @@ class PanelHeaderViewController: UIViewController {
     public var state: Bool = false {
         didSet {
             button?.value = state
-            if state {
-                delegate?.onOpen(header: self)
-            }
-            else {
-                delegate?.onClose(header: self)
+            if oldValue != state {
+                if state {
+                    delegate?.onOpen(header: self)
+                }
+                else {
+                    delegate?.onClose(header: self)
+                }
             }
         }
     }
@@ -58,7 +60,7 @@ class PanelHeaderViewController: UIViewController {
     
     func setupView() {
         view = UIView()
-        view.backgroundColor = UIColor(named: "PanelHeader")
+        view.backgroundColor = UIColor(named: "PanelHeader", in: Bundle(for: PanelHeaderViewController.self), compatibleWith: nil)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = true
         view.heightAnchor.constraint(equalToConstant: 48).isActive = true
@@ -145,7 +147,6 @@ class PanelHeaderViewController: UIViewController {
     @objc func tapGesture(_ recognizer: UITapGestureRecognizer) {
         self.state.toggle()
     }
-
     
     deinit {
         spacer = nil
