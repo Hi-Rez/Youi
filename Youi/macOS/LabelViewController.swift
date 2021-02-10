@@ -75,7 +75,8 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
             labelValue.maximumNumberOfLines = 100
             labelValue.backgroundColor = .clear
             labelValue.stringValue = parameter.value
-            hStack.addView(labelValue, in: .leading)
+            labelValue.alignment = .right
+            hStack.addView(labelValue, in: .trailing)
 
             viewHeightConstraint = view.heightAnchor.constraint(equalTo: labelValue.heightAnchor, constant: 16)
             viewHeightConstraint.isActive = true

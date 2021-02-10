@@ -94,6 +94,9 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     case .toggle:
                         addToggle(boolParam)
                         addSpacer()
+                    case .button:
+                        addButton(boolParam)
+                        addSpacer()
                     case .unknown:
                         addToggle(boolParam)
                         addSpacer()
@@ -108,6 +111,8 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                         addDropDown(stringParam)
                     case .label:
                         addLabel(stringParam)
+                    case .inputfield:
+                        addInput(stringParam)
                     case .unknown:
                         addLabel(stringParam)
                     default:
@@ -164,6 +169,12 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     
     open func addToggle(_ parameter: BoolParameter) {
         let vc = ToggleViewController()
+        vc.parameter = parameter
+        addControl(vc)
+    }
+    
+    open func addButton(_ parameter: BoolParameter) {
+        let vc = ButtonViewController()
         vc.parameter = parameter
         addControl(vc)
     }

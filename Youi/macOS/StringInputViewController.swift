@@ -22,6 +22,14 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
         view.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         if let parameter = self.parameter {
+            valueObservation = parameter.observe(\StringParameter.value, options: [.old,.new]) { [unowned self] _, change in
+                if let newValue = change.newValue, let oldValue = change.oldValue, oldValue != newValue, let field = self.inputField {
+                    field.stringValue = newValue
+                    field.layout()
+                    self.view.needsLayout = true
+                }
+            }
+            
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -88,14 +96,6 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
         }
     }
 
-    public func controlTextDidChange(_ obj: Notification) {
-        if let textField = obj.object as? NSTextField {
-            let charSet = NSCharacterSet.alphanumerics.inverted
-            let chars = textField.stringValue.components(separatedBy: charSet)
-            textField.stringValue = chars.joined()
-        }
-    }
-    
     deinit {
         parameter = nil
         valueObservation = nil
