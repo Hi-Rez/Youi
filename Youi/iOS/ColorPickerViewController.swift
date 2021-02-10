@@ -61,7 +61,7 @@ class ColorPickerViewController: WidgetViewController {
         guard let param = parameter as? Float4Parameter else { return }
         let colorCb: (Float4Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self] _, _ in
             if let param = parameter as? Float4Parameter, let colorWell = self.colorWell {
-                colorWell.selectedColor = UIColor(displayP3Red: CGFloat(param.x), green: CGFloat(param.y), blue: CGFloat(param.z), alpha: CGFloat(param.w))
+                colorWell.selectedColor = UIColor(red: CGFloat(param.x), green: CGFloat(param.y), blue: CGFloat(param.z), alpha: CGFloat(param.w))
             }
         }
         observationR = param.observe(\.x, changeHandler: colorCb)
@@ -70,7 +70,7 @@ class ColorPickerViewController: WidgetViewController {
         observationA = param.observe(\.w, changeHandler: colorCb)
 
         if let colorWell = self.colorWell {
-            colorWell.selectedColor = UIColor(displayP3Red: CGFloat(param.x), green: CGFloat(param.y), blue: CGFloat(param.z), alpha: CGFloat(param.w))
+            colorWell.selectedColor = UIColor(red: CGFloat(param.x), green: CGFloat(param.y), blue: CGFloat(param.z), alpha: CGFloat(param.w))
         }
         
         super.setupBinding()

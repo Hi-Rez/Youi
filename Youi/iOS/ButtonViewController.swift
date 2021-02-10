@@ -1,17 +1,16 @@
 //
-//  DropDownViewController.swift
-//  YouiTwo
+//  ButtonViewController.swift
+//  Youi
 //
-//  Created by Reza Ali on 2/4/21.
+//  Created by Reza Ali on 2/8/21.
 //
 
-import Satin
 import UIKit
+import Satin
 
-class DropDownViewController: WidgetViewController {
+class ButtonViewController: WidgetViewController {
     var valueObservation: NSKeyValueObservation?
     var button: UIButton?
-    var options: [String] = []
 
     var font: UIFont {
         labelFont
@@ -20,7 +19,6 @@ class DropDownViewController: WidgetViewController {
     override open func loadView() {
         setupView()
         setupStackViews()
-        setupLabel()
         setupButton()
         setupBinding()
     }
@@ -42,52 +40,28 @@ class DropDownViewController: WidgetViewController {
     func setupButton() {
         guard let hStack = self.hStack else { return }
         let button = UIButton(type: .roundedRect)
-
-        button.setTitleColor(UIColor(named: "Text", in: Bundle(for: DropDownViewController.self), compatibleWith: nil), for: .normal)
-        button.titleLabel?.font = font
-        button.contentHorizontalAlignment = .right
+        button.setTitleColor(UIColor(named: "Text", in: Bundle(for: ButtonViewController.self), compatibleWith: nil), for: .normal)
+        button.titleLabel?.font = font    
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
         button.layer.cornerRadius = 4
         button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor(named: "Border", in: Bundle(for: DropDownViewController.self), compatibleWith: nil)?.cgColor
-        button.showsMenuAsPrimaryAction = true
+        button.layer.borderColor = UIColor(named: "Border", in: Bundle(for: ButtonViewController.self), compatibleWith: nil)?.cgColor
+        button.addAction(UIAction(handler: { [unowned self] _ in
+            if let param = parameter as? BoolParameter {
+                param.value.toggle()
+            }
+        }), for: .touchUpInside)
+        
         button.heightAnchor.constraint(equalToConstant: 32).isActive = true
         hStack.addArrangedSubview(button)
         self.button = button
     }
 
     override func setupBinding() {
-        var stringValue: String = ""
-        if let param = parameter as? StringParameter {
-            stringValue = param.value
-            valueObservation = param.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue {
-                    self.setValue(value)
-                }
-            }
-        }
-
-        if let button = self.button {
+        var stringValue = ""
+        if let param = parameter as? BoolParameter, let button = self.button {
+            stringValue = param.label
             button.setTitle(stringValue, for: .normal)
-            var children: [UIAction] = []
-            for option in options {
-                children.append(UIAction(title: option, handler: { [unowned self] _ in self.setValue(option) }))
-            }
-            let menu = UIMenu(title: "", options: .displayInline, children: children)
-            button.menu = menu
-        }
-
-        if let label = self.label, let parameter = self.parameter {
-            label.text = "\(parameter.label)"
-        }
-    }
-
-    func setValue(_ value: String) {
-        if let param = parameter as? StringParameter, param.value != value {
-            param.value = value
-        }
-        if let button = self.button {
-            button.setTitle(value, for: .normal)
         }
     }
 
@@ -102,3 +76,4 @@ class DropDownViewController: WidgetViewController {
         }
     }
 }
+

@@ -51,7 +51,7 @@ open class InspectorWindow: UIViewController {
         inspectorViewController = InspectorViewController(title)
     }
     
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         setupView()
     }
     
@@ -106,11 +106,11 @@ open class InspectorWindow: UIViewController {
             
             if animated {
                 UIView.animate(withDuration: 0.2) {
-//                    superView.layoutIfNeeded()
+                    superView.layoutIfNeeded()
                 }
             }
             else {
-//                superView.layoutIfNeeded()
+                superView.layoutIfNeeded()
             }
         }
         else {
@@ -123,22 +123,19 @@ open class InspectorWindow: UIViewController {
             
             if animated {
                 UIView.animate(withDuration: 0.2) {
-//                    superView.layoutIfNeeded()
+                    superView.layoutIfNeeded()
                 }
             }
             else {
-//                superView.layoutIfNeeded()
+                superView.layoutIfNeeded()
             }
         }
     }
     
     func setupGestures() {
-        
-        
-            let viewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(viewPanGesture))
-            view.addGestureRecognizer(viewPanGestureRecognizer)
-            self.viewPanGestureRecognizer = viewPanGestureRecognizer
-        
+        let viewPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(viewPanGesture))
+        view.addGestureRecognizer(viewPanGestureRecognizer)
+        self.viewPanGestureRecognizer = viewPanGestureRecognizer
         
         if let button = self.button {
             let buttonPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(buttonPanGesture))
@@ -179,7 +176,7 @@ open class InspectorWindow: UIViewController {
         }
     }
 
-    open override func viewWillLayoutSubviews() {
+    override open func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         if let superView = view.superview {
             if topAnchorConstraint == nil {
@@ -224,7 +221,7 @@ open class InspectorWindow: UIViewController {
         }
     }
     
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         view.layer.borderColor = UIColor(named: "Border", in: Bundle(for: InspectorWindow.self), compatibleWith: nil)?.cgColor
     }
     
@@ -232,11 +229,18 @@ open class InspectorWindow: UIViewController {
         viewPanGestureRecognizer = nil
         buttonPanGestureRecognizer = nil
         
+        if let inspectorViewController = self.inspectorViewController {
+            inspectorViewController.view.removeFromSuperview()
+        }
         inspectorViewController = nil
         
         topAnchorConstraint = nil
         bottomAnchorConstraint = nil
         widthAnchorConstraint = nil
+        
+        if let button = self.button {
+            button.removeFromSuperview()
+        }
         
         button = nil
         buttonAnchorConstraint = nil
