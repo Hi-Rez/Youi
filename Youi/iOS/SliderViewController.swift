@@ -8,7 +8,7 @@
 import UIKit
 import Satin
 
-class SliderViewController: WidgetViewController {
+class SliderViewController: WidgetViewController, UITextFieldDelegate {
     var valueObservation: NSKeyValueObservation?
     var minObservation: NSKeyValueObservation?
     var maxObservation: NSKeyValueObservation?
@@ -18,6 +18,11 @@ class SliderViewController: WidgetViewController {
     }
     
     var slider: UISlider?
+    var input: UITextField?
+    
+    var font: UIFont {
+        .boldSystemFont(ofSize: 14)
+    }
 
     override open func loadView() {
         setupView()
@@ -25,6 +30,7 @@ class SliderViewController: WidgetViewController {
         setupSlider()
         setupHorizontalStackView()
         setupLabel()
+        setupInput()
         setupBinding()
     }
     
@@ -42,7 +48,77 @@ class SliderViewController: WidgetViewController {
         stack.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -16).isActive = true
         vStack = stack
     }
+    
+    override func setupHorizontalStackView() {
+        guard let vStack = self.vStack else { return }
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.spacing = 4
+        stack.alignment = .center
+        stack.distribution = .fill
+        vStack.addArrangedSubview(stack)
+        stack.centerXAnchor.constraint(equalTo: vStack.centerXAnchor).isActive = true
+        stack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: 0).isActive = true
+        hStack = stack
+    }
+    
+    func setupInput() {
+        guard let hStack = self.hStack else { return }
+        let input = UITextField()
+        input.borderStyle = .none
+        input.translatesAutoresizingMaskIntoConstraints = false
+        input.font = font
+        input.backgroundColor = .clear
+        input.textAlignment = .right
+        input.contentHuggingPriority(for: .horizontal)
+        input.keyboardType = .decimalPad
+        input.addAction(UIAction(handler: { [unowned self] _ in
+            if let input = self.input, let text = input.text, let value = Float(text) {
+                setValue(value)
+            }
+        }), for: .editingChanged)
+        hStack.addArrangedSubview(input)
+        input.delegate = self
+        self.input = input
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    } // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
 
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let input = self.input, let text = input.text, let value = Float(text) {
+            setValue(value)
+        }
+        textField.resignFirstResponder()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        guard !string.isEmpty else {
+            return true
+        }
+        
+        if textField.keyboardType == .decimalPad {
+            if !CharacterSet(charactersIn: "-0123456789.").isSuperset(of: CharacterSet(charactersIn: string)) {
+                return false
+            }
+            if string == ".", let text = textField.text, text.contains(".") {
+                return false
+            }
+        }
+        
+        // Allow text change
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func setupSlider() {
         guard let vStack = self.vStack else { return }
         let slider = UISlider(frame: CGRect(x: 0, y: 0, width: 32, height: 32), primaryAction: UIAction(handler: { [unowned self] _ in
@@ -69,8 +145,8 @@ class SliderViewController: WidgetViewController {
             maxValue = param.max
             stringValue = String(format: "%.3f", value)
             valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let label = self.label, let slider = self.slider {
-                    label.text = "\(param.label): " + String(format: "%.3f", value)
+                if let value = change.newValue, let slider = self.slider, let input = self.input, !input.isFirstResponder {
+                    input.text = String(format: "%.3f", value)
                     slider.value = value
                 }
             }
@@ -91,8 +167,8 @@ class SliderViewController: WidgetViewController {
             maxValue = Float(param.max)
             stringValue = "\(param.value)"
             valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let label = self.label, let slider = self.slider  {
-                    label.text = "\(param.label): " + String(value)
+                if let value = change.newValue, let slider = self.slider, let input = self.input, !input.isFirstResponder {
+                    input.text = "\(value)"
                     slider.value = Float(value)
                 }
             }
@@ -113,8 +189,8 @@ class SliderViewController: WidgetViewController {
             maxValue = Float(param.max)
             stringValue = String(format: "%.3f", value)
             valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let label = self.label, let slider = self.slider  {
-                    label.text = "\(param.label): " + String(format: "%.3f", value)
+                if let value = change.newValue, let slider = self.slider, let input = self.input, !input.isFirstResponder {
+                    input.text = String(format: "%.3f", value)
                     slider.value = Float(value)
                 }
             }
@@ -130,12 +206,19 @@ class SliderViewController: WidgetViewController {
             }
         }
         
-        guard let slider = self.slider else { return }
-        slider.minimumValue = minValue
-        slider.maximumValue = maxValue
-        slider.value = value
-        guard let label = self.label else { return }
-        label.text = "\(parameter.label): \(stringValue)"
+        if let slider = self.slider {
+            slider.minimumValue = minValue
+            slider.maximumValue = maxValue
+            slider.value = value
+        }
+        
+        if let label = self.label {
+            label.text = "\(parameter.label)"
+        }
+        
+        if let input = self.input {
+            input.text = "\(stringValue)"
+        }
     }
 
     func setValue(_ value: Float) {

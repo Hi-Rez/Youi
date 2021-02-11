@@ -133,7 +133,7 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
             stringValue = "\(param.value)"
             valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue, let input = self.input, !input.isFirstResponder {
-                    input.text = String(format: "%.3f", value)
+                    input.text = "\(value)"
                 }
             }
         }
