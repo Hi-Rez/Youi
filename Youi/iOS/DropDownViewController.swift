@@ -14,7 +14,7 @@ class DropDownViewController: WidgetViewController {
     var options: [String] = []
 
     var font: UIFont {
-        labelFont
+        .boldSystemFont(ofSize: 14)
     }
 
     override open func loadView() {

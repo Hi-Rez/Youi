@@ -13,7 +13,7 @@ class ButtonViewController: WidgetViewController {
     var button: UIButton?
 
     var font: UIFont {
-        labelFont
+        .boldSystemFont(ofSize: 14)
     }
 
     override open func loadView() {

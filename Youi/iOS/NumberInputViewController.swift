@@ -13,7 +13,7 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
     var input: UITextField?
     
     var font: UIFont {
-        labelFont
+        .boldSystemFont(ofSize: 14)
     }
 
     override open func loadView() {
