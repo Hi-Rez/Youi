@@ -11,6 +11,8 @@ import UIKit
 class WidgetViewController: UIViewController {
     public weak var parameter: Parameter?
     
+    var tapGestureRegognizer: UITapGestureRecognizer?
+    
     var minHeight: CGFloat {
         48
     }
@@ -30,6 +32,16 @@ class WidgetViewController: UIViewController {
         setupBinding()
     }
     
+    func setupGestures() {
+        let tapGestureRegognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapGesture))
+        view.addGestureRecognizer(tapGestureRegognizer)
+        self.tapGestureRegognizer = tapGestureRegognizer
+    }
+    
+    @objc func viewTapGesture(_ recognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
     func setupStackViews()
     {
         setupVerticalStackView()
@@ -41,6 +53,7 @@ class WidgetViewController: UIViewController {
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: minHeight).isActive = true
+        setupGestures()
     }
 
     func setupVerticalStackView() {

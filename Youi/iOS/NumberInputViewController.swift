@@ -47,7 +47,6 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
         input.backgroundColor = .clear
         input.textAlignment = .right
         input.contentHuggingPriority(for: .horizontal)
-        input.keyboardType = .decimalPad
         input.addAction(UIAction(handler: { [unowned self] _ in
             if let input = self.input, let text = input.text, let value = Float(text) {
                 setValue(value)
@@ -101,15 +100,13 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
             return true
         }
         
-        if textField.keyboardType == .decimalPad {
-            if !CharacterSet(charactersIn: "-0123456789.").isSuperset(of: CharacterSet(charactersIn: string)) {
-                return false
-            }
-            if string == ".", let text = textField.text, text.contains(".") {
-                return false
-            }
+        if !CharacterSet(charactersIn: "-0123456789.").isSuperset(of: CharacterSet(charactersIn: string)) {
+            return false
         }
-        
+        if string == ".", let text = textField.text, text.contains(".") {
+            return false
+        }
+                
         // Allow text change
         return true
     }

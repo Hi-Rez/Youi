@@ -29,6 +29,7 @@ open class InspectorWindow: UIViewController {
         }
     }
     
+    var viewTapGestureRegognizer: UITapGestureRecognizer?
     var viewPanGestureRecognizer: UIPanGestureRecognizer?
     var buttonPanGestureRecognizer: UIPanGestureRecognizer?
     
@@ -142,6 +143,14 @@ open class InspectorWindow: UIViewController {
             button.addGestureRecognizer(buttonPanGestureRecognizer)
             self.buttonPanGestureRecognizer = buttonPanGestureRecognizer
         }
+        
+        let tapGestureRegognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapGesture))
+        view.superview?.addGestureRecognizer(tapGestureRegognizer)
+        self.viewTapGestureRegognizer = tapGestureRegognizer
+    }
+    
+    @objc func viewTapGesture(_ recognizer: UITapGestureRecognizer) {
+        view.superview?.endEditing(true)
     }
     
     @objc func viewPanGesture(_ recognizer: UIPanGestureRecognizer) {
