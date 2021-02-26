@@ -52,14 +52,20 @@ class LabelViewController: WidgetViewController {
     
     override func setupBinding() {
         guard let parameter = self.parameter as? StringParameter else { return }
-        valueObservation = parameter.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, _ in
+        valueObservation = parameter.observe(\.value, options: [.old, .new]) { [unowned self] _, _ in
             if let label = self.valueLabel {
                 label.text = "\(parameter.value)"
             }
         }
             
-        guard let label = self.label else { return }
-        label.text = "\(parameter.label):"
+        if let label = self.label {
+            label.text = "\(parameter.label):"
+        }
+        
+        
+        if let value = self.valueLabel {
+            value.text = "\(parameter.value)"
+        }
     }
     
     deinit {
