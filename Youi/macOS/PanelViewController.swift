@@ -157,10 +157,10 @@ open class PanelViewController: ControlViewController {
         
     @objc open func onButtonChange() {
         if let button = self.button, button.state == .off {
-            _close()
+            open = false
         }
         else {
-            _open()
+            open = true
         }
     }
     
