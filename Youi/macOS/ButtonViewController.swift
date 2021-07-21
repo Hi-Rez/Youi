@@ -13,6 +13,7 @@ open class ButtonViewController: NSViewController {
     var observation: NSKeyValueObservation?
 
     var button: NSButton!
+    var defaultState: Bool!
 
     open override func loadView() {
         view = NSView()
@@ -20,6 +21,8 @@ open class ButtonViewController: NSViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = self.parameter {
+            defaultState = parameter.value
+            
             observation = parameter.observe(\BoolParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue {
                     self.button.state = (value ? .on : .off)
@@ -80,6 +83,10 @@ open class ButtonViewController: NSViewController {
             if let parameter = self.parameter {
                 parameter.value = true
             }
+        }
+        
+        if let parameter = self.parameter, defaultState != parameter.value {
+            parameter.value = defaultState
         }
     }
 

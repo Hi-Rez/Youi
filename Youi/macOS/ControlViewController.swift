@@ -174,9 +174,9 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     }
     
     open func addButton(_ parameter: BoolParameter) {
-//        let vc = ButtonViewController()
-//        vc.parameter = parameter
-//        addControl(vc)
+        let vc = ButtonViewController()
+        vc.parameter = parameter
+        addControl(vc)
     }
     
     open func addLabel(_ parameter: StringParameter) {
