@@ -8,31 +8,51 @@
 
 /* Begin PBXBuildFile section */
 		DB21E418450596AC66FB00BE /* Pods_Youi_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14E879898327CA3F6D798844 /* Pods_Youi_macOS.framework */; };
-		E10BC6072517F112007FE631 /* FilePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BC6062517F112007FE631 /* FilePickerViewController.swift */; };
-		E10BC60B2517F119007FE631 /* MultiDropdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BC60A2517F119007FE631 /* MultiDropdownViewController.swift */; };
-		E10BC60F2517F122007FE631 /* StringInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BC60E2517F122007FE631 /* StringInputViewController.swift */; };
-		E10BC6132517F139007FE631 /* MultiNumberInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10BC6122517F139007FE631 /* MultiNumberInputViewController.swift */; };
 		E15F8A3E243E333E0034661E /* Youi.h in Headers */ = {isa = PBXBuildFile; fileRef = E15F8A3C243E333E0034661E /* Youi.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E15F8A45243E33F90034661E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E15F8A44243E33F90034661E /* Assets.xcassets */; };
-		E15F8A64243E34430034661E /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A53243E34430034661E /* OptionsViewController.swift */; };
-		E15F8A65243E34430034661E /* DropDownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A54243E34430034661E /* DropDownViewController.swift */; };
-		E15F8A66243E34430034661E /* SliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A55243E34430034661E /* SliderViewController.swift */; };
-		E15F8A67243E34430034661E /* BindingInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A56243E34430034661E /* BindingInputViewController.swift */; };
-		E15F8A68243E34430034661E /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A57243E34430034661E /* InspectorViewController.swift */; };
-		E15F8A69243E34430034661E /* InspectorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A58243E34430034661E /* InspectorWindow.swift */; };
-		E15F8A6A243E34430034661E /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A59243E34430034661E /* PanelViewController.swift */; };
-		E15F8A6B243E34430034661E /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A5A243E34430034661E /* ColorPickerViewController.swift */; };
-		E15F8A6C243E34430034661E /* NumberInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A5B243E34430034661E /* NumberInputViewController.swift */; };
-		E15F8A6D243E34430034661E /* ControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A5C243E34430034661E /* ControlViewController.swift */; };
-		E15F8A6E243E34430034661E /* LabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A5D243E34430034661E /* LabelViewController.swift */; };
-		E15F8A6F243E34430034661E /* TranslucentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A5E243E34430034661E /* TranslucentView.swift */; };
-		E15F8A70243E34430034661E /* ProgressSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A5F243E34430034661E /* ProgressSliderViewController.swift */; };
-		E15F8A71243E34430034661E /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A60243E34430034661E /* DetailsViewController.swift */; };
-		E15F8A72243E34430034661E /* Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A61243E34430034661E /* Spacer.swift */; };
-		E15F8A73243E34430034661E /* MultiToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A62243E34430034661E /* MultiToggleViewController.swift */; };
-		E15F8A74243E34430034661E /* ToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15F8A63243E34430034661E /* ToggleViewController.swift */; };
-		E160D6E12517EF4F00028F00 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E160D6E02517EF4F00028F00 /* InputViewController.swift */; };
 		E1B4DB4C25CE0BAD00908B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E15F8A44243E33F90034661E /* Assets.xcassets */; };
+		E1B8D19626C61CDA007CE5C2 /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18226C61CDA007CE5C2 /* InspectorViewController.swift */; };
+		E1B8D19726C61CDA007CE5C2 /* WidgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18326C61CDA007CE5C2 /* WidgetViewController.swift */; };
+		E1B8D19826C61CDA007CE5C2 /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18426C61CDA007CE5C2 /* PanelViewController.swift */; };
+		E1B8D19926C61CDA007CE5C2 /* ControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18526C61CDA007CE5C2 /* ControlViewController.swift */; };
+		E1B8D19A26C61CDA007CE5C2 /* NumberInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18626C61CDA007CE5C2 /* NumberInputViewController.swift */; };
+		E1B8D19B26C61CDA007CE5C2 /* ButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18726C61CDA007CE5C2 /* ButtonViewController.swift */; };
+		E1B8D19C26C61CDA007CE5C2 /* DropDownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18826C61CDA007CE5C2 /* DropDownViewController.swift */; };
+		E1B8D19D26C61CDA007CE5C2 /* ToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18926C61CDA007CE5C2 /* ToggleViewController.swift */; };
+		E1B8D19E26C61CDA007CE5C2 /* PanelHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18A26C61CDA007CE5C2 /* PanelHeaderViewController.swift */; };
+		E1B8D19F26C61CDA007CE5C2 /* LabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18B26C61CDA007CE5C2 /* LabelViewController.swift */; };
+		E1B8D1A026C61CDA007CE5C2 /* InspectorHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18C26C61CDA007CE5C2 /* InspectorHeaderViewController.swift */; };
+		E1B8D1A126C61CDA007CE5C2 /* MultiNumberInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18D26C61CDA007CE5C2 /* MultiNumberInputViewController.swift */; };
+		E1B8D1A226C61CDA007CE5C2 /* StringInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18E26C61CDA007CE5C2 /* StringInputViewController.swift */; };
+		E1B8D1A326C61CDA007CE5C2 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D18F26C61CDA007CE5C2 /* ColorPickerViewController.swift */; };
+		E1B8D1A426C61CDA007CE5C2 /* InspectorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D19026C61CDA007CE5C2 /* InspectorWindow.swift */; };
+		E1B8D1A526C61CDA007CE5C2 /* Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D19226C61CDA007CE5C2 /* Spacer.swift */; };
+		E1B8D1A626C61CDA007CE5C2 /* HandleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D19326C61CDA007CE5C2 /* HandleButton.swift */; };
+		E1B8D1A726C61CDA007CE5C2 /* DisclosureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D19426C61CDA007CE5C2 /* DisclosureButton.swift */; };
+		E1B8D1A826C61CDA007CE5C2 /* SliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D19526C61CDA007CE5C2 /* SliderViewController.swift */; };
+		E1B8D1C026C61CEB007CE5C2 /* ButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1A926C61CEA007CE5C2 /* ButtonViewController.swift */; };
+		E1B8D1C126C61CEB007CE5C2 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1AA26C61CEA007CE5C2 /* InputViewController.swift */; };
+		E1B8D1C226C61CEB007CE5C2 /* StringInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1AB26C61CEA007CE5C2 /* StringInputViewController.swift */; };
+		E1B8D1C326C61CEB007CE5C2 /* ProgressSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1AC26C61CEA007CE5C2 /* ProgressSliderViewController.swift */; };
+		E1B8D1C426C61CEB007CE5C2 /* ToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1AD26C61CEA007CE5C2 /* ToggleViewController.swift */; };
+		E1B8D1C526C61CEB007CE5C2 /* ColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1AE26C61CEA007CE5C2 /* ColorPickerViewController.swift */; };
+		E1B8D1C626C61CEB007CE5C2 /* NumberInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1AF26C61CEA007CE5C2 /* NumberInputViewController.swift */; };
+		E1B8D1C726C61CEB007CE5C2 /* SliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B026C61CEA007CE5C2 /* SliderViewController.swift */; };
+		E1B8D1C826C61CEB007CE5C2 /* Spacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B126C61CEA007CE5C2 /* Spacer.swift */; };
+		E1B8D1C926C61CEB007CE5C2 /* LabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B226C61CEB007CE5C2 /* LabelViewController.swift */; };
+		E1B8D1CA26C61CEB007CE5C2 /* InspectorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B326C61CEB007CE5C2 /* InspectorWindow.swift */; };
+		E1B8D1CB26C61CEB007CE5C2 /* MultiToggleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B426C61CEB007CE5C2 /* MultiToggleViewController.swift */; };
+		E1B8D1CC26C61CEB007CE5C2 /* BindingInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B526C61CEB007CE5C2 /* BindingInputViewController.swift */; };
+		E1B8D1CD26C61CEB007CE5C2 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B626C61CEB007CE5C2 /* OptionsViewController.swift */; };
+		E1B8D1CE26C61CEB007CE5C2 /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B726C61CEB007CE5C2 /* InspectorViewController.swift */; };
+		E1B8D1CF26C61CEB007CE5C2 /* PanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B826C61CEB007CE5C2 /* PanelViewController.swift */; };
+		E1B8D1D026C61CEB007CE5C2 /* TranslucentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1B926C61CEB007CE5C2 /* TranslucentView.swift */; };
+		E1B8D1D126C61CEB007CE5C2 /* FilePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1BA26C61CEB007CE5C2 /* FilePickerViewController.swift */; };
+		E1B8D1D226C61CEB007CE5C2 /* MultiNumberInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1BB26C61CEB007CE5C2 /* MultiNumberInputViewController.swift */; };
+		E1B8D1D326C61CEB007CE5C2 /* ControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1BC26C61CEB007CE5C2 /* ControlViewController.swift */; };
+		E1B8D1D426C61CEB007CE5C2 /* MultiDropdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1BD26C61CEB007CE5C2 /* MultiDropdownViewController.swift */; };
+		E1B8D1D526C61CEB007CE5C2 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1BE26C61CEB007CE5C2 /* DetailsViewController.swift */; };
+		E1B8D1D626C61CEB007CE5C2 /* DropDownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B8D1BF26C61CEB007CE5C2 /* DropDownViewController.swift */; };
 		E1F2D41A25C9E9DF00420A04 /* Youi.h in Headers */ = {isa = PBXBuildFile; fileRef = E15F8A3C243E333E0034661E /* Youi.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -40,32 +60,52 @@
 		14E879898327CA3F6D798844 /* Pods_Youi_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Youi_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9ACC3972B3CE5BFCB2E971 /* Pods-Youi macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youi macOS.release.xcconfig"; path = "Target Support Files/Pods-Youi macOS/Pods-Youi macOS.release.xcconfig"; sourceTree = "<group>"; };
 		D983E9C2A96CF88F022D33C7 /* Pods-Youi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youi.release.xcconfig"; path = "Target Support Files/Pods-Youi/Pods-Youi.release.xcconfig"; sourceTree = "<group>"; };
-		E10BC6062517F112007FE631 /* FilePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePickerViewController.swift; sourceTree = "<group>"; };
-		E10BC60A2517F119007FE631 /* MultiDropdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDropdownViewController.swift; sourceTree = "<group>"; };
-		E10BC60E2517F122007FE631 /* StringInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringInputViewController.swift; sourceTree = "<group>"; };
-		E10BC6122517F139007FE631 /* MultiNumberInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiNumberInputViewController.swift; sourceTree = "<group>"; };
 		E15F8A39243E333E0034661E /* Youi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Youi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E15F8A3C243E333E0034661E /* Youi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Youi.h; sourceTree = "<group>"; };
 		E15F8A3D243E333E0034661E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E15F8A44243E33F90034661E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E15F8A53243E34430034661E /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
-		E15F8A54243E34430034661E /* DropDownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownViewController.swift; sourceTree = "<group>"; };
-		E15F8A55243E34430034661E /* SliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderViewController.swift; sourceTree = "<group>"; };
-		E15F8A56243E34430034661E /* BindingInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindingInputViewController.swift; sourceTree = "<group>"; };
-		E15F8A57243E34430034661E /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
-		E15F8A58243E34430034661E /* InspectorWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorWindow.swift; sourceTree = "<group>"; };
-		E15F8A59243E34430034661E /* PanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelViewController.swift; sourceTree = "<group>"; };
-		E15F8A5A243E34430034661E /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
-		E15F8A5B243E34430034661E /* NumberInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberInputViewController.swift; sourceTree = "<group>"; };
-		E15F8A5C243E34430034661E /* ControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlViewController.swift; sourceTree = "<group>"; };
-		E15F8A5D243E34430034661E /* LabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelViewController.swift; sourceTree = "<group>"; };
-		E15F8A5E243E34430034661E /* TranslucentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslucentView.swift; sourceTree = "<group>"; };
-		E15F8A5F243E34430034661E /* ProgressSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressSliderViewController.swift; sourceTree = "<group>"; };
-		E15F8A60243E34430034661E /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
-		E15F8A61243E34430034661E /* Spacer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spacer.swift; sourceTree = "<group>"; };
-		E15F8A62243E34430034661E /* MultiToggleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiToggleViewController.swift; sourceTree = "<group>"; };
-		E15F8A63243E34430034661E /* ToggleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleViewController.swift; sourceTree = "<group>"; };
-		E160D6E02517EF4F00028F00 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
+		E1B8D18226C61CDA007CE5C2 /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
+		E1B8D18326C61CDA007CE5C2 /* WidgetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetViewController.swift; sourceTree = "<group>"; };
+		E1B8D18426C61CDA007CE5C2 /* PanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelViewController.swift; sourceTree = "<group>"; };
+		E1B8D18526C61CDA007CE5C2 /* ControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlViewController.swift; sourceTree = "<group>"; };
+		E1B8D18626C61CDA007CE5C2 /* NumberInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D18726C61CDA007CE5C2 /* ButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonViewController.swift; sourceTree = "<group>"; };
+		E1B8D18826C61CDA007CE5C2 /* DropDownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownViewController.swift; sourceTree = "<group>"; };
+		E1B8D18926C61CDA007CE5C2 /* ToggleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleViewController.swift; sourceTree = "<group>"; };
+		E1B8D18A26C61CDA007CE5C2 /* PanelHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelHeaderViewController.swift; sourceTree = "<group>"; };
+		E1B8D18B26C61CDA007CE5C2 /* LabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelViewController.swift; sourceTree = "<group>"; };
+		E1B8D18C26C61CDA007CE5C2 /* InspectorHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorHeaderViewController.swift; sourceTree = "<group>"; };
+		E1B8D18D26C61CDA007CE5C2 /* MultiNumberInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiNumberInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D18E26C61CDA007CE5C2 /* StringInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D18F26C61CDA007CE5C2 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
+		E1B8D19026C61CDA007CE5C2 /* InspectorWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorWindow.swift; sourceTree = "<group>"; };
+		E1B8D19226C61CDA007CE5C2 /* Spacer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spacer.swift; sourceTree = "<group>"; };
+		E1B8D19326C61CDA007CE5C2 /* HandleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandleButton.swift; sourceTree = "<group>"; };
+		E1B8D19426C61CDA007CE5C2 /* DisclosureButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisclosureButton.swift; sourceTree = "<group>"; };
+		E1B8D19526C61CDA007CE5C2 /* SliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderViewController.swift; sourceTree = "<group>"; };
+		E1B8D1A926C61CEA007CE5C2 /* ButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonViewController.swift; sourceTree = "<group>"; };
+		E1B8D1AA26C61CEA007CE5C2 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
+		E1B8D1AB26C61CEA007CE5C2 /* StringInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D1AC26C61CEA007CE5C2 /* ProgressSliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressSliderViewController.swift; sourceTree = "<group>"; };
+		E1B8D1AD26C61CEA007CE5C2 /* ToggleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleViewController.swift; sourceTree = "<group>"; };
+		E1B8D1AE26C61CEA007CE5C2 /* ColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerViewController.swift; sourceTree = "<group>"; };
+		E1B8D1AF26C61CEA007CE5C2 /* NumberInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B026C61CEA007CE5C2 /* SliderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B126C61CEA007CE5C2 /* Spacer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spacer.swift; sourceTree = "<group>"; };
+		E1B8D1B226C61CEB007CE5C2 /* LabelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B326C61CEB007CE5C2 /* InspectorWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorWindow.swift; sourceTree = "<group>"; };
+		E1B8D1B426C61CEB007CE5C2 /* MultiToggleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiToggleViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B526C61CEB007CE5C2 /* BindingInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindingInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B626C61CEB007CE5C2 /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B726C61CEB007CE5C2 /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B826C61CEB007CE5C2 /* PanelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanelViewController.swift; sourceTree = "<group>"; };
+		E1B8D1B926C61CEB007CE5C2 /* TranslucentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslucentView.swift; sourceTree = "<group>"; };
+		E1B8D1BA26C61CEB007CE5C2 /* FilePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePickerViewController.swift; sourceTree = "<group>"; };
+		E1B8D1BB26C61CEB007CE5C2 /* MultiNumberInputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiNumberInputViewController.swift; sourceTree = "<group>"; };
+		E1B8D1BC26C61CEB007CE5C2 /* ControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlViewController.swift; sourceTree = "<group>"; };
+		E1B8D1BD26C61CEB007CE5C2 /* MultiDropdownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDropdownViewController.swift; sourceTree = "<group>"; };
+		E1B8D1BE26C61CEB007CE5C2 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		E1B8D1BF26C61CEB007CE5C2 /* DropDownViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownViewController.swift; sourceTree = "<group>"; };
 		E1F2D3C125C9D87500420A04 /* Youi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Youi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E61D8E37C78986939F183651 /* Pods-Youi macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youi macOS.debug.xcconfig"; path = "Target Support Files/Pods-Youi macOS/Pods-Youi macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		FB38E1BC176E7593CF6D5216 /* Pods-Youi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youi.debug.xcconfig"; path = "Target Support Files/Pods-Youi/Pods-Youi.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,28 +184,29 @@
 		E15F8A52243E342F0034661E /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				E10BC6122517F139007FE631 /* MultiNumberInputViewController.swift */,
-				E10BC60E2517F122007FE631 /* StringInputViewController.swift */,
-				E10BC60A2517F119007FE631 /* MultiDropdownViewController.swift */,
-				E10BC6062517F112007FE631 /* FilePickerViewController.swift */,
-				E160D6E02517EF4F00028F00 /* InputViewController.swift */,
-				E15F8A56243E34430034661E /* BindingInputViewController.swift */,
-				E15F8A5A243E34430034661E /* ColorPickerViewController.swift */,
-				E15F8A5C243E34430034661E /* ControlViewController.swift */,
-				E15F8A60243E34430034661E /* DetailsViewController.swift */,
-				E15F8A54243E34430034661E /* DropDownViewController.swift */,
-				E15F8A57243E34430034661E /* InspectorViewController.swift */,
-				E15F8A58243E34430034661E /* InspectorWindow.swift */,
-				E15F8A5D243E34430034661E /* LabelViewController.swift */,
-				E15F8A62243E34430034661E /* MultiToggleViewController.swift */,
-				E15F8A5B243E34430034661E /* NumberInputViewController.swift */,
-				E15F8A53243E34430034661E /* OptionsViewController.swift */,
-				E15F8A59243E34430034661E /* PanelViewController.swift */,
-				E15F8A5F243E34430034661E /* ProgressSliderViewController.swift */,
-				E15F8A55243E34430034661E /* SliderViewController.swift */,
-				E15F8A61243E34430034661E /* Spacer.swift */,
-				E15F8A63243E34430034661E /* ToggleViewController.swift */,
-				E15F8A5E243E34430034661E /* TranslucentView.swift */,
+				E1B8D1B526C61CEB007CE5C2 /* BindingInputViewController.swift */,
+				E1B8D1A926C61CEA007CE5C2 /* ButtonViewController.swift */,
+				E1B8D1AE26C61CEA007CE5C2 /* ColorPickerViewController.swift */,
+				E1B8D1BC26C61CEB007CE5C2 /* ControlViewController.swift */,
+				E1B8D1BE26C61CEB007CE5C2 /* DetailsViewController.swift */,
+				E1B8D1BF26C61CEB007CE5C2 /* DropDownViewController.swift */,
+				E1B8D1BA26C61CEB007CE5C2 /* FilePickerViewController.swift */,
+				E1B8D1AA26C61CEA007CE5C2 /* InputViewController.swift */,
+				E1B8D1B726C61CEB007CE5C2 /* InspectorViewController.swift */,
+				E1B8D1B326C61CEB007CE5C2 /* InspectorWindow.swift */,
+				E1B8D1B226C61CEB007CE5C2 /* LabelViewController.swift */,
+				E1B8D1BD26C61CEB007CE5C2 /* MultiDropdownViewController.swift */,
+				E1B8D1BB26C61CEB007CE5C2 /* MultiNumberInputViewController.swift */,
+				E1B8D1B426C61CEB007CE5C2 /* MultiToggleViewController.swift */,
+				E1B8D1AF26C61CEA007CE5C2 /* NumberInputViewController.swift */,
+				E1B8D1B626C61CEB007CE5C2 /* OptionsViewController.swift */,
+				E1B8D1B826C61CEB007CE5C2 /* PanelViewController.swift */,
+				E1B8D1AC26C61CEA007CE5C2 /* ProgressSliderViewController.swift */,
+				E1B8D1B026C61CEA007CE5C2 /* SliderViewController.swift */,
+				E1B8D1B126C61CEA007CE5C2 /* Spacer.swift */,
+				E1B8D1AB26C61CEA007CE5C2 /* StringInputViewController.swift */,
+				E1B8D1AD26C61CEA007CE5C2 /* ToggleViewController.swift */,
+				E1B8D1B926C61CEB007CE5C2 /* TranslucentView.swift */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -180,8 +221,35 @@
 		E15F8A78243E39720034661E /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				E1B8D18726C61CDA007CE5C2 /* ButtonViewController.swift */,
+				E1B8D18F26C61CDA007CE5C2 /* ColorPickerViewController.swift */,
+				E1B8D19126C61CDA007CE5C2 /* Components */,
+				E1B8D18526C61CDA007CE5C2 /* ControlViewController.swift */,
+				E1B8D18826C61CDA007CE5C2 /* DropDownViewController.swift */,
+				E1B8D18C26C61CDA007CE5C2 /* InspectorHeaderViewController.swift */,
+				E1B8D18226C61CDA007CE5C2 /* InspectorViewController.swift */,
+				E1B8D19026C61CDA007CE5C2 /* InspectorWindow.swift */,
+				E1B8D18B26C61CDA007CE5C2 /* LabelViewController.swift */,
+				E1B8D18D26C61CDA007CE5C2 /* MultiNumberInputViewController.swift */,
+				E1B8D18626C61CDA007CE5C2 /* NumberInputViewController.swift */,
+				E1B8D18A26C61CDA007CE5C2 /* PanelHeaderViewController.swift */,
+				E1B8D18426C61CDA007CE5C2 /* PanelViewController.swift */,
+				E1B8D19526C61CDA007CE5C2 /* SliderViewController.swift */,
+				E1B8D18E26C61CDA007CE5C2 /* StringInputViewController.swift */,
+				E1B8D18926C61CDA007CE5C2 /* ToggleViewController.swift */,
+				E1B8D18326C61CDA007CE5C2 /* WidgetViewController.swift */,
 			);
 			path = iOS;
+			sourceTree = "<group>";
+		};
+		E1B8D19126C61CDA007CE5C2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E1B8D19226C61CDA007CE5C2 /* Spacer.swift */,
+				E1B8D19326C61CDA007CE5C2 /* HandleButton.swift */,
+				E1B8D19426C61CDA007CE5C2 /* DisclosureButton.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -254,10 +322,11 @@
 				TargetAttributes = {
 					E15F8A38243E333E0034661E = {
 						CreatedOnToolsVersion = 11.4;
-						LastSwiftMigration = 1140;
+						LastSwiftMigration = 1250;
 					};
 					E1F2D3C025C9D87500420A04 = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -329,28 +398,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E15F8A6E243E34430034661E /* LabelViewController.swift in Sources */,
-				E15F8A72243E34430034661E /* Spacer.swift in Sources */,
-				E15F8A6A243E34430034661E /* PanelViewController.swift in Sources */,
-				E15F8A68243E34430034661E /* InspectorViewController.swift in Sources */,
-				E15F8A66243E34430034661E /* SliderViewController.swift in Sources */,
-				E10BC60B2517F119007FE631 /* MultiDropdownViewController.swift in Sources */,
-				E15F8A6C243E34430034661E /* NumberInputViewController.swift in Sources */,
-				E15F8A74243E34430034661E /* ToggleViewController.swift in Sources */,
-				E15F8A73243E34430034661E /* MultiToggleViewController.swift in Sources */,
-				E15F8A70243E34430034661E /* ProgressSliderViewController.swift in Sources */,
-				E160D6E12517EF4F00028F00 /* InputViewController.swift in Sources */,
-				E15F8A64243E34430034661E /* OptionsViewController.swift in Sources */,
-				E10BC6132517F139007FE631 /* MultiNumberInputViewController.swift in Sources */,
-				E15F8A6F243E34430034661E /* TranslucentView.swift in Sources */,
-				E15F8A69243E34430034661E /* InspectorWindow.swift in Sources */,
-				E15F8A67243E34430034661E /* BindingInputViewController.swift in Sources */,
-				E15F8A6B243E34430034661E /* ColorPickerViewController.swift in Sources */,
-				E10BC6072517F112007FE631 /* FilePickerViewController.swift in Sources */,
-				E15F8A71243E34430034661E /* DetailsViewController.swift in Sources */,
-				E15F8A6D243E34430034661E /* ControlViewController.swift in Sources */,
-				E10BC60F2517F122007FE631 /* StringInputViewController.swift in Sources */,
-				E15F8A65243E34430034661E /* DropDownViewController.swift in Sources */,
+				E1B8D1C326C61CEB007CE5C2 /* ProgressSliderViewController.swift in Sources */,
+				E1B8D1C926C61CEB007CE5C2 /* LabelViewController.swift in Sources */,
+				E1B8D1C426C61CEB007CE5C2 /* ToggleViewController.swift in Sources */,
+				E1B8D1D526C61CEB007CE5C2 /* DetailsViewController.swift in Sources */,
+				E1B8D1D226C61CEB007CE5C2 /* MultiNumberInputViewController.swift in Sources */,
+				E1B8D1CF26C61CEB007CE5C2 /* PanelViewController.swift in Sources */,
+				E1B8D1CD26C61CEB007CE5C2 /* OptionsViewController.swift in Sources */,
+				E1B8D1C526C61CEB007CE5C2 /* ColorPickerViewController.swift in Sources */,
+				E1B8D1C026C61CEB007CE5C2 /* ButtonViewController.swift in Sources */,
+				E1B8D1C826C61CEB007CE5C2 /* Spacer.swift in Sources */,
+				E1B8D1CB26C61CEB007CE5C2 /* MultiToggleViewController.swift in Sources */,
+				E1B8D1CC26C61CEB007CE5C2 /* BindingInputViewController.swift in Sources */,
+				E1B8D1D426C61CEB007CE5C2 /* MultiDropdownViewController.swift in Sources */,
+				E1B8D1D626C61CEB007CE5C2 /* DropDownViewController.swift in Sources */,
+				E1B8D1D126C61CEB007CE5C2 /* FilePickerViewController.swift in Sources */,
+				E1B8D1C226C61CEB007CE5C2 /* StringInputViewController.swift in Sources */,
+				E1B8D1D026C61CEB007CE5C2 /* TranslucentView.swift in Sources */,
+				E1B8D1CE26C61CEB007CE5C2 /* InspectorViewController.swift in Sources */,
+				E1B8D1CA26C61CEB007CE5C2 /* InspectorWindow.swift in Sources */,
+				E1B8D1C626C61CEB007CE5C2 /* NumberInputViewController.swift in Sources */,
+				E1B8D1C126C61CEB007CE5C2 /* InputViewController.swift in Sources */,
+				E1B8D1D326C61CEB007CE5C2 /* ControlViewController.swift in Sources */,
+				E1B8D1C726C61CEB007CE5C2 /* SliderViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +428,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1B8D19726C61CDA007CE5C2 /* WidgetViewController.swift in Sources */,
+				E1B8D19F26C61CDA007CE5C2 /* LabelViewController.swift in Sources */,
+				E1B8D19626C61CDA007CE5C2 /* InspectorViewController.swift in Sources */,
+				E1B8D1A426C61CDA007CE5C2 /* InspectorWindow.swift in Sources */,
+				E1B8D1A026C61CDA007CE5C2 /* InspectorHeaderViewController.swift in Sources */,
+				E1B8D1A526C61CDA007CE5C2 /* Spacer.swift in Sources */,
+				E1B8D1A826C61CDA007CE5C2 /* SliderViewController.swift in Sources */,
+				E1B8D19926C61CDA007CE5C2 /* ControlViewController.swift in Sources */,
+				E1B8D19C26C61CDA007CE5C2 /* DropDownViewController.swift in Sources */,
+				E1B8D1A726C61CDA007CE5C2 /* DisclosureButton.swift in Sources */,
+				E1B8D1A126C61CDA007CE5C2 /* MultiNumberInputViewController.swift in Sources */,
+				E1B8D1A226C61CDA007CE5C2 /* StringInputViewController.swift in Sources */,
+				E1B8D19826C61CDA007CE5C2 /* PanelViewController.swift in Sources */,
+				E1B8D19E26C61CDA007CE5C2 /* PanelHeaderViewController.swift in Sources */,
+				E1B8D1A626C61CDA007CE5C2 /* HandleButton.swift in Sources */,
+				E1B8D1A326C61CDA007CE5C2 /* ColorPickerViewController.swift in Sources */,
+				E1B8D19B26C61CDA007CE5C2 /* ButtonViewController.swift in Sources */,
+				E1B8D19D26C61CDA007CE5C2 /* ToggleViewController.swift in Sources */,
+				E1B8D19A26C61CDA007CE5C2 /* NumberInputViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +580,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = CC7PU3PUHS;
+				DEVELOPMENT_TEAM = H5N5GRKN9A;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -518,7 +607,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = CC7PU3PUHS;
+				DEVELOPMENT_TEAM = H5N5GRKN9A;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -539,6 +628,7 @@
 		E1F2D3C625C9D87500420A04 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -558,6 +648,7 @@
 				PRODUCT_NAME = Youi;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -566,6 +657,7 @@
 		E1F2D3C725C9D87500420A04 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
