@@ -47,7 +47,9 @@ open class MultiDropdownViewController: NSViewController {
         for (index, parameter) in parameters.enumerated() {
             observations.append(parameter.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, _ in
                 if let dd = self.dropDownMenus[parameter.label] {
-                    dd.selectItem(withTitle: parameter.value)
+                    DispatchQueue.main.async {
+                        dd.selectItem(withTitle: parameter.value)
+                    }
                 }
             })
 

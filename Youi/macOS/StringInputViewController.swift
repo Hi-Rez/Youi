@@ -24,9 +24,11 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
         if let parameter = self.parameter {
             valueObservation = parameter.observe(\StringParameter.value, options: [.old,.new]) { [unowned self] _, change in
                 if let newValue = change.newValue, let oldValue = change.oldValue, oldValue != newValue, let field = self.inputField {
-                    field.stringValue = newValue
-                    field.layout()
-                    self.view.needsLayout = true
+                    DispatchQueue.main.async {
+                        field.stringValue = newValue
+                        field.layout()
+                        self.view.needsLayout = true
+                    }
                 }
             }
             

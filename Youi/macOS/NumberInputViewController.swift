@@ -30,7 +30,9 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
                 stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.inputField?.stringValue = String(format: "%.5f", value)
+                        DispatchQueue.main.async {
+                            self.inputField?.stringValue = String(format: "%.5f", value)
+                        }
                     }
                 }
             }
@@ -40,7 +42,9 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
                 stringValue = "\(param.value)"
                 valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.inputField?.stringValue = String(value)
+                        DispatchQueue.main.async {
+                            self.inputField?.stringValue = String(value)
+                        }
                     }
                 }
             }
@@ -50,7 +54,9 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
                 stringValue = String(format: "%.3f", value)
                 valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.inputField?.stringValue = String(format: "%.5f", value)
+                        DispatchQueue.main.async {
+                            self.inputField?.stringValue = String(format: "%.5f", value)
+                        }
                     }
                 }
             }

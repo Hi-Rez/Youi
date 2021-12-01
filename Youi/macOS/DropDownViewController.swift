@@ -25,7 +25,9 @@ open class DropDownViewController: NSViewController {
         if let parameter = self.parameter {
             observation = parameter.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, _ in
                 if let param = self.parameter {
-                    self.dropDownMenu.selectItem(withTitle: param.value)
+                    DispatchQueue.main.async {
+                        self.dropDownMenu.selectItem(withTitle: param.value)
+                    }
                 }
             }
 

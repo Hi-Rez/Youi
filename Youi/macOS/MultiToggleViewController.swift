@@ -67,7 +67,9 @@ open class MultiToggleViewController: NSViewController {
 
             observations.append(parameter.observe(\BoolParameter.value, options: [.old, .new]) { [button] _, change in
                 if let value = change.newValue {
-                    button.state = (value ? .on : .off)
+                    DispatchQueue.main.async {
+                        button.state = (value ? .on : .off)
+                    }
                 }
             })
 

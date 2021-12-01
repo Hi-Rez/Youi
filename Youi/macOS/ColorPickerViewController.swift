@@ -32,22 +32,30 @@ open class ColorPickerViewController: NSViewController {
                 let param = parameter as! Float4Parameter
                 observationR = param.observe(\Float4Parameter.x, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    DispatchQueue.main.async {
+                        self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    }
                 }
 
                 observationG = param.observe(\Float4Parameter.y, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    DispatchQueue.main.async {
+                        self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    }
                 }
 
                 observationB = param.observe(\Float4Parameter.z, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    DispatchQueue.main.async {
+                        self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    }
                 }
 
                 observationA = param.observe(\Float4Parameter.w, options: [.old, .new]) { [unowned self] _, _ in
                     let value = param.value
-                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    DispatchQueue.main.async {
+                        self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                    }
                 }
             }
 

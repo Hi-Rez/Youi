@@ -142,8 +142,10 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
             stringValue = String(format: "%.3f", value)
             valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue, let slider = self.slider, let input = self.input, !input.isFirstResponder {
-                    input.text = String(format: "%.3f", value)
-                    slider.value = value
+                    DispatchQueue.main.async {
+                        input.text = String(format: "%.3f", value)
+                        slider.value = value
+                    }
                 }
             }
             minObservation = param.observe(\FloatParameter.min, options: [.old, .new]) { [unowned self] _, change in
@@ -164,8 +166,10 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
             stringValue = "\(param.value)"
             valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue, let slider = self.slider, let input = self.input, !input.isFirstResponder {
-                    input.text = "\(value)"
-                    slider.value = Float(value)
+                    DispatchQueue.main.async {
+                        input.text = "\(value)"
+                        slider.value = Float(value)
+                    }
                 }
             }
             minObservation = param.observe(\IntParameter.min, options: [.old, .new]) { [unowned self] _, change in
@@ -186,8 +190,10 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
             stringValue = String(format: "%.3f", value)
             valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue, let slider = self.slider, let input = self.input, !input.isFirstResponder {
-                    input.text = String(format: "%.3f", value)
-                    slider.value = Float(value)
+                    DispatchQueue.main.async {
+                        input.text = String(format: "%.3f", value)
+                        slider.value = Float(value)
+                    }
                 }
             }
             minObservation = param.observe(\DoubleParameter.min, options: [.old, .new]) { [unowned self] _, change in

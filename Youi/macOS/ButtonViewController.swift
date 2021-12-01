@@ -25,7 +25,9 @@ open class ButtonViewController: NSViewController {
             
             observation = parameter.observe(\BoolParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue {
-                    self.button.state = (value ? .on : .off)
+                    DispatchQueue.main.async {
+                        self.button.state = (value ? .on : .off)
+                    }
                 }
             }
 

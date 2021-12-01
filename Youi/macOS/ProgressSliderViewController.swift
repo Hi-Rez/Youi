@@ -39,17 +39,23 @@ open class ProgressSliderViewController: NSViewController {
                 maxValue = Double(param.max)
                 valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.doubleValue = Double(value)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.doubleValue = Double(value)
+                        }
                     }
                 }
                 minObservation = param.observe(\FloatParameter.min, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.minValue = Double(value)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.minValue = Double(value)
+                        }
                     }
                 }
                 maxObservation = param.observe(\FloatParameter.max, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.maxValue = Double(value)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.maxValue = Double(value)
+                        }
                     }
                 }
             }
@@ -60,17 +66,23 @@ open class ProgressSliderViewController: NSViewController {
                 maxValue = Double(param.max)
                 valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.doubleValue = Double(value)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.doubleValue = Double(value)
+                        }
                     }
                 }
                 minObservation = param.observe(\IntParameter.min, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.minValue = Double(value)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.minValue = Double(value)
+                        }
                     }
                 }
                 maxObservation = param.observe(\IntParameter.max, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.maxValue = Double(value)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.maxValue = Double(value)
+                        }
                     }
                 }
             }
@@ -81,17 +93,23 @@ open class ProgressSliderViewController: NSViewController {
                 maxValue = param.max
                 valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.doubleValue = value
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.doubleValue = value
+                        }
                     }
                 }
                 minObservation = param.observe(\DoubleParameter.min, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.minValue = value
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.minValue = value
+                        }
                     }
                 }
                 maxObservation = param.observe(\DoubleParameter.max, options: [.old, .new]) { [unowned self] _, change in
                     if let value = change.newValue {
-                        self.slider.maxValue = value
+                        DispatchQueue.main.async { [weak self] in
+                            self?.slider.maxValue = value
+                        }
                     }
                 }
             }

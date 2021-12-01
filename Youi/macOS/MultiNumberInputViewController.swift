@@ -15,12 +15,12 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
     var inputs: [NSTextField] = []
     var labelField: NSTextField?
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        guard let parameter = self.parameter else { return }
+        guard let parameter = parameter else { return }
 
         let vStack = NSStackView()
         vStack.wantsLayer = true
@@ -58,8 +58,10 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             if let param = parameter as? Int2Parameter {
                 let updateValue: (Int2Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%d", param[i])
+                    DispatchQueue.main.async {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -67,8 +69,10 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
             }
             else if let param = parameter as? Int3Parameter {
                 let updateValue: (Int3Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%d", param[i])
+                    DispatchQueue.main.async {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -77,8 +81,10 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
             }
             else if let param = parameter as? Int4Parameter {
                 let updateValue: (Int4Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%d", param[i])
+                    DispatchQueue.main.async {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -96,8 +102,10 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
             if let param = parameter as? Float2Parameter {
                 let updateValue: (Float2Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.3f", param[i])
+                    DispatchQueue.main.async {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%.3f", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -105,8 +113,11 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
             }
             else if let param = parameter as? Float3Parameter {
                 let updateValue: (Float3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.3f", param[i])
+                    DispatchQueue.main.async { [weak self] in
+                        guard let inputs = self?.inputs else { return }
+                        for (i, input) in inputs.enumerated() {
+                            input.stringValue = String(format: "%.3f", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -115,8 +126,10 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
             }
             else if let param = parameter as? PackedFloat3Parameter {
                 let updateValue: (PackedFloat3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.3f", param[i])
+                    DispatchQueue.main.async {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%.3f", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -125,8 +138,10 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
             }
             else if let param = parameter as? Float4Parameter {
                 let updateValue: (Float4Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.stringValue = String(format: "%.3f", param[i])
+                    DispatchQueue.main.async {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%.3f", param[i])
+                        }
                     }
                 }
                 observers.append(param.observe(\.x, changeHandler: updateValue))
@@ -149,13 +164,13 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
         }
     }
 
-    open override func viewDidAppear() {
+    override open func viewDidAppear() {
         for input in inputs {
             input.isEditable = true
         }
     }
 
-    open override func viewWillDisappear() {
+    override open func viewWillDisappear() {
         for input in inputs {
             input.isEditable = false
         }
@@ -183,7 +198,7 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
     }
 
     func setValue(_ value: Double, _ tag: Int) {
-        guard let parameter = self.parameter else { return }
+        guard let parameter = parameter else { return }
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             let iValue = Int32(value)
             parameter[tag] = iValue
@@ -221,8 +236,8 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
             let currentIndex = control.tag
             let current = inputs[currentIndex]
             if let value = Double(current.stringValue) {
-                self.setValue(value, currentIndex);
-            }        
+                setValue(value, currentIndex)
+            }
             let next = currentIndex + 1
             if next != inputs.count {
                 inputs[next % inputs.count].becomeFirstResponder()

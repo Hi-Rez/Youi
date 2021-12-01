@@ -23,7 +23,9 @@ open class ToggleViewController: NSViewController {
         if let parameter = self.parameter {
             observation = parameter.observe(\BoolParameter.value, options: [.old, .new]) { [unowned self] _, change in
                 if let value = change.newValue {
-                    self.button.state = (value ? .on : .off)
+                    DispatchQueue.main.async {
+                        self.button.state = (value ? .on : .off)
+                    }
                 }
             }
 

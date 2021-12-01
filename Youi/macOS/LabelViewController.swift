@@ -26,9 +26,11 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
         if let parameter = self.parameter {
             observation = parameter.observe(\StringParameter.value, options: [.old,.new]) { [unowned self] _, change in
                 if let value = change.newValue {
-                    self.labelValue.stringValue = value
-                    self.labelValue.layout()
-                    self.view.needsLayout = true                    
+                    DispatchQueue.main.async {
+                        self.labelValue.stringValue = value
+                        self.labelValue.layout()
+                        self.view.needsLayout = true
+                    }
                 }
             }
 

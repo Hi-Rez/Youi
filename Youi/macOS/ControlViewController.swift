@@ -14,7 +14,8 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     public weak var parameters: ParameterGroup?
     public var controls: [NSViewController] = []
     public var stack: NSStackView?
-    public var viewHeightConstraint: NSLayoutConstraint?
+    
+//    public var viewHeightConstraint: NSLayoutConstraint?
     
     public convenience init(_ parameters: ParameterGroup) {
         self.init()
@@ -32,21 +33,20 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer?.backgroundColor = .clear
-        view.widthAnchor.constraint(greaterThanOrEqualToConstant: 240).isActive = true
-        let viewHeightConstraint = view.heightAnchor.constraint(equalToConstant: 240)
-        viewHeightConstraint.isActive = true
-        self.viewHeightConstraint = viewHeightConstraint
     }
     
     open func setupStackView() {
         let stack = NSStackView()
         stack.wantsLayer = true
         stack.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stack)
         stack.orientation = .vertical
-        stack.distribution = .gravityAreas
         stack.spacing = 0
+        stack.distribution = .equalSpacing
+        view.addSubview(stack)
+        stack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stack.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         stack.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        view.heightAnchor.constraint(equalTo: stack.heightAnchor).isActive = true
         self.stack = stack
     }
     
@@ -80,6 +80,8 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                         case .inputfield:
                             addMultiNumberInput(param)
                             addSpacer()
+                        case .colorpalette:
+                            addColorPalette(param as! Float4Parameter)
                         case .unknown:
                             addMultiNumberInput(param)
                             addSpacer()
@@ -135,7 +137,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     }
     
     open func addControl(_ control: NSViewController) {
-        guard let stack = self.stack else { return }
+        guard !controls.contains(control), let stack = self.stack else { return }
         stack.addView(control.view, in: .top)
         control.view.leadingAnchor.constraint(equalTo: stack.leadingAnchor).isActive = true
         control.view.widthAnchor.constraint(equalTo: stack.widthAnchor).isActive = true
@@ -153,6 +155,25 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         let vc = ColorPickerViewController()
         vc.parameter = parameter
         addControl(vc)
+    }
+    
+    open func addColorPalette(_ parameter: Float4Parameter) {
+        var vc: ColorPaletteViewController
+        
+        var needsSpacer = false
+        if controls.last is ColorPaletteViewController {
+            vc = controls.last as! ColorPaletteViewController
+        }
+        else {
+            vc = ColorPaletteViewController()
+            needsSpacer = true
+        }
+        
+        vc.parameters.append(parameter)
+        addControl(vc)
+        if needsSpacer {
+            addSpacer()
+        }
     }
     
     open func addNumberInput(_ parameter: Parameter) {
@@ -274,7 +295,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     open func onButtonPressed(_ sender: NSButton) {}
     
     deinit {
-        viewHeightConstraint = nil
+//        viewHeightConstraint = nil
         removeAll()
         parameters = nil
         stack = nil

@@ -44,13 +44,6 @@ open class PanelViewController: ControlViewController {
         self.parameters = parameters
     }
     
-    open override func setupView() {
-        view = NSView()
-        view.wantsLayer = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer?.backgroundColor = .clear
-    }
-    
     open func setupVerticalStackView() {
         let stack = NSStackView()
         stack.wantsLayer = true
