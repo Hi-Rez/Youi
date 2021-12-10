@@ -77,6 +77,9 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     }
                     else {
                         switch param.controlType {
+                        case .multislider:
+                            addMultiSlider(param)
+                            addSpacer()
                         case .inputfield:
                             addMultiNumberInput(param)
                             addSpacer()
@@ -234,6 +237,12 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     
     open func addMultiNumberInput(_ parameter: Parameter) {
         let vc = MultiNumberInputViewController()
+        vc.parameter = parameter
+        addControl(vc)
+    }
+    
+    open func addMultiSlider(_ parameter: Parameter) {
+        let vc = MultiSliderViewController()
         vc.parameter = parameter
         addControl(vc)
     }
