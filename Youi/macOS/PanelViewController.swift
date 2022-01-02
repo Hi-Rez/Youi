@@ -94,7 +94,7 @@ open class PanelViewController: ControlViewController {
     open func setupLabel() {
         guard let hStack = self.hStack else { return }
         let label = NSTextField()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .medium)
         label.wantsLayer = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isEditable = false

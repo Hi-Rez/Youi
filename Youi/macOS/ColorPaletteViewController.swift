@@ -82,7 +82,9 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
     @objc func onColorPicked(_ sender: NSButton) {
         activeIndex = sender.tag
         
+        let value = parameters[activeIndex]        
         let cp = NSColorPanel.shared
+        cp.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
         cp.setTarget(self)
         cp.setAction(#selector(ColorPaletteViewController.colorDidChange))
         cp.makeKeyAndOrderFront(self)
