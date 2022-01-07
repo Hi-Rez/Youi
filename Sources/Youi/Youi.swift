@@ -10,7 +10,7 @@ import Foundation
 func getBundle() -> Bundle
 {
 #if SWIFT_PACKAGE
-   let resourceBundle = Bundle.module
+   return Bundle.module
 #else
     return Bundle(for: Spacer.self)
 #endif

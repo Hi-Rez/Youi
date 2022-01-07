@@ -8,7 +8,7 @@
 
 #if os(macOS)
 
-import Cocoa
+import AppKit
 
 open class TranslucentView: NSVisualEffectView {
     public init() {

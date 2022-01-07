@@ -7,6 +7,6 @@ let package = Package(
     platforms: [.macOS(.v10_15), .iOS(.v13)],
     products: [.library(name: "Youi", targets: ["Youi"])],
     dependencies: [.package(url: "https://github.com/Hi-Rez/Satin", .branch("master"))],
-    targets: [.target(name: "Youi", dependencies: ["Satin"], resources: [.process("../../Assets.xcassets")])],
+    targets: [.target(name: "Youi", dependencies: ["Satin"], resources: [.process("Resources")])],
     swiftLanguageVersions: [.v5]
 )
