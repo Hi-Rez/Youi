@@ -28,10 +28,9 @@ open class ColorPickerViewController: NSViewController {
 
         guard let parameter = parameter else { return }
 
-        parameter.actions.append { [unowned self] value in
-            DispatchQueue.main.async {
-                self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
-            }
+        parameter.actions.append { [weak self] value in
+            guard let self = self else { return }
+            self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
         }
 
         let vStack = NSStackView()
@@ -146,7 +145,8 @@ class ColorPickerViewController: WidgetViewController {
     override func setupBinding() {
         guard let param = parameter as? Float4Parameter else { return }
 
-        param.actions.append { [unowned self] value in
+        param.actions.append { [weak self] value in
+            guard let self = self else { return }
             if let colorWell = self.colorWell {
                 colorWell.selectedColor = UIColor(red: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
             }
