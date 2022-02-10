@@ -30,7 +30,10 @@ open class ColorPickerViewController: NSViewController {
 
         parameter.actions.append { [weak self] value in
             guard let self = self else { return }
-            self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+            }
         }
 
         let vStack = NSStackView()
