@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Satin",
+        "repositoryURL": "https://github.com/Hi-Rez/Satin",
+        "state": {
+          "branch": "master",
+          "revision": "317557f6ba52c7af2b63e7afcd6400ea312f41cb",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
