@@ -23,5 +23,5 @@ Pod::Spec.new do |spec|
 
   spec.module_name            = "Youi"
   spec.swift_version          = "5.1"
-  spec.dependency             'Satin'
+  spec.dependency             'Satin', '~> 1.6.1'
 end
