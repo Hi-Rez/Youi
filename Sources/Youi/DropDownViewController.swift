@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,7 +15,7 @@ import Cocoa
 
 open class DropDownViewController: NSViewController {
     public weak var parameter: StringParameter?
-    var observation: NSKeyValueObservation?
+    var cancellable: AnyCancellable?
 
     public var options: [String] = []
     var labelField: NSTextField!
@@ -26,14 +27,15 @@ open class DropDownViewController: NSViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = self.parameter {
-            observation = parameter.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, _ in
-                if let param = self.parameter {
+            
+            cancellable = parameter.$value.sink { [weak self] value in
+                if let self = self, let selectedItem = self.dropDownMenu.selectedItem, selectedItem.title != value {
                     DispatchQueue.main.async {
-                        self.dropDownMenu.selectItem(withTitle: param.value)
+                        self.dropDownMenu.selectItem(withTitle: value)
                     }
                 }
             }
-
+            
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false

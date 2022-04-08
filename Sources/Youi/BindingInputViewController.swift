@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,7 +15,7 @@ import Cocoa
 
 open class BindingInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
-    var observation: NSKeyValueObservation?
+    var cancellable: AnyCancellable?
 
     var stepper: NSStepper!
     var inputField: NSTextField!
@@ -32,21 +33,28 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
                 let param = parameter as! FloatParameter
                 value = Double(param.value)
                 stringValue = String(format: "%.5f", value)
-                observation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        self.inputField.stringValue = String(format: "%.5f", value)
-                        self.stepper.floatValue = value
+                
+                cancellable = param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            self.inputField.stringValue = String(format: "%.5f", newValue)
+                            self.stepper.floatValue = newValue
+                        }
                     }
                 }
+                
             }
             else if parameter is IntParameter {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
                 stringValue = String(format: "%.0f", value)
-                observation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        self.inputField.stringValue = String(value)
-                        self.stepper.intValue = Int32(value)
+                
+                cancellable = param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            self.inputField.stringValue = String(format: "%.5f", newValue)
+                            self.stepper.doubleValue = Double(newValue)
+                        }
                     }
                 }
             }
@@ -54,10 +62,13 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
                 let param = parameter as! DoubleParameter
                 value = param.value
                 stringValue = String(format: "%.5f", value)
-                observation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        self.inputField.stringValue = String(format: "%.5f", value)
-                        self.stepper.doubleValue = value
+                
+                cancellable = param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            self.inputField.stringValue = String(format: "%.5f", newValue)
+                            self.stepper.doubleValue = Double(newValue)
+                        }
                     }
                 }
             }
@@ -164,10 +175,6 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
             let chars = textField.stringValue.components(separatedBy: charSet)
             textField.stringValue = chars.joined()
         }
-    }
-
-    deinit {
-        observation = nil
     }
 }
 

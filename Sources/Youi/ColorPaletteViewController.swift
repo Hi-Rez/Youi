@@ -5,8 +5,10 @@
 //  Created by Reza Ali on 11/30/21.
 //
 
-import Satin
+import Combine
 import simd
+
+import Satin
 
 #if os(macOS)
 
@@ -14,14 +16,15 @@ import Cocoa
 
 open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
     public var parameters: [Float4Parameter] = []
-    var parametersMap: [Float4Parameter: NSButton] = [:]
+    var parametersMap: [Int: NSButton] = [:]
+    var cancellables = Set<AnyCancellable>()
     var activeIndex: Int = -1
     let hStack = NSStackView()
     
     override open func viewWillAppear() {
         super.viewWillAppear()
         for (index, parameter) in parameters.enumerated() {
-            guard parametersMap[parameter] == nil else { continue }
+            guard parametersMap[index] == nil else { continue }
             let value = parameter.value
             
             let button = NSButton()
@@ -40,13 +43,15 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
             button.heightAnchor.constraint(equalToConstant: 36).isActive = true
 
             hStack.addView(button, in: .leading)
-            parametersMap[parameter] = button
+            parametersMap[index] = button
 
-            parameter.actions.append { value in
-                DispatchQueue.main.async {
-                    button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w)).cgColor
+            parameter.$value.sink { [weak self] newValue in
+                if let _ = self {
+                    DispatchQueue.main.async {
+                        button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(newValue.x), green: CGFloat(newValue.y), blue: CGFloat(newValue.z), alpha: CGFloat(newValue.w)).cgColor
+                    }
                 }
-            }
+            }.store(in: &cancellables)
         }
     }
     
@@ -85,7 +90,9 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
     @objc func onColorPicked(_ sender: NSButton) {
         activeIndex = sender.tag
         
-        let value = parameters[activeIndex]        
+        let param = parameters[activeIndex]
+        let value = param.value
+        
         let cp = NSColorPanel.shared
         cp.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
         cp.setTarget(self)

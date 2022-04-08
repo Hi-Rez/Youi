@@ -6,8 +6,10 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
-import Satin
+import Combine
 import simd
+
+import Satin
 
 #if os(macOS)
 
@@ -15,6 +17,8 @@ import Cocoa
 
 open class ColorPickerViewController: NSViewController {
     public weak var parameter: Float4Parameter?
+    var cancellable: AnyCancellable?
+    
     var labelField: NSTextField!
     var colorWell: NSColorWell!
 
@@ -28,14 +32,15 @@ open class ColorPickerViewController: NSViewController {
 
         guard let parameter = parameter else { return }
 
-        parameter.actions.append { [weak self] value in
-            guard let self = self else { return }
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+        cancellable = parameter.$value.sink { [weak self] value in
+            if let self = self {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                }
             }
         }
-
+        
         let vStack = NSStackView()
         vStack.wantsLayer = true
         vStack.translatesAutoresizingMaskIntoConstraints = false

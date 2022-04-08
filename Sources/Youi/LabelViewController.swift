@@ -6,14 +6,16 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
+
 #if os(macOS)
 
 import Cocoa
 
 open class LabelViewController: NSViewController, NSTextFieldDelegate {
     public weak var parameter: StringParameter?
-    var observation: NSKeyValueObservation?
+    var cancellable: AnyCancellable?
 
     var labelField: NSTextField!
     var labelValue: NSTextField!
@@ -26,16 +28,16 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = self.parameter {
-            observation = parameter.observe(\StringParameter.value, options: [.old,.new]) { [unowned self] _, change in
-                if let value = change.newValue {
+            cancellable = parameter.$value.sink { [weak self] newValue in
+                if let self = self, self.labelField.stringValue != newValue {
                     DispatchQueue.main.async {
-                        self.labelValue.stringValue = value
+                        self.labelValue.stringValue = newValue
                         self.labelValue.layout()
                         self.view.needsLayout = true
                     }
                 }
             }
-
+            
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false

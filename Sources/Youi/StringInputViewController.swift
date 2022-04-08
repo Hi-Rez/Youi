@@ -5,6 +5,7 @@
 //  Created by Reza Ali on 4/27/20.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -13,7 +14,7 @@ import Cocoa
 
 open class StringInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: StringParameter?
-    var valueObservation: NSKeyValueObservation?
+    var subscription: AnyCancellable?
 
     var inputField: NSTextField?
     var labelField: NSTextField?
@@ -25,10 +26,11 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
         view.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         if let parameter = self.parameter {
-            valueObservation = parameter.observe(\StringParameter.value, options: [.old,.new]) { [unowned self] _, change in
-                if let newValue = change.newValue, let oldValue = change.oldValue, oldValue != newValue, let field = self.inputField {
+            
+            subscription = parameter.$value.sink { [weak self] value in
+                if let self = self, let field = self.inputField, field.stringValue != value {
                     DispatchQueue.main.async {
-                        field.stringValue = newValue
+                        field.stringValue = value
                         field.layout()
                         self.view.needsLayout = true
                     }
@@ -103,7 +105,6 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
 
     deinit {
         parameter = nil
-        valueObservation = nil
     }
 }
 

@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -127,16 +128,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     }
                     addSpacer()
                 }
-                else if param is FileParameter {
-                    let fileParam = param as! FileParameter
-                    switch param.controlType {
-                    case .filepicker:
-                        addFilePicker(fileParam)
-                    default:
-                        break
-                    }
-                    addSpacer()
-                }
             }
         }
     }
@@ -207,12 +198,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     
     open func addLabel(_ parameter: StringParameter) {
         let vc = LabelViewController()
-        vc.parameter = parameter
-        addControl(vc)
-    }
-    
-    open func addFilePicker(_ parameter: FileParameter) {
-        let vc = FilePickerViewController()
         vc.parameter = parameter
         addControl(vc)
     }

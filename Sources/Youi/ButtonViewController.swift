@@ -5,6 +5,7 @@
 //  Created by Reza Ali on 2/8/21.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -13,7 +14,7 @@ import Cocoa
 
 open class ButtonViewController: NSViewController {
     public weak var parameter: BoolParameter?
-    var observation: NSKeyValueObservation?
+    var subscriber: AnyCancellable?
 
     var button: NSButton!
     var defaultState: Bool!
@@ -26,8 +27,8 @@ open class ButtonViewController: NSViewController {
         if let parameter = self.parameter {
             defaultState = parameter.value
             
-            observation = parameter.observe(\BoolParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue {
+            subscriber = parameter.$value.sink { [weak self] value in
+                if let self = self {
                     DispatchQueue.main.async {
                         self.button.state = (value ? .on : .off)
                     }
@@ -92,7 +93,9 @@ open class ButtonViewController: NSViewController {
         }
     }
 
-    deinit {}
+    deinit {
+        subscriber?.cancel()
+    }
 }
 
 #elseif os(iOS)

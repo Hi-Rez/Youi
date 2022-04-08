@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,18 +15,18 @@ import Cocoa
 
 open class ToggleViewController: NSViewController {
     public weak var parameter: BoolParameter?
-    var observation: NSKeyValueObservation?
+    var subscriber: AnyCancellable?
 
     var button: NSButton!
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        if let parameter = self.parameter {
-            observation = parameter.observe(\BoolParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue {
+        if let parameter = parameter {
+            subscriber = parameter.$value.sink { [weak self] value in
+                if let self = self {
                     DispatchQueue.main.async {
                         self.button.state = (value ? .on : .off)
                     }
@@ -65,19 +66,19 @@ open class ToggleViewController: NSViewController {
             button.state = (parameter.value ? .on : .off)
             button.target = self
             button.action = #selector(ToggleViewController.onButtonChange)
-            
+
             view.heightAnchor.constraint(equalTo: button.heightAnchor, constant: 17).isActive = true
         }
     }
 
     @objc func onButtonChange() {
         if button.state == .off {
-            if let parameter = self.parameter {
+            if let parameter = parameter {
                 parameter.value = false
             }
         }
         else {
-            if let parameter = self.parameter {
+            if let parameter = parameter {
                 parameter.value = true
             }
         }
@@ -91,17 +92,17 @@ open class ToggleViewController: NSViewController {
 import UIKit
 
 class ToggleViewController: WidgetViewController {
-    var valueObservation: NSKeyValueObservation?
+    var subscriber: AnyCancellable?
     var toggle: UISwitch?
 
-    open override func loadView() {
+    override open func loadView() {
         setupView()
         setupStackViews()
         setupSwitch()
         setupLabel()
         setupBinding()
     }
-    
+
     override func setupHorizontalStackView() {
         super.setupHorizontalStackView()
         if let stack = hStack {
@@ -109,9 +110,9 @@ class ToggleViewController: WidgetViewController {
             stack.distribution = .fill
         }
     }
-    
+
     func setupSwitch() {
-        guard let stack = self.hStack else { return }
+        guard let stack = hStack else { return }
         let toggle = UISwitch()
         toggle.addAction(UIAction(handler: { [unowned self] _ in
             if let parameter = self.parameter as? BoolParameter {
@@ -123,28 +124,27 @@ class ToggleViewController: WidgetViewController {
         self.toggle = toggle
     }
 
-    override func setupBinding()
-    {
-        if let parameter = self.parameter as? BoolParameter {
-            valueObservation = parameter.observe(\BoolParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let toggle = self.toggle {
-                    toggle.isOn = value
+    override func setupBinding() {
+        if let parameter = parameter as? BoolParameter {
+            subscriber = parameter.publisher.sink { [weak self] value in
+                if let self = self, let toggle = self.toggle {
+                    DispatchQueue.main.async {
+                        toggle.isOn = value
+                    }
                 }
             }
         }
-        
-        if let toggle = self.toggle, let parameter = self.parameter as? BoolParameter {
+
+        if let toggle = toggle, let parameter = parameter as? BoolParameter {
             toggle.isOn = parameter.value
         }
-        
+
         super.setupBinding()
     }
-    
+
     deinit {
-        valueObservation = nil
         toggle = nil
     }
 }
-
 
 #endif

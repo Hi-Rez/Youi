@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,7 +15,7 @@ import Cocoa
 
 open class DetailsViewController: NSViewController, NSTextFieldDelegate {
     public var details: [StringParameter] = []
-    var observations: [NSKeyValueObservation] = []
+    var cancellables = Set<AnyCancellable>()
 
     open override func loadView() {
         view = NSView()
@@ -67,17 +68,18 @@ open class DetailsViewController: NSViewController, NSTextFieldDelegate {
             labelValue.stringValue = detail.value
             hStack.addView(labelValue, in: .leading)
 
-            observations.append(detail.observe(\StringParameter.value, options: .new) { [labelValue] _, change in
-                if let value = change.newValue {
-                    labelValue.stringValue = value
+            detail.$value.sink { [weak self] newValue in
+                if let _ = self {
+                    DispatchQueue.main.async {
+                        labelValue.stringValue = newValue
+                    }
                 }
-            })
+            }.store(in: &cancellables)
         }
     }
 
     deinit {
         details = []
-        observations = []
     }
 }
 

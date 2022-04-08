@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,7 +15,7 @@ import Cocoa
 
 open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
-    var valueObservation: NSKeyValueObservation?
+    var cancellables = Set<AnyCancellable>()
 
     var inputField: NSTextField?
     var labelField: NSTextField?
@@ -31,37 +32,40 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
                 let param = parameter as! FloatParameter
                 value = Double(param.value)
                 stringValue = String(format: "%.3f", value)
-                valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async {
-                            self.inputField?.stringValue = String(format: "%.5f", value)
+                            self.inputField?.stringValue = String(format: "%.5f", newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
             else if parameter is IntParameter {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
                 stringValue = "\(param.value)"
-                valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async {
-                            self.inputField?.stringValue = String(value)
+                            self.inputField?.stringValue = String(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
             else if parameter is DoubleParameter {
                 let param = parameter as! DoubleParameter
                 value = param.value
                 stringValue = String(format: "%.3f", value)
-                valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async {
-                            self.inputField?.stringValue = String(format: "%.5f", value)
+                            self.inputField?.stringValue = String(format: "%.5f", newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
 
             let vStack = NSStackView()

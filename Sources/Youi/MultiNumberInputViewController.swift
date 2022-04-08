@@ -5,6 +5,7 @@
 //  Created by Reza Ali on 4/27/20.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,7 +15,8 @@ import Cocoa
 open class MultiNumberInputViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
 
-    var observers: [NSKeyValueObservation] = []
+    var cancellables = Set<AnyCancellable>()
+    
     var inputs: [NSTextField] = []
     var labelField: NSTextField?
 
@@ -60,40 +62,37 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
 
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             if let param = parameter as? Int2Parameter {
-                let updateValue: (Int2Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async {
-                        for (i, input) in self.inputs.enumerated() {
-                            input.stringValue = String(format: "%d", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Int3Parameter {
-                let updateValue: (Int3Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async {
-                        for (i, input) in self.inputs.enumerated() {
-                            input.stringValue = String(format: "%d", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Int4Parameter {
-                let updateValue: (Int4Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async {
-                        for (i, input) in self.inputs.enumerated() {
-                            input.stringValue = String(format: "%d", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
-                observers.append(param.observe(\.w, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
 
             for i in 0..<parameter.count {
@@ -104,53 +103,48 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
         }
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
             if let param = parameter as? Float2Parameter {
-                let updateValue: (Float2Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async {
-                        for (i, input) in self.inputs.enumerated() {
-                            input.stringValue = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Float3Parameter {
-                let updateValue: (Float3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let inputs = self?.inputs else { return }
-                        for (i, input) in inputs.enumerated() {
-                            input.stringValue = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? PackedFloat3Parameter {
-                let updateValue: (PackedFloat3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async {
-                        for (i, input) in self.inputs.enumerated() {
-                            input.stringValue = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Float4Parameter {
-                let updateValue: (Float4Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    DispatchQueue.main.async {
-                        for (i, input) in self.inputs.enumerated() {
-                            input.stringValue = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        DispatchQueue.main.async {
+                            for (i, input) in self.inputs.enumerated() {
+                                input.stringValue = String(format: "%d", param[i])
+                            }
                         }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
-                observers.append(param.observe(\.w, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
 
             for i in 0..<parameter.count {
@@ -256,7 +250,6 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
 
     deinit {
         parameter = nil
-        observers = []
         inputs = []
         labelField = nil
     }

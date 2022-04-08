@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -18,9 +19,7 @@ protocol SliderViewControllerDelegate: AnyObject {
 
 open class SliderViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
-    var valueObservation: NSKeyValueObservation?
-    var minObservation: NSKeyValueObservation?
-    var maxObservation: NSKeyValueObservation?
+    var cancellables = Set<AnyCancellable>()
 
     var inputField: NSTextField!
     var labelField: NSTextField!
@@ -28,103 +27,111 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
 
     var delegate: SliderViewControllerDelegate?
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 52).isActive = true
 
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             var value: Double = 0.0
             var minValue: Double = 0.0
             var maxValue: Double = 1.0
             var stringValue: String = ""
-            if parameter is FloatParameter {
-                let param = parameter as! FloatParameter
+            if let param = parameter as? FloatParameter {
+                
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
                 stringValue = String(format: "%.3f", value)
-                valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
                             self?.inputField.stringValue = String(format: "%.3f", value)
-                            self?.slider.doubleValue = Double(value)
+                            self?.slider.doubleValue = Double(newValue)
                         }
                     }
-                }
-                minObservation = param.observe(\FloatParameter.min, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(value)
+                            self?.slider.minValue = Double(newValue)
                         }
                     }
-                }
-                maxObservation = param.observe(\FloatParameter.max, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(value)
+                            self?.slider.maxValue = Double(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
-            else if parameter is IntParameter {
-                let param = parameter as! IntParameter
+            else if let param = parameter as? IntParameter {
+                
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
-                stringValue = "\(Int(value))"                
-                valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                stringValue = "\(Int(value))"
+
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputField.stringValue = String(value)
-                            self?.slider.doubleValue = Double(value)
+                            self?.inputField.stringValue = String(format: "%.3f", value)
+                            self?.slider.doubleValue = Double(newValue)
                         }
                     }
-                }
-                minObservation = param.observe(\IntParameter.min, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(value)
+                            self?.slider.minValue = Double(newValue)
                         }
                     }
-                }
-                maxObservation = param.observe(\IntParameter.max, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(value)
+                            self?.slider.maxValue = Double(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
-            else if parameter is DoubleParameter {
-                let param = parameter as! DoubleParameter
+            else if let param = parameter as? DoubleParameter {
                 value = param.value
                 minValue = param.min
                 maxValue = param.max
                 stringValue = String(format: "%.3f", value)
-                valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
                             self?.inputField.stringValue = String(format: "%.3f", value)
-                            self?.slider.doubleValue = value
+                            self?.slider.doubleValue = Double(newValue)
                         }
                     }
-                }
-                minObservation = param.observe(\DoubleParameter.min, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = value
+                            self?.slider.minValue = Double(newValue)
                         }
                     }
-                }
-                maxObservation = param.observe(\DoubleParameter.max, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = value
+                            self?.slider.maxValue = Double(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
 
             let vStack = NSStackView()
@@ -192,7 +199,7 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
     }
 
     func setValue(_ value: Double) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 floatParam.value = Float(value)
@@ -208,7 +215,6 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
         }
     }
 
-    
     @objc func onInputChanged(_ sender: NSTextField) {
         if let value = Double(sender.stringValue) {
             setValue(value)
@@ -216,7 +222,7 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
             deactivateAsync()
         }
     }
-    
+
     public func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? NSTextField {
             let charSet = NSCharacterSet(charactersIn: "-1234567890.").inverted
@@ -240,10 +246,10 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
     override var minHeight: CGFloat {
         64
     }
-    
+
     var slider: UISlider?
     var input: UITextField?
-    
+
     var font: UIFont {
         .boldSystemFont(ofSize: 14)
     }
@@ -257,7 +263,7 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
         setupInput()
         setupBinding()
     }
-    
+
     override func setupVerticalStackView() {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -272,9 +278,9 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
         stack.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -16).isActive = true
         vStack = stack
     }
-    
+
     override func setupHorizontalStackView() {
-        guard let vStack = self.vStack else { return }
+        guard let vStack = vStack else { return }
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -286,9 +292,9 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
         stack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: 0).isActive = true
         hStack = stack
     }
-    
+
     func setupInput() {
-        guard let hStack = self.hStack else { return }
+        guard let hStack = hStack else { return }
         let input = UITextField()
         input.borderStyle = .none
         input.translatesAutoresizingMaskIntoConstraints = false
@@ -305,32 +311,32 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
         input.delegate = self
         self.input = input
     }
-    
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     } // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let input = self.input, let text = input.text, let value = Float(text) {
+        if let input = input, let text = input.text, let value = Float(text) {
             setValue(value)
         }
         textField.resignFirstResponder()
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     {
         guard !string.isEmpty else {
             return true
         }
-        
+
         if !CharacterSet(charactersIn: "-0123456789.").isSuperset(of: CharacterSet(charactersIn: string)) {
             return false
         }
         if string == ".", let text = textField.text, text.contains(".") {
             return false
         }
-        
+
         // Allow text change
         return true
     }
@@ -339,9 +345,9 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
+
     func setupSlider() {
-        guard let vStack = self.vStack else { return }
+        guard let vStack = vStack else { return }
         let slider = UISlider(frame: CGRect(x: 0, y: 0, width: 32, height: 32), primaryAction: UIAction(handler: { [unowned self] _ in
             if let slider = self.slider {
                 self.setValue(slider.value)
@@ -354,7 +360,7 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
     }
 
     override func setupBinding() {
-        guard let parameter = self.parameter else { return }
+        guard let parameter = parameter else { return }
         var value: Float = 0.0
         var minValue: Float = 0.0
         var maxValue: Float = 1.0
@@ -431,24 +437,24 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
                 }
             }
         }
-        
-        if let slider = self.slider {
+
+        if let slider = slider {
             slider.minimumValue = minValue
             slider.maximumValue = maxValue
             slider.value = value
         }
-        
-        if let label = self.label {
+
+        if let label = label {
             label.text = "\(parameter.label)"
         }
-        
-        if let input = self.input {
+
+        if let input = input {
             input.text = "\(stringValue)"
         }
     }
 
     func setValue(_ value: Float) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 floatParam.value = value
@@ -463,7 +469,7 @@ class SliderViewController: WidgetViewController, UITextFieldDelegate {
             }
         }
     }
-    
+
     deinit {
         valueObservation = nil
         minObservation = nil

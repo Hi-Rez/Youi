@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,7 +15,7 @@ import Cocoa
 
 open class MultiToggleViewController: NSViewController {
     public var parameters: [BoolParameter] = []
-    var observations: [NSKeyValueObservation] = []
+    var subscriptions = Set<AnyCancellable>()
 
     var spacers: [Spacer] = []
     var buttons: [NSButton] = []
@@ -68,14 +69,14 @@ open class MultiToggleViewController: NSViewController {
                 spacers.append(spacer)
             }
 
-            observations.append(parameter.observe(\BoolParameter.value, options: [.old, .new]) { [button] _, change in
-                if let value = change.newValue {
+            parameter.$value.sink { [weak self] value in
+                if let _ = self {
                     DispatchQueue.main.async {
                         button.state = (value ? .on : .off)
                     }
                 }
-            })
-
+            }.store(in: &subscriptions)
+            
             view.heightAnchor.constraint(equalTo: button.heightAnchor, constant: 16).isActive = true
         }
     }
@@ -97,7 +98,7 @@ open class MultiToggleViewController: NSViewController {
 
     deinit {
         parameters = []
-        observations = []
+        subscriptions.removeAll()
         spacers = []
         buttons = []
     }

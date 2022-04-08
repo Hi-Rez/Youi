@@ -5,6 +5,7 @@
 //  Created by Reza Ali on 4/26/20.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -13,7 +14,8 @@ import Cocoa
 
 open class MultiDropdownViewController: NSViewController {
     public var parameters: [StringParameter] = []
-    var observations: [NSKeyValueObservation] = []
+    var cancellables = Set<AnyCancellable>()
+    
     public var options: [[String]] = []
     var labelFields: [NSTextField] = []
     var dropDownMenus: [String: NSPopUpButton] = [:]
@@ -48,14 +50,14 @@ open class MultiDropdownViewController: NSViewController {
         hStack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: -14).isActive = true
 
         for (index, parameter) in parameters.enumerated() {
-            observations.append(parameter.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, _ in
-                if let dd = self.dropDownMenus[parameter.label] {
+            parameter.$value.sink { [weak self] newValue in
+                if let self = self, let dd = self.dropDownMenus[parameter.label] {
                     DispatchQueue.main.async {
                         dd.selectItem(withTitle: parameter.value)
                     }
                 }
-            })
-
+            }.store(in: &cancellables)
+            
             let labelField = NSTextField()
             labelField.font = .labelFont(ofSize: 12)
             labelField.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +107,6 @@ open class MultiDropdownViewController: NSViewController {
         labelFields = []
         dropDownMenus = [:]
         parameters = []
-        observations = []
         options = []
         spacers = []
     }

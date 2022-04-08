@@ -6,6 +6,7 @@
 //  Copyright © 2020 Reza Ali. All rights reserved.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -18,9 +19,8 @@ public protocol ProgressSliderViewControllerDelegate: AnyObject {
 
 open class ProgressSliderViewController: NSViewController {
     public weak var parameter: Parameter?
-    var valueObservation: NSKeyValueObservation?
-    var minObservation: NSKeyValueObservation?
-    var maxObservation: NSKeyValueObservation?
+    var cancellables = Set<AnyCancellable>()
+    
     public var slider: NSSlider!
 
     public weak var delegate: ProgressSliderViewControllerDelegate?
@@ -40,81 +40,88 @@ open class ProgressSliderViewController: NSViewController {
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
-                valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.doubleValue = Double(value)
+                            self?.slider.doubleValue = Double(newValue)
                         }
                     }
-                }
-                minObservation = param.observe(\FloatParameter.min, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(value)
+                            self?.slider.minValue = Double(newValue)
                         }
                     }
-                }
-                maxObservation = param.observe(\FloatParameter.max, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(value)
+                            self?.slider.maxValue = Double(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
             else if parameter is IntParameter {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
                 minValue = Double(param.min)
                 maxValue = Double(param.max)
-                valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.doubleValue = Double(value)
+                            self?.slider.doubleValue = Double(newValue)
                         }
                     }
-                }
-                minObservation = param.observe(\IntParameter.min, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(value)
+                            self?.slider.minValue = Double(newValue)
                         }
                     }
-                }
-                maxObservation = param.observe(\IntParameter.max, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(value)
+                            self?.slider.maxValue = Double(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
             else if parameter is DoubleParameter {
                 let param = parameter as! DoubleParameter
                 value = param.value
                 minValue = param.min
                 maxValue = param.max
-                valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.doubleValue = value
+                            self?.slider.doubleValue = Double(newValue)
                         }
                     }
-                }
-                minObservation = param.observe(\DoubleParameter.min, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = value
+                            self?.slider.minValue = Double(newValue)
                         }
                     }
-                }
-                maxObservation = param.observe(\DoubleParameter.max, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = value
+                            self?.slider.maxValue = Double(newValue)
                         }
                     }
-                }
+                }.store(in: &cancellables)
             }
 
             let vStack = NSStackView()

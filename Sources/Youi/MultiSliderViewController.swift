@@ -5,6 +5,7 @@
 //  Created by Reza Ali on 12/9/21.
 //
 
+import Combine
 import Satin
 
 #if os(macOS)
@@ -14,10 +15,8 @@ import Cocoa
 open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
     public weak var parameter: Parameter?
     
-    var valueObservations: [NSKeyValueObservation] = []
-    var minObservations: [NSKeyValueObservation] = []
-    var maxObservations: [NSKeyValueObservation] = []
-
+    var cancellables = Set<AnyCancellable>()
+    
     var inputFields: [NSTextField] = []
     var labelFields: [NSTextField] = []
     var sliders: [NSSlider] = []
@@ -37,70 +36,51 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
             
             
             if let param = parameter as? Float2Parameter {
-                values.append(Double(param.x))
-                values.append(Double(param.y))
+                values.append(Double(param.value.x))
+                values.append(Double(param.value.y))
                                 
                 mins.append(Double(param.min.x))
                 mins.append(Double(param.min.y))
                                 
                 maxes.append(Double(param.max.x))
                 maxes.append(Double(param.max.y))
-                
-                valueObservations.append(param.observe(\Float2Parameter.x, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[0].stringValue = String(format: "%.3f", value)
-                            self?.sliders[0].floatValue = value
+                                
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                    DispatchQueue.main.async {
+                        for i in 0..<param.count {
+                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                                self.sliders[i].doubleValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                               
-                valueObservations.append(param.observe(\Float2Parameter.y, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[1].stringValue = String(format: "%.3f", value)
-                            self?.sliders[1].floatValue = value
+                            for i in 0..<param.count {
+                                self?.sliders[i].minValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                minObservations.append(param.observe(\Float2Parameter.minX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].minValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].maxValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                
-                maxObservations.append(param.observe(\Float2Parameter.maxX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                minObservations.append(param.observe(\Float2Parameter.minY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float2Parameter.maxY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].maxValue = Double(value)
-                        }
-                    }
-                })
-                
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Float3Parameter {
-                values.append(Double(param.x))
-                values.append(Double(param.y))
-                values.append(Double(param.z))
+                values.append(Double(param.value.x))
+                values.append(Double(param.value.y))
+                values.append(Double(param.value.z))
                 
                 mins.append(Double(param.min.x))
                 mins.append(Double(param.min.y))
@@ -110,86 +90,43 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 maxes.append(Double(param.max.y))
                 maxes.append(Double(param.max.z))
                 
-                valueObservations.append(param.observe(\Float3Parameter.x, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[0].stringValue = String(format: "%.3f", value)
-                            self?.sliders[0].floatValue = value
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                    DispatchQueue.main.async {
+                        for i in 0..<param.count {
+                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                                self.sliders[i].doubleValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Float3Parameter.y, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[1].stringValue = String(format: "%.3f", value)
-                            self?.sliders[1].floatValue = value
+                            for i in 0..<param.count {
+                                self?.sliders[i].minValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Float3Parameter.z, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[2].stringValue = String(format: "%.3f", value)
-                            self?.sliders[2].floatValue = value
-                        }
-                    }
-                })
                 
-                minObservations.append(param.observe(\Float3Parameter.minX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].minValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].maxValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                
-                maxObservations.append(param.observe(\Float3Parameter.maxX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                minObservations.append(param.observe(\Float3Parameter.minY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float3Parameter.maxY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float3Parameter.minZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float3Parameter.maxZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].maxValue = Double(value)
-                        }
-                    }
-                })
+                }.store(in: &cancellables)
             }
             if let param = parameter as? Float4Parameter {
-                values.append(Double(param.x))
-                values.append(Double(param.y))
-                values.append(Double(param.z))
-                values.append(Double(param.w))
+                values.append(Double(param.value.x))
+                values.append(Double(param.value.y))
+                values.append(Double(param.value.z))
+                values.append(Double(param.value.w))
                 
                 mins.append(Double(param.min.x))
                 mins.append(Double(param.min.y))
@@ -201,171 +138,85 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 maxes.append(Double(param.max.z))
                 maxes.append(Double(param.max.w))
                 
-                valueObservations.append(param.observe(\Float4Parameter.x, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[0].stringValue = String(format: "%.3f", value)
-                            self?.sliders[0].floatValue = value
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                    DispatchQueue.main.async {
+                        for i in 0..<param.count {
+                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                                self.sliders[i].doubleValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Float4Parameter.y, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[1].stringValue = String(format: "%.3f", value)
-                            self?.sliders[1].floatValue = value
+                            for i in 0..<param.count {
+                                self?.sliders[i].minValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Float4Parameter.z, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[2].stringValue = String(format: "%.3f", value)
-                            self?.sliders[2].floatValue = value
-                        }
-                    }
-                })
                 
-                valueObservations.append(param.observe(\Float4Parameter.w, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[3].stringValue = String(format: "%.3f", value)
-                            self?.sliders[3].floatValue = value
+                            for i in 0..<param.count {
+                                self?.sliders[i].maxValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                
-                minObservations.append(param.observe(\Float4Parameter.minX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float4Parameter.maxX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                minObservations.append(param.observe(\Float4Parameter.minY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float4Parameter.maxY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float4Parameter.minZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float4Parameter.maxZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float4Parameter.minW, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[3].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Float4Parameter.maxW, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[3].maxValue = Double(value)
-                        }
-                    }
-                })
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Int2Parameter {
-                values.append(Double(param.x))
-                values.append(Double(param.y))
-                                
+                values.append(Double(param.value.x))
+                values.append(Double(param.value.y))
+                
                 mins.append(Double(param.min.x))
                 mins.append(Double(param.min.y))
                                 
                 maxes.append(Double(param.max.x))
                 maxes.append(Double(param.max.y))
                 
-                valueObservations.append(param.observe(\Int2Parameter.x, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[0].stringValue = String(format: "%.3f", value)
-                            self?.sliders[0].doubleValue = Double(value)
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                    DispatchQueue.main.async {
+                        for i in 0..<param.count {
+                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                                self.sliders[i].doubleValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                               
-                valueObservations.append(param.observe(\Int2Parameter.y, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[1].stringValue = String(format: "%.3f", value)
-                            self?.sliders[1].doubleValue = Double(value)
-                        }
-                    }
-                })
+                }.store(in: &cancellables)
                 
-                minObservations.append(param.observe(\Int2Parameter.minX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].minValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].minValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                maxObservations.append(param.observe(\Int2Parameter.maxX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].maxValue = Double(value)
-                        }
-                    }
-                })
                 
-                minObservations.append(param.observe(\Int2Parameter.minY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].minValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].maxValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                
-                maxObservations.append(param.observe(\Int2Parameter.maxY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].maxValue = Double(value)
-                        }
-                    }
-                })
+                }.store(in: &cancellables)
                 
             }
             else if let param = parameter as? Int3Parameter {
-                values.append(Double(param.x))
-                values.append(Double(param.y))
-                values.append(Double(param.z))
+                values.append(Double(param.value.x))
+                values.append(Double(param.value.y))
+                values.append(Double(param.value.z))
                 
                 mins.append(Double(param.min.x))
                 mins.append(Double(param.min.y))
@@ -375,86 +226,43 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 maxes.append(Double(param.max.y))
                 maxes.append(Double(param.max.z))
                 
-                valueObservations.append(param.observe(\Int3Parameter.x, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[0].stringValue = String(format: "%.3f", value)
-                            self?.sliders[0].doubleValue = Double(value)
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                    DispatchQueue.main.async {
+                        for i in 0..<param.count {
+                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                                self.sliders[i].doubleValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Int3Parameter.y, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[1].stringValue = String(format: "%.3f", value)
-                            self?.sliders[1].doubleValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].minValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Int3Parameter.z, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[2].stringValue = String(format: "%.3f", value)
-                            self?.sliders[2].doubleValue = Double(value)
-                        }
-                    }
-                })
                 
-                minObservations.append(param.observe(\Int3Parameter.minX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].minValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].maxValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                
-                maxObservations.append(param.observe(\Int3Parameter.maxX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                minObservations.append(param.observe(\Int3Parameter.minY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int3Parameter.maxY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int3Parameter.minZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int3Parameter.maxZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].maxValue = Double(value)
-                        }
-                    }
-                })
+                }.store(in: &cancellables)
             }
             if let param = parameter as? Int4Parameter {
-                values.append(Double(param.x))
-                values.append(Double(param.y))
-                values.append(Double(param.z))
-                values.append(Double(param.w))
+                values.append(Double(param.value.x))
+                values.append(Double(param.value.y))
+                values.append(Double(param.value.z))
+                values.append(Double(param.value.w))
                 
                 mins.append(Double(param.min.x))
                 mins.append(Double(param.min.y))
@@ -466,105 +274,37 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 maxes.append(Double(param.max.z))
                 maxes.append(Double(param.max.w))
                 
-                valueObservations.append(param.observe(\Int4Parameter.x, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[0].stringValue = String(format: "%.3f", value)
-                            self?.sliders[0].doubleValue = Double(value)
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                    DispatchQueue.main.async {
+                        for i in 0..<param.count {
+                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                                self.sliders[i].doubleValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Int4Parameter.y, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[1].stringValue = String(format: "%.3f", value)
-                            self?.sliders[1].doubleValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].minValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
+                }.store(in: &cancellables)
                 
-                valueObservations.append(param.observe(\Int4Parameter.z, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[2].stringValue = String(format: "%.3f", value)
-                            self?.sliders[2].doubleValue = Double(value)
-                        }
-                    }
-                })
                 
-                valueObservations.append(param.observe(\Int4Parameter.w, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
                         DispatchQueue.main.async { [weak self] in
-                            self?.inputFields[3].stringValue = String(format: "%.3f", value)
-                            self?.sliders[3].doubleValue = Double(value)
+                            for i in 0..<param.count {
+                                self?.sliders[i].maxValue = Double(newValue[i])
+                            }
                         }
                     }
-                })
-                
-                minObservations.append(param.observe(\Int4Parameter.minX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int4Parameter.maxX, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[0].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                minObservations.append(param.observe(\Int4Parameter.minY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int4Parameter.maxY, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[1].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int4Parameter.minZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int4Parameter.maxZ, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[2].maxValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int4Parameter.minW, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[3].minValue = Double(value)
-                        }
-                    }
-                })
-                
-                maxObservations.append(param.observe(\Int4Parameter.maxW, options: [.old, .new]) { [unowned self] _, change in
-                    if let value = change.newValue {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.sliders[3].maxValue = Double(value)
-                        }
-                    }
-                })
+                }.store(in: &cancellables)
             }
 
             let vStack = NSStackView()
@@ -714,9 +454,6 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
     }
 
     deinit {
-        valueObservations = []
-        minObservations = []
-        maxObservations = []
         sliders = []
         labelFields = []
         inputFields = []
