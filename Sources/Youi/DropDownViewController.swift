@@ -21,21 +21,18 @@ open class DropDownViewController: NSViewController {
     var labelField: NSTextField!
     var dropDownMenu: NSPopUpButton!
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        if let parameter = self.parameter {
-            
+        if let parameter = parameter {
             cancellable = parameter.$value.sink { [weak self] value in
                 if let self = self, let selectedItem = self.dropDownMenu.selectedItem, selectedItem.title != value {
-                    DispatchQueue.main.async {
-                        self.dropDownMenu.selectItem(withTitle: value)
-                    }
+                    self.dropDownMenu.selectItem(withTitle: value)
                 }
             }
-            
+
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -82,7 +79,7 @@ open class DropDownViewController: NSViewController {
     }
 
     @objc func onSelected(_ sender: NSPopUpButton) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             parameter.value = sender.title
         }
     }
@@ -95,7 +92,7 @@ open class DropDownViewController: NSViewController {
 import UIKit
 
 class DropDownViewController: WidgetViewController {
-    var valueObservation: NSKeyValueObservation?
+    var cancellables = Set<AnyCancellable>()
     var button: UIButton?
     var options: [String] = []
 
@@ -112,7 +109,7 @@ class DropDownViewController: WidgetViewController {
     }
 
     override func setupHorizontalStackView() {
-        guard let vStack = self.vStack else { return }
+        guard let vStack = vStack else { return }
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -126,7 +123,7 @@ class DropDownViewController: WidgetViewController {
     }
 
     func setupButton() {
-        guard let hStack = self.hStack else { return }
+        guard let hStack = hStack else { return }
         let button = UIButton(type: .roundedRect)
 
         button.setTitleColor(UIColor(named: "Text", in: getBundle(), compatibleWith: nil), for: .normal)
@@ -146,14 +143,14 @@ class DropDownViewController: WidgetViewController {
         var stringValue: String = ""
         if let param = parameter as? StringParameter {
             stringValue = param.value
-            valueObservation = param.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue {
+            param.$value.sink { [weak self] value in
+                if let self = self {
                     self.setValue(value)
                 }
-            }
+            }.store(in: &cancellables)
         }
 
-        if let button = self.button {
+        if let button = button {
             button.setTitle(stringValue, for: .normal)
             var children: [UIAction] = []
             for option in options {
@@ -163,7 +160,7 @@ class DropDownViewController: WidgetViewController {
             button.menu = menu
         }
 
-        if let label = self.label, let parameter = self.parameter {
+        if let label = label, let parameter = parameter {
             label.text = "\(parameter.label)"
         }
     }
@@ -172,22 +169,20 @@ class DropDownViewController: WidgetViewController {
         if let param = parameter as? StringParameter, param.value != value {
             param.value = value
         }
-        if let button = self.button {
+        if let button = button {
             button.setTitle(value, for: .normal)
         }
     }
 
     deinit {
-        valueObservation = nil
         button = nil
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if let button = self.button {
+        if let button = button {
             button.layer.borderColor = UIColor(named: "Border", in: getBundle(), compatibleWith: nil)?.cgColor
         }
     }
 }
-
 
 #endif

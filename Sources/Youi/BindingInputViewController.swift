@@ -21,40 +21,35 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
     var inputField: NSTextField!
     var labelField: NSTextField!
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             var value: Double = 0.0
             var stringValue: String = ""
             if parameter is FloatParameter {
                 let param = parameter as! FloatParameter
                 value = Double(param.value)
                 stringValue = String(format: "%.5f", value)
-                
+
                 cancellable = param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            self.inputField.stringValue = String(format: "%.5f", newValue)
-                            self.stepper.floatValue = newValue
-                        }
+                        self.inputField.stringValue = String(format: "%.5f", newValue)
+                        self.stepper.floatValue = newValue
                     }
                 }
-                
             }
             else if parameter is IntParameter {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
                 stringValue = String(format: "%.0f", value)
-                
+
                 cancellable = param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            self.inputField.stringValue = String(format: "%.5f", newValue)
-                            self.stepper.doubleValue = Double(newValue)
-                        }
+                        self.inputField.stringValue = String(format: "%.5f", newValue)
+                        self.stepper.doubleValue = Double(newValue)
                     }
                 }
             }
@@ -62,13 +57,11 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
                 let param = parameter as! DoubleParameter
                 value = param.value
                 stringValue = String(format: "%.5f", value)
-                
+
                 cancellable = param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            self.inputField.stringValue = String(format: "%.5f", newValue)
-                            self.stepper.doubleValue = Double(newValue)
-                        }
+                        self.inputField.stringValue = String(format: "%.5f", newValue)
+                        self.stepper.doubleValue = Double(newValue)
                     }
                 }
             }
@@ -146,7 +139,7 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
 
     func setValue(_ value: Double) {
         stepper.doubleValue = value
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 floatParam.value = Float(value)

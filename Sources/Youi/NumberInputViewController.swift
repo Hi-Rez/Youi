@@ -20,24 +20,22 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
     var inputField: NSTextField?
     var labelField: NSTextField?
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             var value: Double = 0.0
             var stringValue: String = ""
             if parameter is FloatParameter {
                 let param = parameter as! FloatParameter
                 value = Double(param.value)
                 stringValue = String(format: "%.3f", value)
-                
+
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            self.inputField?.stringValue = String(format: "%.5f", newValue)
-                        }
+                        self.inputField?.stringValue = String(format: "%.5f", newValue)
                     }
                 }.store(in: &cancellables)
             }
@@ -45,12 +43,10 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
                 let param = parameter as! IntParameter
                 value = Double(param.value)
                 stringValue = "\(param.value)"
-                
+
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            self.inputField?.stringValue = String(newValue)
-                        }
+                        self.inputField?.stringValue = String(newValue)
                     }
                 }.store(in: &cancellables)
             }
@@ -58,12 +54,10 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
                 let param = parameter as! DoubleParameter
                 value = param.value
                 stringValue = String(format: "%.3f", value)
-                
+
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            self.inputField?.stringValue = String(format: "%.5f", newValue)
-                        }
+                        self.inputField?.stringValue = String(format: "%.5f", newValue)
                     }
                 }.store(in: &cancellables)
             }
@@ -124,7 +118,7 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
     }
 
     func setValue(_ value: Double) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 floatParam.value = Float(value)
@@ -139,14 +133,14 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
             }
         }
     }
-    
+
     @objc func onInputChanged(_ sender: NSTextField) {
         if let value = Double(sender.stringValue) {
             setValue(value)
             deactivateAsync()
         }
     }
-    
+
     public func controlTextDidChange(_ obj: Notification) {
         if let textField = obj.object as? NSTextField {
             let charSet = NSCharacterSet(charactersIn: "-1234567890.").inverted
@@ -163,9 +157,9 @@ open class NumberInputViewController: InputViewController, NSTextFieldDelegate {
 import UIKit
 
 class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
-    var valueObservation: NSKeyValueObservation?
+    var cancellables = Set<AnyCancellable>()
     var input: UITextField?
-    
+
     var font: UIFont {
         .boldSystemFont(ofSize: 14)
     }
@@ -177,9 +171,9 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
         setupInput()
         setupBinding()
     }
-    
+
     override func setupHorizontalStackView() {
-        guard let vStack = self.vStack else { return }
+        guard let vStack = vStack else { return }
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -191,9 +185,9 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
         stack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: 0).isActive = true
         hStack = stack
     }
-    
+
     func setupInput() {
-        guard let hStack = self.hStack else { return }
+        guard let hStack = hStack else { return }
         let input = UITextField()
         input.borderStyle = .roundedRect
         input.translatesAutoresizingMaskIntoConstraints = false
@@ -210,21 +204,21 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
         input.delegate = self
         self.input = input
     }
-    
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     } // return YES to allow editing to stop and to resign first responder status. NO to disallow the editing session to end
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let input = self.input, let text = input.text, let value = Float(text) {
+        if let input = input, let text = input.text, let value = Float(text) {
             setValue(value)
         }
         textField.resignFirstResponder()
     }
-    
+
     func setValue(_ value: Float) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 if value != floatParam.value {
@@ -253,14 +247,14 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
         guard !string.isEmpty else {
             return true
         }
-        
+
         if !CharacterSet(charactersIn: "-0123456789.").isSuperset(of: CharacterSet(charactersIn: string)) {
             return false
         }
         if string == ".", let text = textField.text, text.contains(".") {
             return false
         }
-                
+
         // Allow text change
         return true
     }
@@ -269,42 +263,41 @@ class NumberInputViewController: WidgetViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
+
     override func setupBinding() {
         var stringValue: String = ""
-        if let param = self.parameter as? FloatParameter {
+        if let param = parameter as? FloatParameter {
             stringValue = String(format: "%.3f", param.value)
-            valueObservation = param.observe(\FloatParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let input = self.input, !input.isFirstResponder {
+            param.$value.sink { [weak self] value in
+                if let self = self, let input = self.input, !input.isFirstResponder {
                     input.text = String(format: "%.3f", value)
                 }
-            }
+            }.store(in: &cancellables)
         }
-        else if let param = self.parameter as? IntParameter {
+        else if let param = parameter as? IntParameter {
             stringValue = "\(param.value)"
-            valueObservation = param.observe(\IntParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let input = self.input, !input.isFirstResponder {
+            param.$value.sink { [weak self] value in
+                if let self = self, let input = self.input, !input.isFirstResponder {
                     input.text = "\(value)"
                 }
-            }
+            }.store(in: &cancellables)
         }
-        else if let param = self.parameter as? DoubleParameter {
+        else if let param = parameter as? DoubleParameter {
             stringValue = String(format: "%.3f", param.value)
-            valueObservation = param.observe(\DoubleParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let input = self.input, !input.isFirstResponder {
+            param.$value.sink { [weak self] value in
+                if let self = self, let input = self.input, !input.isFirstResponder {
                     input.text = String(format: "%.3f", value)
                 }
-            }
+            }.store(in: &cancellables)
         }
-        
-        guard let input = self.input else { return }
+
+        guard let input = input else { return }
         input.text = stringValue
-        
+
         super.setupBinding()
     }
-    
+
     deinit {
-        valueObservation = nil
         input = nil
     }
 }

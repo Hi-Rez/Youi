@@ -16,7 +16,7 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
     public weak var parameter: Parameter?
 
     var cancellables = Set<AnyCancellable>()
-    
+
     var inputs: [NSTextField] = []
     var labelField: NSTextField?
 
@@ -62,40 +62,34 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
 
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             if let param = parameter as? Int2Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
             else if let param = parameter as? Int3Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
             else if let param = parameter as? Int4Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
 
-            for i in 0..<parameter.count {
+            for i in 0 ..< parameter.count {
                 let value: Int32 = parameter[i]
                 let input = createInput("\(value)", i)
                 hStack.addView(input, in: .trailing)
@@ -103,51 +97,43 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
         }
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
             if let param = parameter as? Float2Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
             else if let param = parameter as? Float3Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
             else if let param = parameter as? PackedFloat3Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
             else if let param = parameter as? Float4Parameter {
-                param.$value.sink { [weak self] newValue in
+                param.$value.sink { [weak self] _ in
                     if let self = self {
-                        DispatchQueue.main.async {
-                            for (i, input) in self.inputs.enumerated() {
-                                input.stringValue = String(format: "%d", param[i])
-                            }
+                        for (i, input) in self.inputs.enumerated() {
+                            input.stringValue = String(format: "%d", param[i])
                         }
                     }
                 }.store(in: &cancellables)
             }
 
-            for i in 0..<parameter.count {
+            for i in 0 ..< parameter.count {
                 let value: Float = parameter[i]
                 let input = createInput("\(value)", i)
                 hStack.addView(input, in: .trailing)
@@ -260,13 +246,13 @@ open class MultiNumberInputViewController: InputViewController, NSTextFieldDeleg
 import UIKit
 
 class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate {
-    var observers: [NSKeyValueObservation] = []
+    var cancellables = Set<AnyCancellable>()
     var inputs: [UITextField] = []
 
     var font: UIFont {
         labelFont
     }
-    
+
     override open func loadView() {
         setupView()
         setupStackViews()
@@ -274,9 +260,9 @@ class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate 
         setupInputs()
         setupBinding()
     }
-    
+
     override func setupHorizontalStackView() {
-        guard let vStack = self.vStack else { return }
+        guard let vStack = vStack else { return }
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -288,56 +274,56 @@ class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate 
         stack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: 0).isActive = true
         hStack = stack
     }
-    
+
     func setupInputs() {
-        guard let hStack = self.hStack else { return }
+        guard let hStack = hStack else { return }
         if let param = parameter {
             for i in 0 ..< param.count {
                 hStack.addArrangedSubview(createInput("", i))
             }
         }
-        
+
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             if let param = parameter as? Int2Parameter {
-                inputs[0].text = "\(param.x)"
-                inputs[1].text = "\(param.y)"
+                inputs[0].text = "\(param.value.x)"
+                inputs[1].text = "\(param.value.y)"
             }
             else if let param = parameter as? Int3Parameter {
-                inputs[0].text = "\(param.x)"
-                inputs[1].text = "\(param.y)"
-                inputs[2].text = "\(param.z)"
+                inputs[0].text = "\(param.value.x)"
+                inputs[1].text = "\(param.value.y)"
+                inputs[2].text = "\(param.value.z)"
             }
             else if let param = parameter as? Int4Parameter {
-                inputs[0].text = "\(param.x)"
-                inputs[1].text = "\(param.y)"
-                inputs[2].text = "\(param.z)"
-                inputs[3].text = "\(param.w)"
+                inputs[0].text = "\(param.value.x)"
+                inputs[1].text = "\(param.value.y)"
+                inputs[2].text = "\(param.value.z)"
+                inputs[3].text = "\(param.value.w)"
             }
         }
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
             if let param = parameter as? Float2Parameter {
-                inputs[0].text = String(format: "%.3f", param.x)
-                inputs[1].text = String(format: "%.3f", param.y)
+                inputs[0].text = String(format: "%.3f", param.value.x)
+                inputs[1].text = String(format: "%.3f", param.value.y)
             }
             else if let param = parameter as? Float3Parameter {
-                inputs[0].text = String(format: "%.3f", param.x)
-                inputs[1].text = String(format: "%.3f", param.y)
-                inputs[2].text = String(format: "%.3f", param.z)
+                inputs[0].text = String(format: "%.3f", param.value.x)
+                inputs[1].text = String(format: "%.3f", param.value.y)
+                inputs[2].text = String(format: "%.3f", param.value.z)
             }
             else if let param = parameter as? PackedFloat3Parameter {
-                inputs[0].text = String(format: "%.3f", param.x)
-                inputs[1].text = String(format: "%.3f", param.y)
-                inputs[2].text = String(format: "%.3f", param.z)
+                inputs[0].text = String(format: "%.3f", param.value.x)
+                inputs[1].text = String(format: "%.3f", param.value.y)
+                inputs[2].text = String(format: "%.3f", param.value.z)
             }
             else if let param = parameter as? Float4Parameter {
-                inputs[0].text = String(format: "%.3f", param.x)
-                inputs[1].text = String(format: "%.3f", param.y)
-                inputs[2].text = String(format: "%.3f", param.z)
-                inputs[3].text = String(format: "%.3f", param.w)
+                inputs[0].text = String(format: "%.3f", param.value.x)
+                inputs[1].text = String(format: "%.3f", param.value.y)
+                inputs[2].text = String(format: "%.3f", param.value.z)
+                inputs[3].text = String(format: "%.3f", param.value.w)
             }
         }
     }
-    
+
     func createInput(_ value: String, _ tag: Int) -> UITextField {
         let input = UITextField()
         input.tag = tag
@@ -357,7 +343,7 @@ class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate 
         inputs.append(input)
         return input
     }
-    
+
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -369,9 +355,9 @@ class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate 
         }
         textField.resignFirstResponder()
     }
-    
+
     func setValue(_ value: Float, _ tag: Int) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 if value != floatParam.value {
@@ -400,14 +386,14 @@ class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate 
         guard !string.isEmpty else {
             return true
         }
-        
+
         if !CharacterSet(charactersIn: "-0123456789.").isSuperset(of: CharacterSet(charactersIn: string)) {
             return false
         }
         if string == ".", let text = textField.text, text.contains(".") {
             return false
         }
-        
+
         // Allow text change
         return true
     }
@@ -416,88 +402,80 @@ class MultiNumberInputViewController: WidgetViewController, UITextFieldDelegate 
         textField.resignFirstResponder()
         return true
     }
-    
+
     override func setupBinding() {
         if parameter is Int2Parameter || parameter is Int3Parameter || parameter is Int3Parameter || parameter is Int4Parameter {
             if let param = parameter as? Int2Parameter {
-                let updateValue: (Int2Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = "\(param[i])"
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = "\(value[i])"
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Int3Parameter {
-                let updateValue: (Int3Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = String(format: "%d", param[i])
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = "\(value[i])"
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Int4Parameter {
-                let updateValue: (Int4Parameter, NSKeyValueObservedChange<Int32>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = String(format: "%d", param[i])
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = "\(value[i])"
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
-                observers.append(param.observe(\.w, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
         }
         else if parameter is Float2Parameter || parameter is Float3Parameter || parameter is Float4Parameter || parameter is PackedFloat3Parameter {
             if let param = parameter as? Float2Parameter {
-                let updateValue: (Float2Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = String(format: "%.3f", value[i])
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Float3Parameter {
-                let updateValue: (Float3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = String(format: "%.3f", value[i])
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? PackedFloat3Parameter {
-                let updateValue: (PackedFloat3Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = String(format: "%.3f", value[i])
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
             else if let param = parameter as? Float4Parameter {
-                let updateValue: (Float4Parameter, NSKeyValueObservedChange<Float>) -> Void = { [unowned self, param] _, _ in
-                    for (i, input) in self.inputs.enumerated() {
-                        input.text = String(format: "%.3f", param[i])
+                param.$value.sink { [weak self] value in
+                    if let self = self {
+                        for (i, input) in self.inputs.enumerated() {
+                            input.text = String(format: "%.3f", value[i])
+                        }
                     }
-                }
-                observers.append(param.observe(\.x, changeHandler: updateValue))
-                observers.append(param.observe(\.y, changeHandler: updateValue))
-                observers.append(param.observe(\.z, changeHandler: updateValue))
-                observers.append(param.observe(\.w, changeHandler: updateValue))
+                }.store(in: &cancellables)
             }
         }
-        
+
         super.setupBinding()
     }
-    
+
     deinit {
-        observers = []
         inputs = []
     }
 }

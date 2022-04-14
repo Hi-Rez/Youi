@@ -22,22 +22,20 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
     var viewHeightConstraint: NSLayoutConstraint!
     var viewWidthConstraint: NSLayoutConstraint!
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             cancellable = parameter.$value.sink { [weak self] newValue in
                 if let self = self, self.labelField.stringValue != newValue {
-                    DispatchQueue.main.async {
-                        self.labelValue.stringValue = newValue
-                        self.labelValue.layout()
-                        self.view.needsLayout = true
-                    }
+                    self.labelValue.stringValue = newValue
+                    self.labelValue.layout()
+                    self.view.needsLayout = true
                 }
             }
-            
+
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +90,7 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
         }
     }
 
-    open override func viewWillLayout() {
+    override open func viewWillLayout() {
         let w = labelValue.intrinsicContentSize.width
         if w < 240 {
             viewWidthConstraint.isActive = true
@@ -110,13 +108,13 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
 import UIKit
 
 class LabelViewController: WidgetViewController {
-    var valueObservation: NSKeyValueObservation?
+    var cancellables = Set<AnyCancellable>()
     var valueLabel: UILabel?
-    
+
     var font: UIFont {
         .boldSystemFont(ofSize: 14)
     }
-    
+
     override open func loadView() {
         setupView()
         setupStackViews()
@@ -124,9 +122,9 @@ class LabelViewController: WidgetViewController {
         setupValueLabel()
         setupBinding()
     }
-    
+
     override func setupHorizontalStackView() {
-        guard let vStack = self.vStack else { return }
+        guard let vStack = vStack else { return }
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -138,9 +136,9 @@ class LabelViewController: WidgetViewController {
         stack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: 0).isActive = true
         hStack = stack
     }
-    
+
     func setupValueLabel() {
-        guard let hStack = self.hStack else { return }
+        guard let hStack = hStack else { return }
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = font
@@ -150,29 +148,23 @@ class LabelViewController: WidgetViewController {
         hStack.addArrangedSubview(label)
         valueLabel = label
     }
-    
+
     override func setupBinding() {
-        guard let parameter = self.parameter as? StringParameter else { return }
-        valueObservation = parameter.observe(\.value, options: [.old, .new]) { [unowned self] _, _ in
-            if let label = self.valueLabel {
-                label.text = "\(parameter.value)"
+        guard let parameter = parameter as? StringParameter else { return }
+        parameter.$value.sink { [weak self] value in
+            if let self = self, let label = self.valueLabel {
+                label.text = "\(value)"
             }
-        }
-            
-        if let label = self.label {
+        }.store(in: &cancellables)
+
+        if let label = label {
             label.text = "\(parameter.label):"
         }
-        
-        
-        if let value = self.valueLabel {
+
+        if let value = valueLabel {
             value.text = "\(parameter.value)"
         }
     }
-    
-    deinit {
-        valueObservation = nil
-    }
 }
-
 
 #endif

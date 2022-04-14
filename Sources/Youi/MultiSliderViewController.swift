@@ -21,19 +21,17 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
     var labelFields: [NSTextField] = []
     var sliders: [NSSlider] = []
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
         
-
-        if let parameter = self.parameter {
-            let labels: [String] = ["X","Y","Z","W"]
+        if let parameter = parameter {
+            let labels: [String] = ["X", "Y", "Z", "W"]
             
             var values: [Double] = []
             var mins: [Double] = []
             var maxes: [Double] = []
-            
             
             if let param = parameter as? Float2Parameter {
                 values.append(Double(param.value.x))
@@ -47,32 +45,25 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                                 
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                    DispatchQueue.main.async {
                         for i in 0..<param.count {
-                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                                self.sliders[i].doubleValue = Double(newValue[i])
-                            }
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].minValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
-                
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].maxValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
@@ -92,32 +83,25 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                    DispatchQueue.main.async {
                         for i in 0..<param.count {
-                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                                self.sliders[i].doubleValue = Double(newValue[i])
-                            }
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].minValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
-                
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].maxValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
@@ -140,32 +124,25 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                    DispatchQueue.main.async {
                         for i in 0..<param.count {
-                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                                self.sliders[i].doubleValue = Double(newValue[i])
-                            }
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].minValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
-                
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].maxValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
@@ -182,36 +159,28 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                    DispatchQueue.main.async {
                         for i in 0..<param.count {
-                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                                self.sliders[i].doubleValue = Double(newValue[i])
-                            }
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].minValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
-                
                 
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].maxValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
-                
             }
             else if let param = parameter as? Int3Parameter {
                 values.append(Double(param.value.x))
@@ -228,32 +197,25 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                    DispatchQueue.main.async {
                         for i in 0..<param.count {
-                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                                self.sliders[i].doubleValue = Double(newValue[i])
-                            }
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].minValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
-                
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].maxValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
@@ -276,32 +238,25 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                    DispatchQueue.main.async {
                         for i in 0..<param.count {
-                                self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                                self.sliders[i].doubleValue = Double(newValue[i])
-                            }
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].minValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
                 
-                
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            for i in 0..<param.count {
-                                self?.sliders[i].maxValue = Double(newValue[i])
-                            }
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
                         }
                     }
                 }.store(in: &cancellables)
@@ -344,7 +299,6 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
             
             labelFields.append(labelField)
             
-            
             let sliderStack = NSStackView()
             sliderStack.wantsLayer = true
             sliderStack.translatesAutoresizingMaskIntoConstraints = false
@@ -355,9 +309,7 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
             vStack.addView(sliderStack, in: .trailing)
             sliderStack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: -16).isActive = true
             
-            
             for i in 0..<parameter.count {
-                
                 let vs = NSStackView()
                 vs.wantsLayer = true
                 vs.translatesAutoresizingMaskIntoConstraints = false
@@ -365,7 +317,7 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 vs.spacing = 2
                 vs.alignment = .leading
                 vs.distribution = .fillEqually
-                sliderStack.addView(vs, in: .leading)                
+                sliderStack.addView(vs, in: .leading)
                 
                 let slider = NSSlider(value: values[i], minValue: mins[i], maxValue: maxes[i], target: self, action: #selector(onSliderChange))
                 slider.tag = i
@@ -382,7 +334,7 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 hs.spacing = 0
                 hs.alignment = .centerY
                 hs.distribution = .gravityAreas
-                vs.addView(hs, in: .leading)                
+                vs.addView(hs, in: .leading)
                 
                 let labelField = NSTextField()
                 labelField.font = .boldSystemFont(ofSize: 12)
@@ -420,7 +372,7 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
 
     @objc func onSliderChange(_ sender: NSSlider) {
         setValue(sender.doubleValue, sender.tag)
-        self.inputFields[sender.tag].stringValue = String(format: "%.3f", sender.floatValue)
+        inputFields[sender.tag].stringValue = String(format: "%.3f", sender.floatValue)
         deactivate()
     }
 
@@ -436,11 +388,10 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
         }
     }
 
-    
     @objc func onInputChanged(_ sender: NSTextField) {
         if let value = Double(sender.stringValue) {
             setValue(value, sender.tag)
-            self.sliders[sender.tag].doubleValue = value
+            sliders[sender.tag].doubleValue = value
             deactivateAsync()
         }
     }
@@ -460,4 +411,4 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
     }
 }
 
-#endif 
+#endif

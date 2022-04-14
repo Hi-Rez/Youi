@@ -29,9 +29,7 @@ open class ButtonViewController: NSViewController {
             
             subscriber = parameter.$value.sink { [weak self] value in
                 if let self = self {
-                    DispatchQueue.main.async {
-                        self.button.state = (value ? .on : .off)
-                    }
+                    self.button.state = (value ? .on : .off)
                 }
             }
 

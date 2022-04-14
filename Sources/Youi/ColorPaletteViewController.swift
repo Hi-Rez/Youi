@@ -47,9 +47,7 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
 
             parameter.$value.sink { [weak self] newValue in
                 if let _ = self {
-                    DispatchQueue.main.async {
-                        button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(newValue.x), green: CGFloat(newValue.y), blue: CGFloat(newValue.z), alpha: CGFloat(newValue.w)).cgColor
-                    }
+                    button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(newValue.x), green: CGFloat(newValue.y), blue: CGFloat(newValue.z), alpha: CGFloat(newValue.w)).cgColor
                 }
             }.store(in: &cancellables)
         }

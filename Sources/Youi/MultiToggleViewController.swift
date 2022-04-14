@@ -71,9 +71,7 @@ open class MultiToggleViewController: NSViewController {
 
             parameter.$value.sink { [weak self] value in
                 if let _ = self {
-                    DispatchQueue.main.async {
-                        button.state = (value ? .on : .off)
-                    }
+                    button.state = (value ? .on : .off)
                 }
             }.store(in: &subscriptions)
             

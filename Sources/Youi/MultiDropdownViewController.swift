@@ -15,13 +15,13 @@ import Cocoa
 open class MultiDropdownViewController: NSViewController {
     public var parameters: [StringParameter] = []
     var cancellables = Set<AnyCancellable>()
-    
+
     public var options: [[String]] = []
     var labelFields: [NSTextField] = []
     var dropDownMenus: [String: NSPopUpButton] = [:]
     var spacers: [Spacer] = []
-    
-    open override func loadView() {
+
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,14 +50,12 @@ open class MultiDropdownViewController: NSViewController {
         hStack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: -14).isActive = true
 
         for (index, parameter) in parameters.enumerated() {
-            parameter.$value.sink { [weak self] newValue in
+            parameter.$value.sink { [weak self] _ in
                 if let self = self, let dd = self.dropDownMenus[parameter.label] {
-                    DispatchQueue.main.async {
-                        dd.selectItem(withTitle: parameter.value)
-                    }
+                    dd.selectItem(withTitle: parameter.value)
                 }
             }.store(in: &cancellables)
-            
+
             let labelField = NSTextField()
             labelField.font = .labelFont(ofSize: 12)
             labelField.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +64,6 @@ open class MultiDropdownViewController: NSViewController {
             labelField.backgroundColor = .clear
             labelField.stringValue = parameter.label
 
-//            hStack.addView(labelField, in: .trailing)
             hStack.addArrangedSubview(labelField)
             view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
 
@@ -88,14 +85,6 @@ open class MultiDropdownViewController: NSViewController {
             hStack.addArrangedSubview(dropDownMenu)
             labelFields.append(labelField)
             dropDownMenus[parameter.label] = dropDownMenu
-
-//            if (index + 1) != parameters.count {
-//                let spacer = Spacer()
-//                spacer.widthAnchor.constraint(equalToConstant: 1).isActive = true
-//                hStack.addView(spacer, in: .trailing)
-//                spacer.heightAnchor.constraint(equalTo: hStack.heightAnchor).isActive = true
-//                spacers.append(spacer)
-//            }
         }
     }
 

@@ -20,18 +20,18 @@ public protocol ProgressSliderViewControllerDelegate: AnyObject {
 open class ProgressSliderViewController: NSViewController {
     public weak var parameter: Parameter?
     var cancellables = Set<AnyCancellable>()
-    
+
     public var slider: NSSlider!
 
     public weak var delegate: ProgressSliderViewControllerDelegate?
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 32).isActive = true
 
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             var value: Double = 0.0
             var minValue: Double = 0.0
             var maxValue: Double = 1.0
@@ -42,25 +42,19 @@ open class ProgressSliderViewController: NSViewController {
                 maxValue = Double(param.max)
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.doubleValue = Double(newValue)
-                        }
+                        self.slider.doubleValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(newValue)
-                        }
+                        self.slider.minValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
 
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(newValue)
-                        }
+                        self.slider.maxValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
             }
@@ -71,25 +65,19 @@ open class ProgressSliderViewController: NSViewController {
                 maxValue = Double(param.max)
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.doubleValue = Double(newValue)
-                        }
+                        self.slider.doubleValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(newValue)
-                        }
+                        self.slider.minValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
 
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(newValue)
-                        }
+                        self.slider.maxValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
             }
@@ -98,28 +86,22 @@ open class ProgressSliderViewController: NSViewController {
                 value = param.value
                 minValue = param.min
                 maxValue = param.max
-                
+
                 param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.doubleValue = Double(newValue)
-                        }
+                        self.slider.doubleValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
 
                 param.$min.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.minValue = Double(newValue)
-                        }
+                        self.slider.minValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
 
                 param.$max.sink { [weak self] newValue in
                     if let self = self {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.slider.maxValue = Double(newValue)
-                        }
+                        self.slider.maxValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
             }
@@ -149,12 +131,12 @@ open class ProgressSliderViewController: NSViewController {
     }
 
     @objc func onSliderChange() {
-        setValue(slider.doubleValue)        
+        setValue(slider.doubleValue)
         delegate?.onValueChanged(self)
     }
 
     func setValue(_ value: Double) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter
                 floatParam.value = Float(value)

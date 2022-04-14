@@ -19,24 +19,21 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
     var inputField: NSTextField?
     var labelField: NSTextField?
 
-    open override func loadView() {
+    override open func loadView() {
         view = NSView()
         view.wantsLayer = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 32).isActive = true
-        
-        if let parameter = self.parameter {
-            
+
+        if let parameter = parameter {
             subscription = parameter.$value.sink { [weak self] value in
                 if let self = self, let field = self.inputField, field.stringValue != value {
-                    DispatchQueue.main.async {
-                        field.stringValue = value
-                        field.layout()
-                        self.view.needsLayout = true
-                    }
+                    field.stringValue = value
+                    field.layout()
+                    self.view.needsLayout = true
                 }
             }
-            
+
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +95,7 @@ open class StringInputViewController: InputViewController, NSTextFieldDelegate {
     }
 
     func setValue(_ value: String) {
-        if let parameter = self.parameter {
+        if let parameter = parameter {
             parameter.value = value
         }
     }
@@ -114,7 +111,7 @@ import UIKit
 
 class StringInputViewController: NumberInputViewController {
     override func setupInput() {
-        guard let hStack = self.hStack else { return }
+        guard let hStack = hStack else { return }
         let input = UITextField()
         input.borderStyle = .roundedRect
         input.translatesAutoresizingMaskIntoConstraints = false
@@ -131,20 +128,20 @@ class StringInputViewController: NumberInputViewController {
         input.delegate = self
         self.input = input
     }
-    
+
     override func textFieldDidEndEditing(_ textField: UITextField) {
-        if let input = self.input, let text = input.text {
+        if let input = input, let text = input.text {
             setValue(text)
         }
         textField.resignFirstResponder()
     }
-    
+
     func setValue(_ text: String) {
-        if let parameter = self.parameter as? StringParameter, parameter.value != text {
+        if let parameter = parameter as? StringParameter, parameter.value != text {
             parameter.value = text
         }
     }
-    
+
     override func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     {
         return true
@@ -154,23 +151,21 @@ class StringInputViewController: NumberInputViewController {
         var stringValue: String = ""
         if let param = self.parameter as? StringParameter {
             stringValue = param.value
-            valueObservation = param.observe(\StringParameter.value, options: [.old, .new]) { [unowned self] _, change in
-                if let value = change.newValue, let input = self.input, !input.isFirstResponder {
+            param.$value.sink { [weak self] value in
+                if let self = self, let input = self.input, !input.isFirstResponder {
                     self.setValue(value)
                 }
-            }
+            }.store(in: &cancellables)
         }
-        
-        
-        guard let input = self.input else { return }
+
+        guard let input = input else { return }
         input.text = stringValue
-        
-        guard let label = self.label, let parameter = self.parameter else { return }
+
+        guard let label = label, let parameter = parameter else { return }
         label.text = "\(parameter.label)"
     }
-    
+
     deinit {
-        valueObservation = nil
         input = nil
     }
 }

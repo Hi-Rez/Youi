@@ -126,11 +126,9 @@ class ToggleViewController: WidgetViewController {
 
     override func setupBinding() {
         if let parameter = parameter as? BoolParameter {
-            subscriber = parameter.publisher.sink { [weak self] value in
+            subscriber = parameter.$value.sink { [weak self] value in
                 if let self = self, let toggle = self.toggle {
-                    DispatchQueue.main.async {
-                        toggle.isOn = value
-                    }
+                    toggle.isOn = value
                 }
             }
         }

@@ -18,9 +18,9 @@ import Cocoa
 open class ColorPickerViewController: NSViewController {
     public weak var parameter: Float4Parameter?
     var cancellable: AnyCancellable?
-    
-    var labelField: NSTextField!
-    var colorWell: NSColorWell!
+
+    var labelField: NSTextField?
+    var colorWell: NSColorWell?
 
     override open func loadView() {
         NSColorPanel.shared.showsAlpha = true
@@ -33,14 +33,11 @@ open class ColorPickerViewController: NSViewController {
         guard let parameter = parameter else { return }
 
         cancellable = parameter.$value.sink { [weak self] value in
-            if let self = self {
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    self.colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
-                }
+            if let self = self, let colorWell = self.colorWell {
+                colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
             }
         }
-        
+
         let vStack = NSStackView()
         vStack.wantsLayer = true
         vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -62,25 +59,22 @@ open class ColorPickerViewController: NSViewController {
         hStack.alignment = .centerY
         hStack.distribution = .gravityAreas
         hStack.spacing = 4
-
         hStack.widthAnchor.constraint(equalTo: vStack.widthAnchor, constant: -16).isActive = true
 
-        colorWell = NSColorWell()
+        let colorWell = NSColorWell()
         colorWell.wantsLayer = true
 
         let value = parameter.value
         colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
-
         colorWell.translatesAutoresizingMaskIntoConstraints = false
         colorWell.widthAnchor.constraint(equalToConstant: 24).isActive = true
         colorWell.heightAnchor.constraint(equalToConstant: 24).isActive = true
-
         colorWell.target = self
         colorWell.action = #selector(ColorPickerViewController.onColorChange)
-
         hStack.addView(colorWell, in: .leading)
+        self.colorWell = colorWell
 
-        labelField = NSTextField()
+        let labelField = NSTextField()
         labelField.font = .labelFont(ofSize: 12)
         labelField.wantsLayer = true
         labelField.translatesAutoresizingMaskIntoConstraints = false
@@ -89,6 +83,7 @@ open class ColorPickerViewController: NSViewController {
         labelField.backgroundColor = .clear
         labelField.stringValue = parameter.label
         hStack.addView(labelField, in: .leading)
+        self.labelField = labelField
     }
 
     @objc func onColorChange(_ sender: NSColorWell) {
@@ -109,6 +104,7 @@ open class ColorPickerViewController: NSViewController {
 import UIKit
 
 class ColorPickerViewController: WidgetViewController {
+    var cancellables = Set<AnyCancellable>()
     var colorWell: UIColorWell?
 
     override var minHeight: CGFloat {
@@ -152,16 +148,15 @@ class ColorPickerViewController: WidgetViewController {
 
     override func setupBinding() {
         guard let param = parameter as? Float4Parameter else { return }
-
-        param.actions.append { [weak self] value in
-            guard let self = self else { return }
-            if let colorWell = self.colorWell {
+        param.$value.sink { [weak self] value in
+            if let self = self, let colorWell = self.colorWell {
                 colorWell.selectedColor = UIColor(red: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
             }
-        }
+        }.store(in: &cancellables)
 
         if let colorWell = colorWell {
-            colorWell.selectedColor = UIColor(red: CGFloat(param.x), green: CGFloat(param.y), blue: CGFloat(param.z), alpha: CGFloat(param.w))
+            let value = param.value
+            colorWell.selectedColor = UIColor(red: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
         }
 
         super.setupBinding()
