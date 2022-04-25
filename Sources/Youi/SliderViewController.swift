@@ -46,7 +46,7 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
 
                 param.$value.sink { [weak self] newValue in
                     if let self = self, let slider = self.slider, let inputField = self.inputField {
-                        inputField.stringValue = String(format: "%.3f", value)
+                        inputField.stringValue = String(format: "%.3f", newValue)
                         slider.doubleValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
@@ -71,7 +71,7 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
 
                 param.$value.sink { [weak self] newValue in
                     if let self = self, let slider = self.slider, let inputField = self.inputField {
-                        inputField.stringValue = String(format: "%.3f", value)
+                        inputField.stringValue = "\(newValue)"
                         slider.doubleValue = Double(newValue)
                     }
                 }.store(in: &cancellables)
@@ -96,7 +96,7 @@ open class SliderViewController: InputViewController, NSTextFieldDelegate {
 
                 param.$value.sink { [weak self] newValue in
                     if let self = self, let slider = self.slider, let inputField = self.inputField {
-                        inputField.stringValue = String(format: "%.3f", value)
+                        inputField.stringValue = String(format: "%.3f", newValue)
                         slider.doubleValue = Double(newValue)
                     }
                 }.store(in: &cancellables)

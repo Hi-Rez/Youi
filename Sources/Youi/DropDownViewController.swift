@@ -27,12 +27,6 @@ open class DropDownViewController: NSViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = parameter {
-            cancellable = parameter.$value.sink { [weak self] value in
-                if let self = self, let selectedItem = self.dropDownMenu.selectedItem, selectedItem.title != value {
-                    self.dropDownMenu.selectItem(withTitle: value)
-                }
-            }
-
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +69,14 @@ open class DropDownViewController: NSViewController {
             dropDownMenu.action = #selector(onSelected)
             dropDownMenu.bezelStyle = .texturedRounded
             hStack.addView(dropDownMenu, in: .trailing)
+            
+            
+            cancellable = parameter.$value.sink { [weak self] value in
+                if let self = self, let selectedItem = self.dropDownMenu.selectedItem, selectedItem.title != value {
+                    self.dropDownMenu.selectItem(withTitle: value)
+                }
+            }
+
         }
     }
 

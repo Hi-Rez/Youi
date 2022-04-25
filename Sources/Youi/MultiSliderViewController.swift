@@ -34,232 +34,46 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
             var maxes: [Double] = []
             
             if let param = parameter as? Float2Parameter {
-                values.append(Double(param.value.x))
-                values.append(Double(param.value.y))
-                                
-                mins.append(Double(param.min.x))
-                mins.append(Double(param.min.y))
-                                
-                maxes.append(Double(param.max.x))
-                maxes.append(Double(param.max.y))
-                                
-                param.$value.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                            self.sliders[i].doubleValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$min.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].minValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$max.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].maxValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
+                for i in 0..<param.count {
+                    values.append(Double(param.value[i]))
+                    mins.append(Double(param.min[i]))
+                    maxes.append(Double(param.max[i]))
+                }
             }
             else if let param = parameter as? Float3Parameter {
-                values.append(Double(param.value.x))
-                values.append(Double(param.value.y))
-                values.append(Double(param.value.z))
-                
-                mins.append(Double(param.min.x))
-                mins.append(Double(param.min.y))
-                mins.append(Double(param.min.z))
-                
-                maxes.append(Double(param.max.x))
-                maxes.append(Double(param.max.y))
-                maxes.append(Double(param.max.z))
-                
-                param.$value.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                            self.sliders[i].doubleValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$min.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].minValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$max.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].maxValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
+                for i in 0..<param.count {
+                    values.append(Double(param.value[i]))
+                    mins.append(Double(param.min[i]))
+                    maxes.append(Double(param.max[i]))
+                }
             }
-            if let param = parameter as? Float4Parameter {
-                values.append(Double(param.value.x))
-                values.append(Double(param.value.y))
-                values.append(Double(param.value.z))
-                values.append(Double(param.value.w))
-                
-                mins.append(Double(param.min.x))
-                mins.append(Double(param.min.y))
-                mins.append(Double(param.min.z))
-                mins.append(Double(param.min.w))
-                
-                maxes.append(Double(param.max.x))
-                maxes.append(Double(param.max.y))
-                maxes.append(Double(param.max.z))
-                maxes.append(Double(param.max.w))
-                
-                param.$value.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                            self.sliders[i].doubleValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$min.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].minValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$max.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].maxValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
+            else if let param = parameter as? Float4Parameter {
+                for i in 0..<param.count {
+                    values.append(Double(param.value[i]))
+                    mins.append(Double(param.min[i]))
+                    maxes.append(Double(param.max[i]))
+                }
             }
             else if let param = parameter as? Int2Parameter {
-                values.append(Double(param.value.x))
-                values.append(Double(param.value.y))
-                
-                mins.append(Double(param.min.x))
-                mins.append(Double(param.min.y))
-                                
-                maxes.append(Double(param.max.x))
-                maxes.append(Double(param.max.y))
-                
-                param.$value.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                            self.sliders[i].doubleValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$min.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].minValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$max.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].maxValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
+                for i in 0..<param.count {
+                    values.append(Double(param.value[i]))
+                    mins.append(Double(param.min[i]))
+                    maxes.append(Double(param.max[i]))
+                }
             }
             else if let param = parameter as? Int3Parameter {
-                values.append(Double(param.value.x))
-                values.append(Double(param.value.y))
-                values.append(Double(param.value.z))
-                
-                mins.append(Double(param.min.x))
-                mins.append(Double(param.min.y))
-                mins.append(Double(param.min.z))
-                
-                maxes.append(Double(param.max.x))
-                maxes.append(Double(param.max.y))
-                maxes.append(Double(param.max.z))
-                
-                param.$value.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                            self.sliders[i].doubleValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$min.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].minValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$max.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].maxValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
+                for i in 0..<param.count {
+                    values.append(Double(param.value[i]))
+                    mins.append(Double(param.min[i]))
+                    maxes.append(Double(param.max[i]))
+                }
             }
             if let param = parameter as? Int4Parameter {
-                values.append(Double(param.value.x))
-                values.append(Double(param.value.y))
-                values.append(Double(param.value.z))
-                values.append(Double(param.value.w))
-                
-                mins.append(Double(param.min.x))
-                mins.append(Double(param.min.y))
-                mins.append(Double(param.min.z))
-                mins.append(Double(param.min.w))
-                
-                maxes.append(Double(param.max.x))
-                maxes.append(Double(param.max.y))
-                maxes.append(Double(param.max.z))
-                maxes.append(Double(param.max.w))
-                
-                param.$value.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
-                            self.sliders[i].doubleValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$min.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].minValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
-                
-                param.$max.sink { [weak self] newValue in
-                    if let self = self {
-                        for i in 0..<param.count {
-                            self.sliders[i].maxValue = Double(newValue[i])
-                        }
-                    }
-                }.store(in: &cancellables)
+                for i in 0..<param.count {
+                    values.append(Double(param.value[i]))
+                    mins.append(Double(param.min[i]))
+                    maxes.append(Double(param.max[i]))
+                }
             }
 
             let vStack = NSStackView()
@@ -366,6 +180,163 @@ open class MultiSliderViewController: InputViewController, NSTextFieldDelegate {
                 hs.addView(inputField, in: .trailing)
                 
                 inputFields.append(inputField)
+            }
+            
+            if let param = parameter as? Float2Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+            }
+            else if let param = parameter as? Float3Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+            }
+            if let param = parameter as? Float4Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+            }
+            else if let param = parameter as? Int2Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+            }
+            else if let param = parameter as? Int3Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+            }
+            if let param = parameter as? Int4Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.inputFields[i].stringValue = String(format: "%.3f", newValue[i])
+                            self.sliders[i].doubleValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$min.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].minValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
+                
+                param.$max.sink { [weak self] newValue in
+                    if let self = self {
+                        for i in 0..<param.count {
+                            self.sliders[i].maxValue = Double(newValue[i])
+                        }
+                    }
+                }.store(in: &cancellables)
             }
         }
     }
