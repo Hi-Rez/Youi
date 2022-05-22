@@ -17,8 +17,8 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
     public weak var parameter: Parameter?
     var cancellable: AnyCancellable?
 
-    var stepper: NSStepper!
-    var inputField: NSTextField!
+    var stepper: NSStepper?
+    var inputField: NSTextField?
     var labelField: NSTextField!
 
     override open func loadView() {
@@ -36,8 +36,8 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
 
                 cancellable = param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        self.inputField.stringValue = String(format: "%.5f", newValue)
-                        self.stepper.floatValue = newValue
+                        self.inputField?.stringValue = String(format: "%.5f", newValue)
+                        self.stepper?.floatValue = newValue
                     }
                 }
             }
@@ -48,8 +48,8 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
 
                 cancellable = param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        self.inputField.stringValue = String(format: "%.5f", newValue)
-                        self.stepper.doubleValue = Double(newValue)
+                        self.inputField?.stringValue = String(format: "%.5f", newValue)
+                        self.stepper?.doubleValue = Double(newValue)
                     }
                 }
             }
@@ -60,8 +60,8 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
 
                 cancellable = param.$value.sink { [weak self] newValue in
                     if let self = self {
-                        self.inputField.stringValue = String(format: "%.5f", newValue)
-                        self.stepper.doubleValue = Double(newValue)
+                        self.inputField?.stringValue = String(format: "%.5f", newValue)
+                        self.stepper?.doubleValue = Double(newValue)
                     }
                 }
             }
@@ -99,7 +99,7 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
             hStack.addView(labelField, in: .leading)
             view.heightAnchor.constraint(equalTo: labelField.heightAnchor, constant: 16).isActive = true
 
-            inputField = NSTextField()
+            let inputField = NSTextField()
             inputField.font = .boldSystemFont(ofSize: 12)
             inputField.stringValue = stringValue
             inputField.wantsLayer = true
@@ -115,8 +115,9 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
             inputField.resignFirstResponder()
             inputField.widthAnchor.constraint(equalToConstant: 24).isActive = true
             hStack.addView(inputField, in: .trailing)
+            self.inputField = inputField
 
-            stepper = NSStepper()
+            let stepper = NSStepper()
             stepper.wantsLayer = true
             stepper.translatesAutoresizingMaskIntoConstraints = false
             stepper.target = self
@@ -130,6 +131,7 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
             stepper.maxValue = 100
             stepper.valueWraps = true
             hStack.addView(stepper, in: .trailing)
+            self.stepper = stepper
         }
     }
 
@@ -138,7 +140,7 @@ open class BindingInputViewController: InputViewController, NSTextFieldDelegate 
     }
 
     func setValue(_ value: Double) {
-        stepper.doubleValue = value
+        stepper?.doubleValue = value
         if let parameter = parameter {
             if parameter is FloatParameter {
                 let floatParam = parameter as! FloatParameter

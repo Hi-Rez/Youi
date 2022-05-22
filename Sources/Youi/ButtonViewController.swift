@@ -26,12 +26,6 @@ open class ButtonViewController: NSViewController {
 
         if let parameter = self.parameter {
             defaultState = parameter.value
-            
-            subscriber = parameter.$value.sink { [weak self] value in
-                if let self = self {
-                    self.button.state = (value ? .on : .off)
-                }
-            }
 
             let vStack = NSStackView()
             vStack.wantsLayer = true
@@ -71,6 +65,12 @@ open class ButtonViewController: NSViewController {
             button.action = #selector(ButtonViewController.onButtonChange)
             
             view.heightAnchor.constraint(equalTo: button.heightAnchor, constant: 16).isActive = true
+            
+            subscriber = parameter.$value.sink { [weak self] value in
+                if let self = self {
+                    self.button.state = (value ? .on : .off)
+                }
+            }
         }
     }
 

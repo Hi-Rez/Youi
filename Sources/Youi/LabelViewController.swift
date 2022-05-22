@@ -28,14 +28,6 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
 
         if let parameter = parameter {
-            cancellable = parameter.$value.sink { [weak self] newValue in
-                if let self = self, self.labelField.stringValue != newValue {
-                    self.labelValue.stringValue = newValue
-                    self.labelValue.layout()
-                    self.view.needsLayout = true
-                }
-            }
-
             let vStack = NSStackView()
             vStack.wantsLayer = true
             vStack.translatesAutoresizingMaskIntoConstraints = false
@@ -87,6 +79,14 @@ open class LabelViewController: NSViewController, NSTextFieldDelegate {
 
             viewWidthConstraint = view.widthAnchor.constraint(equalToConstant: 240)
             viewWidthConstraint.isActive = false
+            
+            cancellable = parameter.$value.sink { [weak self] newValue in
+                if let self = self, self.labelField.stringValue != newValue {
+                    self.labelValue.stringValue = newValue
+                    self.labelValue.layout()
+                    self.view.needsLayout = true
+                }
+            }
         }
     }
 

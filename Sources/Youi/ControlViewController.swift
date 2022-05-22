@@ -312,8 +312,6 @@ open class ControlViewController: UIViewController {
         self.parameters = parameters
     }
     
-    var param = FloatParameter("Slider", 0.5, 0.0, 1.0, .slider)
-    
     open override func loadView() {
         setupView()
         setupStackView()
@@ -371,6 +369,9 @@ open class ControlViewController: UIViewController {
                         case .inputfield:
                             addMultiNumberInput(param)
                             addSpacer()
+//                        case .multislider:
+//                            addMultiSlider(param)
+//                            addSpacer()
                         case .unknown:
                             addMultiNumberInput(param)
                             addSpacer()
