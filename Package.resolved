@@ -5,9 +5,9 @@
         "package": "Satin",
         "repositoryURL": "https://github.com/Hi-Rez/Satin",
         "state": {
-          "branch": "master",
-          "revision": "317557f6ba52c7af2b63e7afcd6400ea312f41cb",
-          "version": null
+          "branch": null,
+          "revision": "08a068949ab72623d4e170fa8e7304f5ec8f30ea",
+          "version": "2.1.0"
         }
       }
     ]
