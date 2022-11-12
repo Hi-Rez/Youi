@@ -293,8 +293,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
     deinit {
 //        viewHeightConstraint = nil
         removeAll()
-        parameters = nil
-        stack = nil
     }
 }
 

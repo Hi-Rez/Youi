@@ -207,10 +207,7 @@ open class PanelViewController: ControlViewController {
     deinit {
         controls = []
         parameters = nil
-        button = nil
         stack = nil
-        vStack = nil
-        label = nil
     }
 }
 
