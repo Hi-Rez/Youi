@@ -15,7 +15,7 @@ import Satin
 import Cocoa
 
 open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
-    public var parameters: [Float4Parameter] = []
+    public var parameters: [Parameter] = []
     var parametersMap: [Int: NSButton] = [:]
     var cancellables = Set<AnyCancellable>()
     var activeIndex: Int = -1
@@ -25,7 +25,14 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
         super.viewWillAppear()
         for (index, parameter) in parameters.enumerated() {
             guard parametersMap[index] == nil else { continue }
-            let value = parameter.value
+            var value: simd_float4 = .one
+            
+            if let param = parameter as? Float4Parameter {
+                value = param.value
+            }
+            else if let param = parameter as? Float3Parameter {
+                value = simd_make_float4(param.value, 1.0)
+            }
             
             let button = NSButton()
             button.isBordered = false
@@ -45,11 +52,20 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
             hStack.addView(button, in: .leading)
             parametersMap[index] = button
 
-            parameter.$value.sink { [weak self] newValue in
-                if let _ = self {
-                    button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(newValue.x), green: CGFloat(newValue.y), blue: CGFloat(newValue.z), alpha: CGFloat(newValue.w)).cgColor
-                }
-            }.store(in: &cancellables)
+            if let param = parameter as? Float4Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let _ = self {
+                        button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(newValue.x), green: CGFloat(newValue.y), blue: CGFloat(newValue.z), alpha: CGFloat(newValue.w)).cgColor
+                    }
+                }.store(in: &cancellables)
+            }
+            else if let param = parameter as? Float3Parameter {
+                param.$value.sink { [weak self] newValue in
+                    if let _ = self {
+                        button.layer?.backgroundColor = NSColor(deviceRed: CGFloat(newValue.x), green: CGFloat(newValue.y), blue: CGFloat(newValue.z), alpha: 1.0).cgColor
+                    }
+                }.store(in: &cancellables)
+            }
         }
     }
     
@@ -88,10 +104,17 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
     @objc func onColorPicked(_ sender: NSButton) {
         activeIndex = sender.tag
         
-        let param = parameters[activeIndex]
-        let value = param.value
-        
         let cp = NSColorPanel.shared
+        let param = parameters[activeIndex]
+        var value: simd_float4 = .one
+        
+        if let param = param as? Float4Parameter {
+            value = param.value
+        }
+        else if let param = param as? Float3Parameter {
+            value = simd_make_float4(param.value, 1.0)
+        }
+                
         cp.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
         cp.setTarget(self)
         cp.setAction(#selector(ColorPaletteViewController.colorDidChange))
@@ -108,7 +131,13 @@ open class ColorPaletteViewController: NSViewController, NSWindowDelegate {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        parameters[activeIndex].value = simd_make_float4(Float(red), Float(green), Float(blue), Float(alpha))
+        
+        if let param = parameters[activeIndex] as? Float4Parameter {
+            param.value = simd_make_float4(Float(red), Float(green), Float(blue), Float(alpha))
+        }
+        else if let param = parameters[activeIndex] as? Float3Parameter {
+            param.value = simd_make_float3(Float(red), Float(green), Float(blue))
+        }
     }
 
     public func windowDidResignKey(_ notification: Notification) {

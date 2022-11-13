@@ -16,11 +16,15 @@ import Satin
 import Cocoa
 
 open class ColorPickerViewController: NSViewController {
-    public weak var parameter: Float4Parameter?
+    public weak var parameter: Parameter?
     var cancellable: AnyCancellable?
 
     var labelField: NSTextField?
     var colorWell: NSColorWell?
+    
+    var hasAlpha: Bool {
+        return parameter is Float4Parameter
+    }
 
     override open func loadView() {
         NSColorPanel.shared.showsAlpha = true
@@ -32,10 +36,23 @@ open class ColorPickerViewController: NSViewController {
 
         guard let parameter = parameter else { return }
 
-        cancellable = parameter.$value.sink { [weak self] value in
-            if let self = self, let colorWell = self.colorWell {
-                colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+        var value: simd_float4 = .one
+        
+        if let param = parameter as? Float4Parameter {
+            cancellable = param.$value.sink { [weak self] value in
+                if let self = self, let colorWell = self.colorWell {
+                    colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+                }
             }
+            value = param.value
+        }
+        else if let param = parameter as? Float3Parameter {
+            cancellable = param.$value.sink { [weak self] value in
+                if let self = self, let colorWell = self.colorWell {
+                    colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: 1.0)
+                }
+            }
+            value = simd_make_float4(param.value, 1.0)
         }
 
         let vStack = NSStackView()
@@ -63,9 +80,9 @@ open class ColorPickerViewController: NSViewController {
 
         let colorWell = NSColorWell()
         colorWell.wantsLayer = true
-
-        let value = parameter.value
+        
         colorWell.color = NSColor(deviceRed: CGFloat(value.x), green: CGFloat(value.y), blue: CGFloat(value.z), alpha: CGFloat(value.w))
+        
         colorWell.translatesAutoresizingMaskIntoConstraints = false
         colorWell.widthAnchor.constraint(equalToConstant: 24).isActive = true
         colorWell.heightAnchor.constraint(equalToConstant: 24).isActive = true
@@ -85,7 +102,7 @@ open class ColorPickerViewController: NSViewController {
         hStack.addView(labelField, in: .leading)
         self.labelField = labelField
     }
-
+    
     @objc func onColorChange(_ sender: NSColorWell) {
         if let parameter = parameter, let color = sender.color.usingColorSpace(.deviceRGB) {
             var red: CGFloat = 0
@@ -94,7 +111,12 @@ open class ColorPickerViewController: NSViewController {
             var alpha: CGFloat = 0
             color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
 
-            parameter.value = simd_make_float4(Float(red), Float(green), Float(blue), Float(alpha))
+            if let param = parameter as? Float4Parameter {
+                param.value = simd_make_float4(Float(red), Float(green), Float(blue), Float(alpha))
+            }
+            else if let param = parameter as? Float3Parameter {
+                param.value = simd_make_float3(Float(red), Float(green), Float(blue))
+            }
         }
     }
 }

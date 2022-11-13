@@ -73,9 +73,8 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     }
                 }
                 if param is Int2Parameter || param is Int3Parameter || param is Int4Parameter || param is Float2Parameter || param is Float3Parameter || param is Float4Parameter {
-                    if param is Float4Parameter, param.controlType == .colorpicker {
-                        let colorParam = param as! Float4Parameter
-                        addColorPicker(colorParam)
+                    if param is Float4Parameter || param is Float3Parameter, param.controlType == .colorpicker {
+                        addColorPicker(param)
                         addSpacer()
                     }
                     else {
@@ -87,7 +86,7 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                             addMultiNumberInput(param)
                             addSpacer()
                         case .colorpalette:
-                            addColorPalette(param as! Float4Parameter)
+                            addColorPalette(param)
                         case .unknown:
                             addMultiNumberInput(param)
                             addSpacer()
@@ -147,13 +146,13 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
         spacer.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
-    open func addColorPicker(_ parameter: Float4Parameter) {
+    open func addColorPicker(_ parameter: Parameter) {
         let vc = ColorPickerViewController()
         vc.parameter = parameter
         addControl(vc)
     }
     
-    open func addColorPalette(_ parameter: Float4Parameter) {
+    open func addColorPalette(_ parameter: Parameter) {
         var vc: ColorPaletteViewController
         
         var needsSpacer = false
@@ -357,9 +356,8 @@ open class ControlViewController: UIViewController {
                     }
                 }
                 if param is Int2Parameter || param is Int3Parameter || param is Int4Parameter || param is Float2Parameter || param is Float3Parameter || param is Float4Parameter {
-                    if param is Float4Parameter, param.controlType == .colorpicker {
-                        let colorParam = param as! Float4Parameter
-                        addColorPicker(colorParam)
+                    if param is Float4Parameter || param is Float3Parameter, param.controlType == .colorpicker {
+                        addColorPicker(param)
                         addSpacer()
                     }
                     else {
