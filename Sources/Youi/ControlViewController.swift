@@ -348,9 +348,6 @@ open class ControlViewController: UIViewController {
                     case .inputfield:
                         addNumberInput(param)
                         addSpacer()
-                    case .unknown:
-                        addNumberInput(param)
-                        addSpacer()
                     default:
                         break
                     }
@@ -368,9 +365,6 @@ open class ControlViewController: UIViewController {
 //                        case .multislider:
 //                            addMultiSlider(param)
 //                            addSpacer()
-                        case .unknown:
-                            addMultiNumberInput(param)
-                            addSpacer()
                         default:
                             break
                         }
@@ -384,9 +378,6 @@ open class ControlViewController: UIViewController {
                         addSpacer()
                     case .button:
                         addButton(boolParam)
-                        addSpacer()
-                    case .unknown:
-                        addToggle(boolParam)
                         addSpacer()
                     default:
                         break
@@ -403,9 +394,6 @@ open class ControlViewController: UIViewController {
                         addSpacer()
                     case .inputfield:
                         addInput(stringParam)
-                        addSpacer()
-                    case .unknown:
-                        addLabel(stringParam)
                         addSpacer()
                     default:
                         break
