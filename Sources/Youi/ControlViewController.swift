@@ -64,10 +64,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     case .inputfield:
                         addNumberInput(param)
                         addSpacer()
-                    case .unknown:
-                        addNumberInput(param)
-                        addSpacer()
-                        
                     default:
                         break
                     }
@@ -87,9 +83,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                             addSpacer()
                         case .colorpalette:
                             addColorPalette(param)
-                        case .unknown:
-                            addMultiNumberInput(param)
-                            addSpacer()
                         default:
                             break
                         }
@@ -104,9 +97,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                     case .button:
                         addButton(boolParam)
                         addSpacer()
-                    case .unknown:
-                        addToggle(boolParam)
-                        addSpacer()
                     default:
                         break
                     }
@@ -120,8 +110,6 @@ open class ControlViewController: InputViewController, OptionsViewControllerDele
                         addLabel(stringParam)
                     case .inputfield:
                         addInput(stringParam)
-                    case .unknown:
-                        addLabel(stringParam)
                     default:
                         break
                     }
